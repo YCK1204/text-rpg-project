@@ -41,6 +41,7 @@ namespace TextRPG
         }
         public override void AttackPlayer()
         {
+            Console.WriteLine($"{Name}이 플레이어를 공격하였습니다");
             //플레이어 체력-=미니언 공격
         }
     }
@@ -62,6 +63,7 @@ namespace TextRPG
         }
         public override void AttackPlayer()
         {
+            Console.WriteLine($"{Name}이 플레이어를 공격하였습니다");
             //플레이어 체력-=미니언 공격
         }
     }
@@ -80,6 +82,7 @@ namespace TextRPG
         }
         public override void AttackPlayer()
         {
+            Console.WriteLine($"{Name}이 플레이어를 공격하였습니다");
             //플레이어 체력-=미니언 공격
         }
     }
