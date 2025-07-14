@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,30 +10,22 @@ namespace TextRPG
     internal class Battle
     {
         List<dynamic> order;
+        int PlayerIndex;
         public Battle(List<dynamic> order)
-        { this.order = order; }
+        { 
+            this.order = order;
+            this.PlayerIndex = order.FindIndex( p=> p == order.OfType<Player>().FirstOrDefault());
+        }
 
         public void Combat(int active)
         {
-            if (this.order[active].GetType() == "Player")
+            if (active == PlayerIndex)
             {
-                /*
-                * Player & Monster 클래스 공통:
-                * int Damage(): 현재 공격력에 기반한 최종 데미지 반환
-                * void UpdateHealth(int DeltaHealth): 특정 행동에 대한 체력 변경치 적용  
-                */
                 PrintCombatMain();
-                Console.WriteLine();
-                Console.WriteLine("1. 공격");
-                Console.WriteLine();
-                Console.WriteLine("원하는 행동을 입력해주세요.");
                 switch (RPGsys.getInput())
                 {
                     case "1":
-                        Console.WriteLine();
-                        Console.WriteLine("0. 취소");
-                        Console.WriteLine();
-                        Console.WriteLine("공격 대상을 선택해주세요.");
+                        PrintAttack();
                         int input;
                         bool success = int.TryParse(RPGsys.getInput(), out input);
                         if (success)
@@ -40,9 +33,9 @@ namespace TextRPG
 
                             if (input < order.Count)
                             {
-                                int damage = order[0].Attack();
+                                int damage = order[PlayerIndex].Attack();
                                 Console.WriteLine();
-                                Console.WriteLine($"{order[0].Name}의 공격!");
+                                Console.WriteLine($"{order[active].Name}의 공격!");
                                 Console.WriteLine($"Lv.{order[input].Level} {order[input].Name}에게 {damage}데미지!.");
                                 order[input].UpdateHealth(damage);
                                 Console.WriteLine($"HP: {order[input].Health + damage} => {(order[input].Health <= 0 ? "Dead" : order[input].Health)}");
@@ -71,37 +64,49 @@ namespace TextRPG
                 int damage = order[active].Attack();
                 Console.WriteLine();
                 Console.WriteLine($"{order[active].Name}의 공격!");
-                Console.WriteLine($"{order[0].Name}에게 {damage}데미지!.");
-                order[0].UpdateHealth(damage);
-                Console.WriteLine($"HP: {order[0].Health + damage} => {(order[0].Health <= 0 ? "Dead" : order[0].Health)}");
+                Console.WriteLine($"{order[PlayerIndex].Name}에게 {damage}데미지!.");
+                order[PlayerIndex].UpdateHealth(damage);
+                Console.WriteLine($"HP: {order[PlayerIndex].Health + damage} => {(order[PlayerIndex].Health <= 0 ? "Dead" : order[PlayerIndex].Health)}");
             }
         }
-
-        public void PrintCombatMain()
+        public void Reward()
         {
+            int TotalGold = 0, TotalExp = 0;
             for (int i = 1; i < order.Count; i++)
             {
-                if (order[i].Health <= 0)
+                TotalGold += order[i].DropGold;
+                TotalExp += order[i].DropExp;
+            }
+            order[PlayerIndex].UpdateGold(TotalGold);
+            order[PlayerIndex].UpdateExp(TotalExp);
+        }
+        public void PrintCombatMain()
+        {
+            foreach (var i in order)
+            {
+                if (i is Player)
+                    continue;
+                if (i.Health <= 0)
                 { 
                     Console.ForegroundColor = ConsoleColor.Green;
-                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
-                    Console.WriteLine($"| HP:{order[i].Health}");
+                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
+                    Console.WriteLine($"| HP:{i.Health}");
                 }
                 else
                 { 
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
                     Console.WriteLine("| Dead");
                 }
                 Console.ResetColor();
             }
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($"[{order[0].Name}]");
-            RPGsys.ArrangePrint($"Lv.{order[0].Level.ToString()}", 6);
-            RPGsys.ArrangePrint($"|   {order[0].Name} ({order[0].Job})", 20);
+            Console.WriteLine($"[{order[PlayerIndex].Name}]");
+            RPGsys.ArrangePrint($"Lv.{order[PlayerIndex].Level.ToString()}", 6);
+            RPGsys.ArrangePrint($"|   {order[PlayerIndex].Name} ({order[PlayerIndex].Job})", 20);
             Console.WriteLine();
-            Console.WriteLine($" HP:{order[0].CurrentHealth}/{order[0].Health}");
+            Console.WriteLine($" HP:{order[PlayerIndex].CurrentHealth}/{order[PlayerIndex].Health}");
             Console.WriteLine();
             Console.WriteLine("1. 공격");
             Console.WriteLine();
@@ -109,44 +114,45 @@ namespace TextRPG
         }
         public void PrintAttack()
         {
-            for (int i = 1; i < order.Count; i++)
+            foreach (var i in order)
             {
-                if (order[i].Health <= 0)
+                if (i is Player)
+                    continue;
+                if (i.Health <= 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
-                    Console.WriteLine($"| HP:{order[i].Health}");
+                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
+                    Console.WriteLine($"| HP:{i.Health}");
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
                     Console.WriteLine("| Dead");
                 }
                 Console.ResetColor();
             }
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine($"[{order[0].Name}]");
-            RPGsys.ArrangePrint("Lv." + order[0].Level.ToString + " " + order[1].Name, 25);
+            Console.WriteLine($"[{order[PlayerIndex].Name}]");
+            RPGsys.ArrangePrint($"Lv.{order[PlayerIndex].Level.ToString()}", 6);
+            RPGsys.ArrangePrint($"|   {order[PlayerIndex].Name} ({order[PlayerIndex].Job})", 20);
             Console.WriteLine();
-            Console.WriteLine($" HP:{order[0].CurrentHealth}/{order[0].Health}");
+            Console.WriteLine($" HP:{order[PlayerIndex].CurrentHealth}/{order[PlayerIndex].Health}");
+            Console.WriteLine();
+            Console.WriteLine("0. 취소");
+            Console.WriteLine();
+            Console.WriteLine("공격 대상을 선택해주세요.");
         }
 
         /*TODO:
          * 오더 흐름에 따라 턴제 채용
-         * 플레이어 순서는 객체 스피드에 따라 차등 적용...가능하면.
-         * 플레이어 id: 0 
-         * 에너미 id (취소. id 대신 에너미 객체 자체를 끼워넣는다)
-         * 에너미 id는 위에서부터 하나하나.
+         * 플레이어 순서는 객체 스피드에 따라 차등 적용(constructor에서 입력)
          * 에너미 AI (추가기능 시 스킬 선택 추가) ** 차후 시간 남으면 추가.
          * 회피기동(+)
          * 급소(+)
          * 
          */
-
-
-
 
 
     }
