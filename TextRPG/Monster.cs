@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,42 +12,59 @@ namespace TextRPG
         public string Name { get; set; }
         public int Health {  get; set; }
         public int Attack {  get; set; }
+        public int Level {  get; set; }
         public int DropGold { get; set; }
         public int DropExp { get; set; }
 
+        public void AttackPlayer()
+        {
+            //플레이어 체력-=미니언 공격
+        }
         
     }
     public class MInion:Monster
     {
-        MInion()
+        
+        
+        public MInion()
         {
+            Random random = new Random();
+            int randomLevel = random.Next(1, 5);
             Name = "미니언";
-            Health = 0;
-            Attack = 0;
-            DropGold = 0;
-            DropExp= 0;
+            Health = 50 + Level * 10;
+            Attack = 10+ Level * 3;
+            Level = randomLevel;
+            DropGold = 100+Level * 10;
+            DropExp = 100 + Level * 10;
         }
+
     }
     public class CannonMinion:Monster
     {
-        CannonMinion()
+        public CannonMinion()
         {
-            Name = "미니언";
-            Health = 0;
-            Attack = 0;
-            DropGold = 0;
-            DropExp = 0;
+            Random random = new Random();
+            int randomLevel = random.Next(1, 5);
+            Name = "대포 미니언";
+            Health = 70 + Level * 10;
+            Attack = 20 + Level * 3;
+            Level = randomLevel;
+            DropGold = 200 + Level * 10;
+            DropExp = 200 + Level * 10;
         }
     }
     public class VoidMinion : Monster
     {
-        VoidMinion()
+        public VoidMinion()
         {
+            Random random = new Random();
+            int randomLevel = random.Next(1, 5);
             Name = "미니언";
-            Health = 0;
-            Attack = 0;
-            DropGold = 0;
-            DropExp = 0;
+            Health = 60 + Level * 10;
+            Attack = 15 + Level * 3;
+            Level = randomLevel;
+            DropGold = 150 + Level * 10;
+            DropExp = 150 + Level * 10;
         }
     }
 }
