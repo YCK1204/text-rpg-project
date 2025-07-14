@@ -10,11 +10,11 @@ namespace TextRPG
     public class GameManager
     {
         public Player player;
-
+        public Battle battle;
         public void run()
         {
             player = new Player();
-
+            battle = new Battle();
             while (true)
             {
                 ShowMainmenu();
