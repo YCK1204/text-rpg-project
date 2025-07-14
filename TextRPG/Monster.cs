@@ -9,36 +9,44 @@ namespace TextRPG
 {
     public abstract class Monster
     {
-        public string Name { get; set; }
-        public int Health {  get; set; }
-        public int Attack {  get; set; }
-        public int Level {  get; set; }
-        public int DropGold { get; set; }
-        public int DropExp { get; set; }
+        public string Name { get; protected set; }
+        public int Health {  get; protected set; }
+        public int Attack {  get; protected set; }
+        public int Level {  get; protected set; }
+        public int DropGold { get; protected set; }
+        public int DropExp { get; protected set; }
 
-        public void AttackPlayer()
-        {
+        public abstract void AttackPlayer();
+        
             //플레이어 체력-=미니언 공격
-        }
+        
         
     }
-    public class MInion:Monster
+    public class MInion : Monster
     {
-        
-        
+
+
         public MInion()
         {
             Random random = new Random();
             int randomLevel = random.Next(1, 5);
             Name = "미니언";
             Health = 50 + Level * 10;
-            Attack = 10+ Level * 3;
+            Attack = 10 + Level * 3;
             Level = randomLevel;
-            DropGold = 100+Level * 10;
+            DropGold = 100 + Level * 10;
             DropExp = 100 + Level * 10;
-        }
 
+
+        }
+        public override void AttackPlayer()
+        {
+            //플레이어 체력-=미니언 공격
+        }
     }
+        
+
+
     public class CannonMinion:Monster
     {
         public CannonMinion()
@@ -51,6 +59,10 @@ namespace TextRPG
             Level = randomLevel;
             DropGold = 200 + Level * 10;
             DropExp = 200 + Level * 10;
+        }
+        public override void AttackPlayer()
+        {
+            //플레이어 체력-=미니언 공격
         }
     }
     public class VoidMinion : Monster
@@ -65,6 +77,10 @@ namespace TextRPG
             Level = randomLevel;
             DropGold = 150 + Level * 10;
             DropExp = 150 + Level * 10;
+        }
+        public override void AttackPlayer()
+        {
+            //플레이어 체력-=미니언 공격
         }
     }
 }
