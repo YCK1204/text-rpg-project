@@ -44,8 +44,8 @@ namespace TextRPG
                 case "2":
                     break;
                 case "3":
-                    List<dynamic> combatParicipants = new List<dynamic>();
-                    combatParicipants.Add(player);
+                    List<dynamic> list = new List<dynamic>(); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    
                     break;
                 default:
                     Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요. 아무키나 다시 입력해주세요.");

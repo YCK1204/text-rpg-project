@@ -9,11 +9,11 @@ namespace TextRPG
     public class Player
     {
         public int Level = 1;
-        public string Name = "용사";
-        public string Class = "모루의 용사";
+        public string Name = "탐험가";
+        public string Class = "모험가";
         public int Attack = 11;
-        public int Defense = 100;
-        public int Health = 1000;
+        public int Defense = 12;
+        public int Health = 100;
         public int Gold = 500;
 
         public void playerinfo()
@@ -25,6 +25,7 @@ namespace TextRPG
             Console.WriteLine($"Defense:{Defense}");
             Console.WriteLine($"Health: {Health}");
             Console.WriteLine($"Gold: {Gold}");
+            Console.WriteLine("아무키나 입력시 시작화면으로 돌아갑니다.");
             Console.ReadKey();
         }
 
