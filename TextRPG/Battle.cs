@@ -16,6 +16,11 @@ namespace TextRPG
         {
             if (this.order[active].GetType() == "Player")
             {
+                /*
+                * Player & Monster 클래스 공통:
+                * int Damage(): 현재 공격력에 기반한 최종 데미지 반환
+                * void UpdateHealth(int DeltaHealth): 특정 행동에 대한 체력 변경치 적용  
+                */
                 PrintCombatMain();
                 Console.WriteLine();
                 Console.WriteLine("1. 공격");
