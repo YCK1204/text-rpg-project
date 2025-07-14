@@ -11,4 +11,11 @@ namespace TextRPG.Utils
         Warrior,
         Mage,
     }
+    public enum LootType
+    {
+        Common,
+        Rare,
+        Epic,
+        Legendary
+    }
 }
