@@ -1,0 +1,40 @@
+{
+  "Monsters": [
+    {
+      "Id": 1,
+      "Status": {
+        "Name": "미니언",
+        "Health": 50,
+        "Attack": 10,
+        "RandomLevelRange": [ 1, 5 ],
+        "DropGold": 100,
+        "DropExp": 100
+      },
+      "Loot": {
+
+      }
+    },
+    {
+      "Id": 2,
+      "Status": {
+        "Name": "대포 미니언",
+        "Health": 70,
+        "Attack": 20,
+        "RandomLevelRange": [ 1, 5 ],
+        "DropGold": 200,
+        "DropExp": 200
+      }
+    },
+    {
+      "Id": 3,
+      "Status": {
+        "Name": "보이드 미니언",
+        "Health": 60,
+        "Attack": 15,
+        "RandomLevelRange": [ 1, 5 ],
+        "DropGold": 150,
+        "DropExp": 150
+      }
+    }
+  ]
+}
