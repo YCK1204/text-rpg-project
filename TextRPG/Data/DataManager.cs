@@ -46,9 +46,11 @@ namespace TextRPG.Data
                     status.Level = random.Next(monster.Status.RandomLevelRange[0], monster.Status.RandomLevelRange[1] + 1);
                     status.Health += (status.Level * 10);
                     status.Attack += (status.Level * 3);
-                    status.DropGold += (status.Level * 10);
-                    status.DropExp += (status.Level * 10);
                     monster.Status = status;
+                    var reward = monster.Reward;
+                    reward.Gold += (status.Level * 10);
+                    reward.Exp += (status.Level * 10);
+                    monster.Reward = reward;
                     t1._Monsters[i] = monster;
                 }
                 return t1._Monsters.ToDictionary(m => m.Id, m => m);

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TextRPG;
+using TextRPG.Utils;
 
 namespace TextRPG
 {
@@ -15,7 +16,7 @@ namespace TextRPG
         public int Defence = 0;
         public string Description = "";
         public int Price = 0;
-        public ItemRarity Rarity { get; set; }
+        public LootType Rarity { get; set; }
     }
 
     class Potion : Item, IUsable
