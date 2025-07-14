@@ -12,7 +12,7 @@ namespace TextRPG
         public Battle(List<dynamic> order)
         { this.order = order; }
 
-        public List<int>? Combat(int active)
+        public void Combat(int active)
         {
             if (this.order[active].GetType() == "Player")
             {
@@ -31,17 +31,44 @@ namespace TextRPG
                         int input;
                         bool success = int.TryParse(RPGsys.getInput(), out input);
                         if (success)
+                        {
+
                             if (input < order.Count)
                             {
+                                int damage = order[0].Attack();
                                 Console.WriteLine();
                                 Console.WriteLine($"{order[0].Name}의 공격!");
-                                Console.WriteLine($"{order[input].Name}의 공격!");
-                            }     
+                                Console.WriteLine($"Lv.{order[input].Level} {order[input].Name}에게 {damage}데미지!.");
+                                order[input].UpdateHealth(damage);
+                                Console.WriteLine($"HP: {order[input].Health + damage} => {(order[input].Health <= 0 ? "Dead" : order[input].Health)}");
+                                Console.WriteLine();
+                                Console.WriteLine("0. 다음");
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("잘못된 입력입니다.");
+                            }
                         break;
-                    default:
+                        }
+                        else
+                        {
+                            Console.WriteLine("잘못된 입력입니다.");
+                            break;
+                        }
+                            default:
                         Console.WriteLine("잘못된 입력입니다.");
-                        return null;
+                        break;
                 }
+            }
+            else
+            {
+                int damage = order[active].Attack();
+                Console.WriteLine();
+                Console.WriteLine($"{order[active].Name}의 공격!");
+                Console.WriteLine($"{order[0].Name}에게 {damage}데미지!.");
+                order[0].UpdateHealth(damage);
+                Console.WriteLine($"HP: {order[0].Health + damage} => {(order[0].Health <= 0 ? "Dead" : order[0].Health)}");
             }
         }
 
@@ -50,18 +77,24 @@ namespace TextRPG
             for (int i = 1; i < order.Count; i++)
             {
                 if (order[i].Health <= 0)
-                    Console.ForegroundColor = ConsoleColor.Red;
+                { 
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                    Console.WriteLine($"| HP:{order[i].Health}");
+                }
                 else
+                { 
                     Console.ForegroundColor = ConsoleColor.Gray;
-
-                RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
-                Console.WriteLine($" HP:{order[i].Health}");
+                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                    Console.WriteLine("| Dead");
+                }
                 Console.ResetColor();
             }
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine($"[{order[0].Name}]");
-            RPGsys.ArrangePrint("Lv." + order[0].Level.ToString + " " + order[1].Name, 25);
+            RPGsys.ArrangePrint($"Lv.{order[0].Level.ToString()}", 6);
+            RPGsys.ArrangePrint($"|   {order[0].Name} ({order[0].Job})", 20);
             Console.WriteLine();
             Console.WriteLine($" HP:{order[0].CurrentHealth}/{order[0].Health}");
             Console.WriteLine();
@@ -74,12 +107,17 @@ namespace TextRPG
             for (int i = 1; i < order.Count; i++)
             {
                 if (order[i].Health <= 0)
-                    Console.ForegroundColor = ConsoleColor.Red;
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                    Console.WriteLine($"| HP:{order[i].Health}");
+                }
                 else
+                {
                     Console.ForegroundColor = ConsoleColor.Gray;
-
-                RPGsys.ArrangePrint(i.ToString() + " Lv." + order[i].Level.ToString + " " + order[i].Name, 27);
-                Console.WriteLine($" HP:{order[i].Health}");
+                    RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                    Console.WriteLine("| Dead");
+                }
                 Console.ResetColor();
             }
             Console.WriteLine();
@@ -169,7 +207,6 @@ namespace TextRPG
 
             Console.Write(text);
             Console.Write(new string(' ', padding));
-            Console.Write("|");
         }
 
     }
