@@ -37,45 +37,51 @@ namespace TextRPG
             });
             loot.Add(new MonsterLoot()
             {
-                Name = "평범한 몬스터 발바닥",
+                Name = "HP 포션",
                 Rarity = ItemRarity.Common,
                 Price = 10
             });
             loot.Add(new MonsterLoot()
             {
-                Name = "평범한 몬스터 ",
+                Name = "MP 포션",
                 Rarity = ItemRarity.Common,
                 Price = 10
             });
             loot.Add(new MonsterLoot()
             {
-                Name = "",
+                Name = "희귀한 마법 가루",
                 Rarity = ItemRarity.Rare,
+                Price = 20
             });
             loot.Add(new MonsterLoot()
             {
-                Name = "",
+                Name = "희귀한 마력 파편",
                 Rarity = ItemRarity.Rare,
+                Price = 20
             });
             loot.Add(new MonsterLoot()
             {
-                Name = "",
+                Name = "희귀한 몬스터의 정수",
                 Rarity = ItemRarity.Rare,
+                Price = 20
             });
             loot.Add(new MonsterLoot()
             {
                 Name = "",
                 Rarity = ItemRarity.Epic,
+                Price = 50
             });
             loot.Add(new MonsterLoot()
             {
                 Name = "",
                 Rarity = ItemRarity.Epic,
+                Price = 50
             });
             loot.Add(new MonsterLoot()
             {
                 Name = "전설의 엑스칼리버",
                 Rarity = ItemRarity.Legendary,
+                Price = 100
             });
         }
     }
