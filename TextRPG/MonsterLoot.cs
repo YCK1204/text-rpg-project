@@ -13,13 +13,11 @@ namespace TextRPG
         Epic,
         Legendary
     }
-    internal class MonsterLoot
+    public class MonsterLoot:Item
     {
-        public string Name {  get; set; }
-        public ItemRarity Rarity { get; set; }
-        public int Price { get; set; }
+        
 
-        List<MonsterLoot> loot=new List<MonsterLoot>();
+        public List<Item> loot=new List<Item>();
         MonsterLoot()
         {
             loot.Add(new MonsterLoot()
@@ -35,17 +33,19 @@ namespace TextRPG
                 Rarity = ItemRarity.Common,
                 Price = 10
             });
-            loot.Add(new MonsterLoot()
+            loot.Add(new Potion()
             {
-                Name = "HP 포션",
+                Name = "작은 HP 포션",
                 Rarity = ItemRarity.Common,
-                Price = 10
+                Price = 100,
+                Heal=10
             });
-            loot.Add(new MonsterLoot()
+            loot.Add(new Potion()
             {
-                Name = "MP 포션",
+                Name = "작은 MP 포션",
                 Rarity = ItemRarity.Common,
-                Price = 10
+                Price = 100,
+                Heal = 10
             });
             loot.Add(new MonsterLoot()
             {
