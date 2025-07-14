@@ -19,8 +19,10 @@ namespace TextRPG
         public abstract void AttackPlayer();
         
             //플레이어 체력-=미니언 공격
-        
-        
+        public void UpdateHealth(int damage)
+        {
+            this.Health -= damage;
+        }
     }
     public class MInion : Monster
     {
