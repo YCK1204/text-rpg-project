@@ -16,8 +16,8 @@ namespace Team_RPG
          * 3: 체력 변동
          * 4: 마나(스테미나) 변동
          * 5: 상태이상(+)
-         * 직업 리스트:
-         * (미정)
+         * 직업 리스트: Not Available Yet
+         * 
          */
 
         public int id { get; set; }
