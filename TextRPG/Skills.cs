@@ -16,6 +16,8 @@ namespace Team_RPG
          * 3: 체력 변동
          * 4: 마나(스테미나) 변동
          * 5: 상태이상(+)
+         * 직업 리스트:
+         * (미정)
          */
 
         public int id { get; set; }
@@ -29,11 +31,11 @@ namespace Team_RPG
         {
             all, enemy, self, any, random
         }
-        public List<Skills> SkillDB { get; } = new();
+        public List<Skills> skillList { get; } = new();
 
         Skills()
         {
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -43,7 +45,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 1,
                 name = "방어",
@@ -53,7 +55,7 @@ namespace Team_RPG
                 type = Type.self,
                 effect = new List<dynamic> { new int[] { 2, 50, 1 }, new int[] { 4, 30, 1 } }
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 2,
                 name = "강타",
@@ -63,7 +65,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 3,
                 name = "전사의 포효",
@@ -73,7 +75,7 @@ namespace Team_RPG
                 type = Type.self,
                 effect = new List<dynamic> { new int[] { 1, 30, 3} }
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "",
@@ -83,7 +85,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -93,7 +95,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -103,7 +105,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -113,7 +115,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -123,7 +125,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -133,7 +135,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -143,7 +145,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -153,7 +155,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -163,7 +165,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -173,7 +175,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -183,7 +185,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -193,7 +195,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -203,7 +205,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -213,7 +215,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -223,7 +225,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -233,7 +235,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -243,7 +245,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -253,7 +255,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -263,7 +265,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -273,7 +275,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
@@ -283,7 +285,7 @@ namespace Team_RPG
                 type = Type.enemy,
                 effect = null
             });
-            SkillDB.Add(new Skills()
+            skillList.Add(new Skills()
             {
                 id = 0,
                 name = "공격",
