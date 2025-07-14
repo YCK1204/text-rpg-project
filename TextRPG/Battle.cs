@@ -12,13 +12,89 @@ namespace TextRPG
         public Battle(List<dynamic> order)
         { this.order = order; }
 
-        public 
+        public List<int>? Combat(int active)
+        {
+            if (this.order[active].GetType() == "Player")
+            {
+                PrintCombatMain();
+                Console.WriteLine();
+                Console.WriteLine("1. 공격");
+                Console.WriteLine();
+                Console.WriteLine("원하는 행동을 입력해주세요.");
+                switch (RPGsys.getInput())
+                {
+                    case "1":
+                        Console.WriteLine();
+                        Console.WriteLine("0. 취소");
+                        Console.WriteLine();
+                        Console.WriteLine("공격 대상을 선택해주세요.");
+                        int input;
+                        bool success = int.TryParse(RPGsys.getInput(), out input);
+                        if (success)
+                            if (input < order.Count)
+                            {
+                                Console.WriteLine();
+                                Console.WriteLine($"{order[0].Name}의 공격!");
+                                Console.WriteLine($"{order[input].Name}의 공격!");
+                            }     
+                        break;
+                    default:
+                        Console.WriteLine("잘못된 입력입니다.");
+                        return null;
+                }
+            }
+        }
+
+        public void PrintCombatMain()
+        {
+            for (int i = 1; i < order.Count; i++)
+            {
+                if (order[i].Health <= 0)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                RPGsys.ArrangePrint("Lv." + order[i].Level.ToString + " " + order[i].Name, 25);
+                Console.WriteLine($" HP:{order[i].Health}");
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"[{order[0].Name}]");
+            RPGsys.ArrangePrint("Lv." + order[0].Level.ToString + " " + order[1].Name, 25);
+            Console.WriteLine();
+            Console.WriteLine($" HP:{order[0].CurrentHealth}/{order[0].Health}");
+            Console.WriteLine();
+            Console.WriteLine("1. 공격");
+            Console.WriteLine();
+            Console.WriteLine("원하는 행동을 입력해주세요.");
+        }
+        public void PrintAttack()
+        {
+            for (int i = 1; i < order.Count; i++)
+            {
+                if (order[i].Health <= 0)
+                    Console.ForegroundColor = ConsoleColor.Red;
+                else
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                RPGsys.ArrangePrint(i.ToString() + " Lv." + order[i].Level.ToString + " " + order[i].Name, 27);
+                Console.WriteLine($" HP:{order[i].Health}");
+                Console.ResetColor();
+            }
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine($"[{order[0].Name}]");
+            RPGsys.ArrangePrint("Lv." + order[0].Level.ToString + " " + order[1].Name, 25);
+            Console.WriteLine();
+            Console.WriteLine($" HP:{order[0].CurrentHealth}/{order[0].Health}");
+        }
 
         /*TODO:
          * 오더 흐름에 따라 턴제 채용
          * 플레이어 순서는 객체 스피드에 따라 차등 적용...가능하면.
          * 플레이어 id: 0 
-         * 에너미 id: 1~4
+         * 에너미 id (취소. id 대신 에너미 객체 자체를 끼워넣는다)
          * 에너미 id는 위에서부터 하나하나.
          * 에너미 AI (추가기능 시 스킬 선택 추가) ** 차후 시간 남으면 추가.
          * 회피기동(+)
@@ -34,7 +110,7 @@ namespace TextRPG
 
     internal class RPGsys
     {
-        public static string getInput()  // 숫자의 경우 기본 숫자 반환 | 이외의 경우 키 정보 그대로 반
+        public static string getInput() // numpad = dpad 통일용 키입력 받는 메소드
         {
             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
             switch (keyInfo.Key)
@@ -70,8 +146,31 @@ namespace TextRPG
                 case ConsoleKey.NumPad9:
                     return "9";
                 default:
-                    return keyInfo.KeyChar.ToString();
+                    return keyInfo.KeyChar.ToString(); // fallback: 입력된 문자 자체
             }
         }
+
+        public static void ArrangePrint(string text, int columnWidth) // 문자열 출력 길이 통합용 메소드
+        {
+            int visualLength = 0;
+
+            foreach (char c in text)
+            {
+                if (char.IsDigit(c) || char.IsLetter(c) || char.IsPunctuation(c) || char.IsWhiteSpace(c))
+                    visualLength += 1;
+                else if (c >= '\uAC00' && c <= '\uD7AF') // 유니코드 한글 범위
+                    visualLength += 2;
+                else
+                    visualLength += 1; // 기타 문자
+            }
+
+            int padding = columnWidth - visualLength;
+            if (padding < 0) padding = 0;
+
+            Console.Write(text);
+            Console.Write(new string(' ', padding));
+            Console.Write("|");
+        }
+
     }
 }
