@@ -12,6 +12,7 @@ namespace TextRPG.Utils
         public int[] RandomLevelRange { get; set; }
         public int DropGold { get; set; }
         public int DropExp { get; set; }
+        public LootType LootType { get; set; }
         public void AttackPlayer()
         {
             Console.WriteLine($"{Name}이 플레이어를 공격하였습니다");
@@ -22,19 +23,23 @@ namespace TextRPG.Utils
             this.Health -= damage;
         }
     }
-    public struct MonsterLoot
-    {
-        public string Name { get; set; }
-        public string Rarity { get; set; }
-        public int Price { get; set; }
-    }
     public struct Monster
     {
         public int Id { get; set; }
         [JsonProperty("Status")]
         public MonsterStatus Status { get; set; }
-        [JsonProperty("Loot")]
-        public MonsterLoot MonsterLoot { get; set; }
+    }
+    public struct MonsterLoot
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public LootType Type { get; set; }
+        public int Price { get; set; }
+    }
+    public struct MonsterLoots
+    {
+        [JsonProperty("MonsterLoots")]
+        public List<MonsterLoot> _MonsterLoots { get; set; }
     }
     public struct Monsters
     {

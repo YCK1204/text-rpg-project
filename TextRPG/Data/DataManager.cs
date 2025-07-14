@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Reflection;
+using TextRPG.Utils;
 
 namespace TextRPG.Data
 {
@@ -14,7 +15,8 @@ namespace TextRPG.Data
         const string CharacterStatusPath = "CharacterStatuses.json";
         private DataManager() { }
 
-        public Dictionary<int, TextRPG.Utils.Monster> Monsters = new Dictionary<int, TextRPG.Utils.Monster>();
+        public Dictionary<int, Monster> Monsters = new Dictionary<int, Monster>();
+        Dictionary<int, MonsterLoot> MonsterLoots = new Dictionary<int, MonsterLoot>();
         Dictionary<int, T2> MakeDict<T1, T2>(string path, Func<T1, Dictionary<int, T2>> func)
         {
             string json = File.ReadAllText(path);
@@ -35,7 +37,7 @@ namespace TextRPG.Data
         public void LoadData()
         {
             Random random = new Random();
-            Monsters = MakeDict<TextRPG.Utils.Monsters, TextRPG.Utils.Monster>($"{JsonPath}/{MonsterPath}", (t1) => 
+            Monsters = MakeDict<Monsters, Monster>($"{JsonPath}/{MonsterPath}", (t1) =>
             {
                 for (int i = 0; i < t1._Monsters.Count; i++)
                 {
@@ -55,6 +57,16 @@ namespace TextRPG.Data
             {
                 Console.WriteLine($"Monster ID: {monster.Key}, Name: {monster.Value.Status.Name}, Health: {monster.Value.Status.Health}");
             }
+            MonsterLoots = MakeDict<MonsterLoots, MonsterLoot>($"{JsonPath}/{MonsterPath}", (t1) => { return t1._MonsterLoots.ToDictionary(m => m.Id, m => m); });
+        }
+        public MonsterLoot GenRandomLoot(LootType type)
+        {
+            List<MonsterLoot> filteredLoots = MonsterLoots.Values
+                .Where(loot => loot.Type == type)
+                .ToList();
+
+            Random random = new Random();
+            return filteredLoots[random.Next(0, filteredLoots.Count)];
         }
         public void SaveData()
         {
