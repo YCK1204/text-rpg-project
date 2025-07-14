@@ -38,7 +38,7 @@ namespace Team_RPG
         public string description { get; set; }
         public float coefficient { get; set; }
         public Type type { get; set; }
-        public List<dynamic>? effect {  get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴], ...]
+        public List<int[]>? effect {  get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴], ...]
         public enum Type
         {
             all, enemy, self, any, random
@@ -65,7 +65,7 @@ namespace Team_RPG
                 description = "적의 눈을 바라보고, 동태를 살피고, 몸을 지킨다.",
                 coefficient = 0,
                 type = Type.self,
-                effect = new List<dynamic> { new int[] { 2, 50, 1 }, new int[] { 4, 30, 1 } }
+                effect = new List<int[]> { new int[] { 2, 50, 1 }, new int[] { 4, 30, 1 } }
             });
             skillList.Add(new Skills()
             {
@@ -85,7 +85,7 @@ namespace Team_RPG
                 description = "마음 속 깊은 곳에서부터 끓어오르는 함성을 전방을 향해 지른다.",
                 coefficient = 0,
                 type = Type.self,
-                effect = new List<dynamic> { new int[] { 1, 30, 3} }
+                effect = new List<int[]> { new int[] { 1, 30, 3} }
             });
             skillList.Add(new Skills()
             {
@@ -196,7 +196,7 @@ namespace Team_RPG
                 description = "해적은 바다의 무법자. 약탈할 수 있다면 약탈하는 것이 그들의 모토.",
                 coefficient = 0,
                 type = Type.self,
-                effect = new List<dynamic> { new int[] { 1, 10, 3 }, new int[] { 2, 10, 3 }, new int[] { 5, 10, 3 } }
+                effect = new List<int[]> { new int[] { 1, 10, 3 }, new int[] { 2, 10, 3 }, new int[] { 5, 10, 3 } }
             });
             skillList.Add(new Skills()
             {
