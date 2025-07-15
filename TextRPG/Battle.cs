@@ -11,13 +11,13 @@ namespace TextRPG
     {
         List<dynamic> order;
         int PlayerIndex;
-        public Battle(List<dynamic> order)
-        { 
-            this.order = order;
+        public Battle(List<dynamic> battlefield) // 전투 참여 객체 전부를 인자로 받음(플레이어, 몬스터 둘 다 포함)
+        {
+            this.order = battlefield;
             this.PlayerIndex = order.FindIndex( p => p == order.OfType<Player>().FirstOrDefault());
         }
 
-        public void Combat(int active)
+        public void Combat(int active) // for이나 foreach문으로 order에서 하나씩 빼와서 반복 돌리시면 됩니다: 인터페이스 기초작업은 다 해뒀고 스킬 선택이랑 아이템 선택만 추가하시면 돼요.
         {
             if (active == PlayerIndex)
             {
@@ -146,7 +146,7 @@ namespace TextRPG
         }
         //public int SkillActivation()
         //{
-            
+
         //}
         /*TODO:
          * 오더 흐름에 따라 턴제 채용
@@ -160,7 +160,27 @@ namespace TextRPG
          *
          *
          */
-        
+        public int SpeedDice(object obj) // 속도값 판정: (보정 = 최소: +0 최대 +5)
+        {
+            Random random = new Random();
+            return random.Next(0, 6) + obj.Speed; 
+        }
+        public List<dynamic> NewOrder() // 턴 시작 시 호출 요망: order 초기화 및 재설정
+        {
+            List<dynamic> newOrder = new List<dynamic>();
+            Int[] speedList = new int[order.Count];
+            for (int i = 0; i < order.Count; i++)
+            {
+                speedList.Add(SpeedDice(order[i]));
+            }
+            foreach (var i in order)
+            {
+                int index = speedList.IndexOf(speedList.Max());
+                newOrder.Add(order[index]);
+                speedList[index] = int.MinValue; // 이미 사용된 속도값은 최소치로 변경
+            }
+            return newOrder;
+        }
 
     }
 
