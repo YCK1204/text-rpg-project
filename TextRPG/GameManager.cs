@@ -14,7 +14,7 @@ namespace TextRPG
         public void run()
         {
             player = new Player();
-            battle = new Battle(order);
+            //battle = new Battle(order);
             while (true)
             {
                 ShowMainmenu();

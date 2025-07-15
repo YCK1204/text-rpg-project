@@ -144,10 +144,10 @@ namespace TextRPG
             Console.WriteLine();
             Console.WriteLine("공격 대상을 선택해주세요.");
         }
-        public int SkillActivation()
-        {
+        //public int SkillActivation()
+        //{
             
-        }
+        //}
         /*TODO:
          * 오더 흐름에 따라 턴제 채용
          * 플레이어 순서는 객체 스피드에 따라 차등 적용(constructor에서 입력)

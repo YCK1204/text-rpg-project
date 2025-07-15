@@ -367,8 +367,8 @@ namespace Team_RPG
                             passiver.CriticalChance += eff[1];
                             break;
                         case 6: // 상태이상 적용
-                            if (rand.Next(100) < eff[2]) // 확률 적용
-                                ApplyStatusEffect(passiver, eff[1], eff[3]);
+                            //if (rand.Next(100) < eff[2]) // 확률 적용
+                                //ApplyStatusEffect(passiver, eff[1], eff[3]);
                             break;
                     }
                 }
