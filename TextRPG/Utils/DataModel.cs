@@ -71,43 +71,15 @@ namespace TextRPG.Utils
 
         public void Display()
         {
-            // 포션 정보 출력
+            Console.WriteLine($"{Name.PadRight(10)} | 회복력: {Heal.ToString().PadRight(5)} | {Description}");
         }
 
         public void Use()
         {
-            // 플레이어 체력 회복
+            Math.Clamp(Player.Health + Heal, 0, Player.MaxHealth);
         }
     }
     public struct Armor : Item, IEquippable
-    {
-        public int Attack { get; set; }
-        public bool Equipped { get; set; }
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Price { get; set; }
-        public ItemRarity Rarity { get; set; }
-
-        public void Display()
-        {
-            // 방어구 정보 출력
-        }
-
-        public void Equip()
-        {
-            // 플레이어 공격력 추가
-            // 착용중인 Weapon이 있다면 Unequip() 호출
-            // Equipped = true; // 장비 착용 상태로 변경
-        }
-
-        public void Unequip()
-        {
-            // 플레이어 공격력 제거
-            // Equipped = false; // 장비 착용 상태로 변경
-        }
-    }
-    public struct Weapon : Item, IEquippable
     {
         public int Defense { get; set; }
         public bool Equipped { get; set; }
@@ -119,20 +91,48 @@ namespace TextRPG.Utils
 
         public void Display()
         {
-            // 무기 정보 출력
+            Console.WriteLine($"{Name.PadRight(10)} | 방어력: {Defense.ToString().PadRight(5)} | {Description}");
         }
 
         public void Equip()
         {
-            // 플레이어 방어력 추가
-            // 착용중인 Armor가 있다면 Unequip() 호출
-            //Equipped = true; // 장비 착용 상태로 변경
+            Player.UnEquipItemArmor();
+            Player.ItemDefense += Defense;
+            Equipped = true;
         }
 
         public void Unequip()
         {
-            // 플레이어 방어력 제거
-            //Equipped = false; // 장비 착용 상태로 변경
+            Player.ItemDefense -= Defense;
+            Equipped = false;
+        }
+    }
+    public struct Weapon : Item, IEquippable
+    {
+        public int Attack { get; set; }
+        public bool Equipped { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public ItemRarity Rarity { get; set; }
+
+        public void Display()
+        {
+            Console.WriteLine($"{Name.PadRight(10)} | 방어력: {Attack.ToString().PadRight(5)} | {Description}");
+        }
+
+        public void Equip()
+        {
+            Player.UnEquipItemWeapon();
+            Player.ItemAttack += Attack;
+            Equipped = true;
+        }
+
+        public void Unequip()
+        {
+            Player.ItemAttack -= Attack;
+            Equipped = false;
         }
     }
     public interface Item
@@ -157,7 +157,7 @@ namespace TextRPG.Utils
             }
             else if (Items[idx - 1] is IEquippable equippableItem)
             {
-                equippableItem.Equip(); // 장비 Item에서 Equipped 처리
+                equippableItem.Equip();
             }
             else;// 사실상 없는 경우
         }
@@ -195,6 +195,32 @@ namespace TextRPG.Utils
                     break;
             }
         }
+        public void UnEquipItemArmor()
+        {
+            if (Items.Count == 0) return;
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Items[i] is Armor armor && armor.Equipped)
+                {
+                    armor.Unequip();
+                    Items[i] = armor;
+                    break;
+                }
+            }
+        }
+        public void UnEquipItemWeapon()
+        {
+            if (Items.Count == 0) return;
+            for (int i = 0; i < Items.Count; i++)
+            {
+                if (Items[i] is Weapon weapon && weapon.Equipped)
+                {
+                    weapon.Unequip();
+                    Items[i] = weapon;
+                    break;
+                }
+            }
+        }
     }
     public struct Items
     {
@@ -208,12 +234,14 @@ namespace TextRPG.Utils
         public CharacterClass Class { get; set; }
         public string ClassName { get; set; }
         public int Attack { get; set; }
+        public int ItemAttack { get; set; }
         public int Defense { get; set; }
+        public int ItemDefense { get; set; }
         public int Health { get; set; }
+        public int MaxHealth { get; set; }
         public int Gold { get; set; }
         public int Exp { get; set; }
         public int NeedExp { get; set; }
-        public int MaxHealth { get; set; }
     }
     public struct CharacterStatuses
     {
