@@ -11,12 +11,12 @@ namespace Team_RPG
         /*
          * 필요 요소들: 스킬 id, 이름, 설명, 스킬 분류(타겟팅), 배율, 효과 
          * 효과 id: (임시)
-         * 1: 공격력 변동
-         * 2: 방어력 변동
-         * 3: 체력 변동
-         * 4: 마나(스테미나) 변동
-         * 5: 급소율 변동
-         * 6: 상태이상(+)
+         * 1: 공격력 변동 - 자신
+         * 2: 방어력 변동 - 자신
+         * 3: 체력 변동 - 자신
+         * 4: 마나(스테미나) 변동 - 자신
+         * 5: 급소율 변동 - 자신
+         * 6: 상태이상(+) - 상대...대상지정?
          * 직업 리스트: Not Available Yet
          * 전사/마법사/궁수/도적/해적
          * 
@@ -28,7 +28,7 @@ namespace Team_RPG
          * 5: 침묵 - 스킬 사용 불가(특정 턴 동안)
          * 6: 빙결 - 행동 불가(특정 턴 동안)
          * 7: 혼란 - 자해를 포함한 랜덤 행동(자해 확률 33%, 최대 5턴)
-         * 8: 즉사 - 확률에 의한 즉사
+         * 8: 즉사 - 확률에 의한 즉사(체력 최대치만큼 즉시 데미지)
          * 상태이상 적용 시: [효과 id, 이상id, 적용 확률, 적용 턴]
          */
         private Random rand = new();
@@ -38,7 +38,7 @@ namespace Team_RPG
         public string description { get; set; }
         public float coefficient { get; set; }
         public Type type { get; set; }
-        public List<int[]>? effect {  get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴], ...]
+        public List<int[]>? effect {  get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴, 대상id], ...]
         public enum Type
         {
             all, enemy, self, any, random, player
@@ -299,53 +299,63 @@ namespace Team_RPG
             }); // 해적 4
             skillList.Add(new Skills()
             {
-                id = 21,
+                id = 24,
                 name = "참모아베기",
                 cost = 70,
                 description = "육중한 검의 무게와, 회전이 섞인 대운동. 용을 격퇴하는 일격이라고도 일컬어진다.",
                 coefficient = 500,
-                type = Type.self,
-                effect = effect = new List<int[]> { new int[] { 3, -50 , 1 } }
-            });
+                type = Type.enemy,
+                effect = effect = new List<int[]> { new int[] { 3, -50 , 1 } } // 역회심
+            }); // 전사 4
             skillList.Add(new Skills()
             {
-                id = 21,
-                name = "재장전",
-                cost = 10,
-                description = "모든 걸 버리고, 단 한 발을 위해.",
-                coefficient = 0,
-                type = Type.self,
-                effect = effect = new List<int[]> { new int[] { 1, 100, 2 } }
-            });
+                id = 25,
+                name = "제네시스",
+                cost = 80,
+                description = "처음, 그 무엇도 구분되지 않았던 시절을 이 일격에 담아.",
+                coefficient = 350,
+                type = Type.all,
+                effect = effect = new List<int[]> { new int[] { 6, 1, 30, 3 }, new int[] { 6, 2, 30, 3 }, new int[] { 6, 3, 30, 3 }, new int[] { 6, 4, 30, 3 }, new int[] { 6, 5, 30, 3 }, new int[] { 6, 6, 30, 3 } }
+            }); // 법사 4
             skillList.Add(new Skills()
             {
-                id = 21,
-                name = "재장전",
-                cost = 10,
-                description = "모든 걸 버리고, 단 한 발을 위해.",
+                id = 26,
+                name = "심장부수기",
+                cost = 80,
+                description = "그냥 툭 건드리는 것 같지만 사실은 굉장히 섬세한 기술. 심장만을 노려 터뜨리는, 도적의 극의.",
+                coefficient = 100,
+                type = Type.enemy,
+                effect = effect = new List<int[]> { new int[] { 6, 8, 50, 1 } }
+            }); // 도적 4
+            skillList.Add(new Skills()
+            {
+                id = 26,
+                name = "전탄발사",
+                cost = 70,
+                description = "남아있는 모든 화살을 단 한번의 일격을 위해",
                 coefficient = 0,
                 type = Type.self,
-                effect = effect = new List<int[]> { new int[] { 1, 100, 2 } }
-            });
+                effect = effect = new List<int[]> { new int[] { 1, 100, 2 } } //회심 최대적용
+            }); // 궁수 4
         }
        
-        public int ActivateSkill(int skillId, dynamic activer, dynamic passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+        public int ActivateSkill(int skillId, object activer, object passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
-            Skills? skill = skillList.FirstOrDefault(s => s.id == skillId);
+            Skills? skill = skillList.FirstOrDefault(s => s.id == skillId); // errorbound
             if (skill == null)
             {
                 Console.WriteLine("해당 스킬이 존재하지 않습니다.");
                 return 0;
             }
-            // 스킬 사용 시 플레이어의 마나 감소
-            if (activer.Mana < skill.cost)
+            // 코스트 감소
+            if (activer.cost < skill.cost)
             {
                 Console.WriteLine("코스트가 부족합니다.");
                 return 0;
             }
             activer.Mana -= skill.cost;
             // 스킬 효과 적용
-            if (skill.effect != null)
+            if (skill.effect != null) // 인스턴스 이름 수정 
             {
                 foreach (var eff in skill.effect)
                 {
@@ -358,7 +368,7 @@ namespace Team_RPG
                             passiver.Defense += (int)(passiver.Defense * eff[1] / 100.0f);
                             break;
                         case 3: // 체력 변동
-                            passiver.Health += (int)(passiver.Health * eff[1] / 100.0f);
+                            passiver.Health += (int)(passiver.MaxHealth * eff[1] / 100.0f);
                             break;
                         case 4: // 코스트 변동
                             passiver.Mana += eff[1];
@@ -368,12 +378,68 @@ namespace Team_RPG
                             break;
                         case 6: // 상태이상 적용
                             //if (rand.Next(100) < eff[2]) // 확률 적용
-                                //ApplyStatusEffect(passiver, eff[1], eff[3]);
+                            //    ApplyStatusEffect(passiver, eff[1], eff[3]); // 차후 메소드 추가요청
                             break;
                     }
                 }
             }
-            return activer.Attack*skill.coefficient/100; // 데미지 반환
+            return (int)(activer.Attack * skill.coefficient/100.0f); // 데미지 반환
+        }
+    
+        public void PrintSkillEffect(int effectId, object passiver, int? StatusId=null, bool increased = true)
+        {
+            switch (effectId)
+            {
+                case 1: // 공격력 변동
+                    Console.WriteLine($"{passiver.Name}의 공격력이 {(increased? "상승했다":"하락했다")}!");
+                    break;
+                case 2: // 방어력 변동
+                    Console.WriteLine($"{passiver.Name}의 방어력이 {(increased? "상승했다" : "하락했다")}!");
+                    break;
+                case 3: // 체력 변동
+                    Console.WriteLine($"{passiver.Name}의 체력을 {/*recover(차후 입력요망)*/}만큼{(increased? "회복했다" : "지불했다")}!");
+                    break;
+                case 4: // 코스트 변동
+                    Console.WriteLine($"{passiver.Name}의 코스트가 {(increased? "상승했다" : "하락했다")}!");
+                    break;
+                case 5: // 치명타 확률 변동
+                    Console.WriteLine($"{passiver.Name}의 치명타 확률이 {(increased? "상승했다" : "하락했다")}!");
+                    break;
+                case 6: // 상태이상 적용
+                    swtich(StatusId)
+                    {
+                        case 1: // 화상
+                            Console.WriteLine($"{passiver.Name}이(가) 화상에 걸렸다!");
+                            break;
+                        case 2: // 중독
+                            Console.WriteLine($"{passiver.Name}이(가) 중독에 걸렸다!");
+                            break;
+                        case 3: // 출혈
+                            Console.WriteLine($"{passiver.Name}이(가) 출혈에 걸렸다!");
+                            break;
+                        case 4: // 마비
+                            Console.WriteLine($"{passiver.Name}이(가) 마비에 걸렸다!");
+                            break;
+                        case 5: // 침묵
+                            Console.WriteLine($"{passiver.Name}이(가) 침묵에 걸렸다!");
+                            break;
+                        case 6: // 빙결
+                            Console.WriteLine($"{passiver.Name}이(가) 빙결에 걸렸다!");
+                            break;
+                        case 7: // 혼란
+                            Console.WriteLine($"{passiver.Name}이(가) 혼란에 빠졌다!");
+                            break;
+                        case 8: // 즉사
+                            Console.WriteLine($"일격필살! {passiver.Name}이(가) 즉사했다!");
+                            break;
+                        default:
+                            Console.WriteLine("알 수 없는 상태이상입니다.");
+                            break;
+                        }
+                        default:
+                    Console.WriteLine("알 수 없는 효과입니다.");
+                    break;
+            }
         }
     }
 }
