@@ -16,8 +16,8 @@ namespace Team_RPG
          * 3: 체력 변동 - 자신
          * 4: 마나(스테미나) 변동 - 자신
          * 5: 급소율 변동 - 자신
-         * 6: 상태이상(+) - 상대...대상지정?
-         * 직업 리스트: Not Available Yet
+         * 6: 상태이상(+) - 상대...대상지정(자동)
+         * 직업 리스트: 
          * 전사/마법사/궁수/도적/해적
          * 
          * 상태이상:
@@ -67,6 +67,7 @@ namespace Team_RPG
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 2, 50, 1 }, new int[] { 4, 30, 1 } }
             }); // 방어
+            // 전사
             skillList.Add(new Skills()
             {
                 id = 2,
@@ -76,7 +77,7 @@ namespace Team_RPG
                 coefficient = 150,
                 type = Type.enemy,
                 effect = null
-            }); // 전사 1
+            }); // 전사 1 - 1
             skillList.Add(new Skills()
             {
                 id = 3,
@@ -86,7 +87,7 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 1, 30, 3 } }
-            }); // 전사 2
+            }); // 전사 2 - 5
             skillList.Add(new Skills()
             {
                 id = 4,
@@ -96,7 +97,8 @@ namespace Team_RPG
                 coefficient = 250,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 3, 70, 3 } }
-            }); // 전사 3
+            }); // 전사 3 - 10
+            // 궁수
             skillList.Add(new Skills()
             {
                 id = 5,
@@ -106,7 +108,7 @@ namespace Team_RPG
                 coefficient = 70,
                 type = Type.all,
                 effect = null
-            }); // 궁수 1
+            }); // 궁수 1 - 1
             skillList.Add(new Skills()
             {
                 id = 6,
@@ -116,7 +118,7 @@ namespace Team_RPG
                 coefficient = 200,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 5, 30, 1 } }
-            }); // 궁수 2
+            }); // 궁수 2 - 5
             skillList.Add(new Skills()
             {
                 id = 7,
@@ -126,7 +128,8 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 5, 20, 3 } }
-            }); // 궁수 3
+            }); // 궁수 3 - 10
+            // 법사
             skillList.Add(new Skills()
             {
                 id = 8,
@@ -136,7 +139,7 @@ namespace Team_RPG
                 coefficient = 80,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 1, 100, 3 } }
-            }); // 법사 1
+            }); // 법사 1 - 1
             skillList.Add(new Skills()
             {
                 id = 9,
@@ -146,7 +149,7 @@ namespace Team_RPG
                 coefficient = 200,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 6, 50, 3 } }
-            }); // 법사 2
+            }); // 법사 2 - 5
             skillList.Add(new Skills()
             {
                 id = 10,
@@ -156,7 +159,8 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 3, 30, 1 } }
-            }); // 법사 3
+            }); // 법사 3 - 10
+            // 도적
             skillList.Add(new Skills()
             {
                 id = 11,
@@ -166,7 +170,7 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 5, 20, 3 } }
-            }); // 도적 1
+            }); // 도적 1 - 1
             skillList.Add(new Skills()
             {
                 id = 12,
@@ -176,7 +180,7 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.all,
                 effect = new List<int[]> { new int[] { 6, 2, 80, 5 } }
-            }); // 도적 2
+            }); // 도적 2 - 5
             skillList.Add(new Skills()
             {
                 id = 13,
@@ -186,7 +190,8 @@ namespace Team_RPG
                 coefficient = 200,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 8, 5, 1 } }
-            }); // 도적 3
+            }); // 도적 3 - 10
+            // 해적
             skillList.Add(new Skills()
             {
                 id = 14,
@@ -196,7 +201,7 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 1, 10, 3 }, new int[] { 2, 10, 3 }, new int[] { 5, 10, 3 } }
-            }); // 해적 1
+            }); // 해적 1 - 1
             skillList.Add(new Skills()
             {
                 id = 15,
@@ -206,7 +211,7 @@ namespace Team_RPG
                 coefficient = 200,
                 type = Type.enemy,
                 effect = null
-            }); // 해적 2
+            }); // 해적 2 - 5
             skillList.Add(new Skills()
             {
                 id = 16,
@@ -216,7 +221,8 @@ namespace Team_RPG
                 coefficient = 100,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 3, 100, 5 }, new int[] { 6, 8, 1, 1 }, }
-            }); // 해적 3
+            }); // 해적 3 - 10
+            // 적
             skillList.Add(new Skills()
             {
                 id = 16,
@@ -267,6 +273,7 @@ namespace Team_RPG
                 type = Type.player,
                 effect = null
             }); // 적 5
+            // 공통
             skillList.Add(new Skills()
             {
                 id = 21,
@@ -287,6 +294,7 @@ namespace Team_RPG
                 type = Type.self,
                 effect = null
             }); // 혼란 상태이상용 공격
+            // 궁극기
             skillList.Add(new Skills() 
             {
                 id = 23,
@@ -296,7 +304,7 @@ namespace Team_RPG
                 coefficient = 30,
                 type = Type.self,
                 effect = effect = new List<int[]> { new int[] { 1, 200, 2 } }
-            }); // 해적 4
+            }); // 해적 4 - 15
             skillList.Add(new Skills()
             {
                 id = 24,
@@ -306,7 +314,7 @@ namespace Team_RPG
                 coefficient = 500,
                 type = Type.enemy,
                 effect = effect = new List<int[]> { new int[] { 3, -50 , 1 } } // 역회심
-            }); // 전사 4
+            }); // 전사 4 - 15
             skillList.Add(new Skills()
             {
                 id = 25,
@@ -316,7 +324,7 @@ namespace Team_RPG
                 coefficient = 350,
                 type = Type.all,
                 effect = effect = new List<int[]> { new int[] { 6, 1, 30, 3 }, new int[] { 6, 2, 30, 3 }, new int[] { 6, 3, 30, 3 }, new int[] { 6, 4, 30, 3 }, new int[] { 6, 5, 30, 3 }, new int[] { 6, 6, 30, 3 } }
-            }); // 법사 4
+            }); // 법사 4 - 15
             skillList.Add(new Skills()
             {
                 id = 26,
@@ -326,7 +334,7 @@ namespace Team_RPG
                 coefficient = 100,
                 type = Type.enemy,
                 effect = effect = new List<int[]> { new int[] { 6, 8, 50, 1 } }
-            }); // 도적 4
+            }); // 도적 4 - 15
             skillList.Add(new Skills()
             {
                 id = 26,
@@ -336,7 +344,7 @@ namespace Team_RPG
                 coefficient = 300,
                 type = Type.enemy,
                 effect = effect = new List<int[]> { new int[] { 1, 100, 2 } } //회심 최대적용
-            }); // 궁수 4
+            }); // 궁수 4 - 15
         }
        
         public int ActivateSkill(int skillId, object activer, object passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
