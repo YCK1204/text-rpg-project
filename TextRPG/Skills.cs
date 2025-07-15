@@ -448,6 +448,27 @@ namespace Team_RPG
                     Console.WriteLine("알 수 없는 효과입니다.");
                     break;
             }
+                    // 상태이상 발동시 출력
+                    //case 1: // 화상
+                    //    Console.WriteLine($"{passiver.Name}은(는) 화상으로 인해 {damage}의 피해를 입었다!");
+                    //    break;
+                    //case 2: // 중독
+                    //    Console.WriteLine($"{passiver.Name}은(는) 독으로 인해 {damage}의 피해를 입었다!");
+                    //    break;
+                    //case 3: // 출혈
+                    //    Console.WriteLine($"{passiver.Name}은(는) 출혈으로 인해 {damage}의 피해를 입었다!");
+                    //    break;
+                    //case 4: // 마비
+                    //    Console.WriteLine($"{passiver.Name}은(는) 몸이 저려 움직일 수 없다!");
+                    //    break;
+                    //case 5: // 침묵
+                    //    Console.WriteLine($"{passiver.Name}은(는) 기술을 쓸 수 없다!");
+                    //    break;
+                    //case 6: // 빙결
+                    //    Console.WriteLine($"{passiver.Name}은(는) 얼어버려 움직일 수 없다!");
+                    //    break;
+                    //case 7: // 혼란
+                    //    Console.WriteLine($"{passiver.Name}은(는) 혼란에 빠져 영문도 모른 채 {damage}의 피해를 입었다!");
+            }
         }
-    }
 }
