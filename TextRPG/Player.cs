@@ -51,10 +51,23 @@ namespace TextRPG
         {
             NeedExp = Level * 500;
         }
-        
+        public void GainExp(int amount)
+        {
+            Exp += amount; // 획득한 경험치를 현재 경험치에 더합니다.
+            Console.WriteLine($"{amount} 경험치를 획득했습니다. 현재 경험치: {Exp}/{NeedExp}");
+
+            // 현재 경험치가 다음 레벨업에 필요한 경험치보다 많거나 같으면 레벨업을 진행합니다.
+            // 한 번에 여러 레벨을 올릴 수도 있으므로 while 루프를 사용합니다.
+            while (Exp >= NeedExp)
+            {
+                Exp -= NeedExp; // 필요한 경험치만큼 차감합니다. (초과 경험치 유지)
+                LevelUP();      // 레벨업 메서드를 호출합니다.
+            }
+        }
 
 
-        
+
+
 
     }
 }
