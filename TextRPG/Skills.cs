@@ -453,7 +453,7 @@ namespace Team_RPG
 
         public void PrintEffects(int damage, object passiver) // 스킬 효과 출력 메소드
         {
-            if (passiver.effect != null)
+            if (passiver != null)
             {
                 foreach (var eff in passiver.effect)
                 {
