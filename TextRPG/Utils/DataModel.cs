@@ -172,15 +172,34 @@ namespace TextRPG.Utils
         }
         public void DisplayInventory()
         {
+            Console.WriteLine("------------------- Item List -------------------");
+            Console.WriteLine(
+@"0. 뒤로가기
+1. 아이템 사용
+2. 아이템 팔기");
             foreach (var item in Items)
                 item.Display();
+            ConsoleKey key = Console.ReadKey(true).Key;
+            switch (key)
+            {
+                case ConsoleKey.D0:
+                case ConsoleKey.NumPad0:
+                    return; // 뒤로가기
+                case ConsoleKey.D1:
+                case ConsoleKey.NumPad1:
+                    // 사용할 아이템 입력
+                    break;
+                case ConsoleKey.D2:
+                case ConsoleKey.NumPad2:
+                    // 판매할 아이템 입력
+                    break;
+            }
         }
     }
     public struct Items
     {
-        public List<Potion> Potions { get; set; }
-        public List<Armor> Armors { get; set; }
-        public List<Weapon> Weapons { get; set; }
+        [JsonProperty("Items")]
+        public List<Item> _Items { get; set; }
     }
     public struct CharacterStatus
     {
@@ -192,15 +211,20 @@ namespace TextRPG.Utils
         public int Defense { get; set; }
         public int Health { get; set; }
         public int Gold { get; set; }
+        public int Exp { get; set; }
+        public int NeedExp { get; set; }
+        public int MaxHealth { get; set; }
     }
     public struct CharacterStatuses
     {
-        [JsonProperty("CharacterStatuses")]
+        [JsonProperty("Statuses")]
         public List<CharacterStatus> _PlayerStatuses { get; set; }
     }
     public struct PlayerCharacter
     {
-        public CharacterStatus Character { get; set; }
+        [JsonProperty("Status")]
+        public CharacterStatus Status { get; set; }
+        public Inventory Inventory { get; set; }
         public int Id { get; set; }
     }
     public struct PlayerCharacters
