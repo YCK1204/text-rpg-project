@@ -22,8 +22,8 @@ namespace Team_RPG
          * 
          * 상태이상:
          * 1: 화상 - 처음 입힌 데미지만큼 고정 데미지(매턴)
-         * 2: 중독 - 최대체력비례 데미지(매턴)
-         * 3: 출혈 - 공격력 비례 데미지(매턴)
+         * 2: 중독 - 최대체력비례 데미지(매턴)(-10%)
+         * 3: 출혈 - 공격력 비례 데미지(매턴)(atk*0.5)
          * 4: 마비 - 행동 불가(20% 확률, 최대 5턴), 회피 불가
          * 5: 침묵 - 스킬 사용 불가(특정 턴 동안)
          * 6: 빙결 - 행동 불가(특정 턴 동안)
@@ -471,4 +471,37 @@ namespace Team_RPG
                     //    Console.WriteLine($"{passiver.Name}은(는) 혼란에 빠져 영문도 모른 채 {damage}의 피해를 입었다!");
             }
         }
-}
+        public void PrintEffects(int damage, object passiver) // 스킬 효과 출력 메소드
+        {
+            if (passiver.effect != null)
+            {
+                foreach (var eff in passiver.effect)
+                {
+                    switch(passiver.effect[0])
+                    {
+                        // 상태이상 발동시 출력
+                    case 1: // 화상
+                        Console.WriteLine($"{passiver.Name}은(는) 화상으로 인해 {damage}의 피해를 입었다!");
+                        break;
+                    case 2: // 중독
+                        Console.WriteLine($"{passiver.Name}은(는) 독으로 인해 {passiver.MaxHealth/10}의 피해를 입었다!");
+                        break;
+                    case 3: // 출혈
+                        Console.WriteLine($"{passiver.Name}은(는) 출혈으로 인해 {passiver.Attack/2}의 피해를 입었다!");
+                        break;
+                    case 4: // 마비
+                        Console.WriteLine($"{passiver.Name}은(는) 몸이 저려 움직일 수 없다!");
+                        break;
+                    case 5: // 침묵
+                        Console.WriteLine($"{passiver.Name}은(는) 기술을 쓸 수 없다!");
+                        break;
+                    case 6: // 빙결
+                        Console.WriteLine($"{passiver.Name}은(는) 얼어버려 움직일 수 없다!");
+                        break;
+                    case 7: // 혼란
+                        Console.WriteLine($"{passiver.Name}은(는) 혼란에 빠져 영문도 모른 채 {damage}의 피해를 입었다!");
+                    }
+                }
+            }
+        }
+    }
