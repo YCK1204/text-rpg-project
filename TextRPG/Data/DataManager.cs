@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 using System.Reflection;
 using TextRPG.Utils;
 
@@ -34,8 +35,11 @@ namespace TextRPG.Data
                 return null;
             }
         }
+
+        public Dictionary<int, Item> Items = new Dictionary<int, Item>();
         public void LoadData()
         {
+            #region Monster
             Random random = new Random();
             Monsters = MakeDict<Monsters, Monster>($"{JsonPath}/{MonsterPath}", (t1) =>
             {
@@ -60,8 +64,20 @@ namespace TextRPG.Data
                 Console.WriteLine($"Monster ID: {monster.Key}, Name: {monster.Value.Status.Name}, Health: {monster.Value.Status.Health}");
             }
             MonsterLoots = MakeDict<MonsterLoots, MonsterLoot>($"{JsonPath}/{MonsterPath}", (t1) => { return t1._MonsterLoots.ToDictionary(m => m.Id, m => m); });
+            #endregion
+
+            #region Item
+            string json = File.ReadAllText($"{JsonPath}/{ItemPath}");
+            Items t1 = JsonConvert.DeserializeObject<Items>(json);
+            foreach (var potion in t1.Potions)
+                Items.Add(potion.Id, potion);
+            foreach (var armor in t1.Armors)
+                Items.Add(armor.Id, armor);
+            foreach (var weapon in t1.Weapons)
+                Items.Add(weapon.Id, weapon);
+            #endregion
         }
-        public MonsterLoot GenRandomLoot(LootType type)
+        public MonsterLoot GenRandomLoot(ItemRarity type)
         {
             List<MonsterLoot> filteredLoots = MonsterLoots.Values
                 .Where(loot => loot.Type == type)

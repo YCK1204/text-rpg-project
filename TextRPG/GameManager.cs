@@ -10,17 +10,17 @@ namespace TextRPG
     public class GameManager
     {
         public Player player;
-
+        public Battle battle;
         public void run()
         {
             player = new Player();
-
+            //battle = new Battle(order);
             while (true)
             {
                 ShowMainmenu();
 
             }
-
+            
         }
         private void ShowMainmenu()
         {
@@ -29,27 +29,31 @@ namespace TextRPG
             Console.WriteLine("스파르타 마을에 오신 여러분을 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
             Console.WriteLine();
-            Console.WriteLine("1. 상태 보기");
+            Console.WriteLine("1. 상태 보기"); // 1 입력시 Player 스크립트에 입력된 상태 호출
             Console.WriteLine("2. 인벤토리 보기");
-            Console.WriteLine("3. 상점 보기");
+            Console.WriteLine("3. 전투 시작"); // 전투 화면을 불러옴
+            Console.WriteLine("4. 게임 종료");
             Console.WriteLine();
-            Console.Write("원하시는 행동을 입력해 주세요:");
-            string input = Console.ReadLine();
+            Console.Write("원하시는 행동을 입력해 주세요:"); // 1~3까지 숫자 입력 시 맞는 화면이 출력됨
+            string input = Console.ReadLine(); //유저가 번호를 입력하는 곳
 
             switch (input)
             {
                 case "1":
-                    player.playerinfo();
+                    player.playerinfo(); // 플레이어의 정보를 보여주는 화면
                     break;
                 case "2":
                     break;
                 case "3":
-                    Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
-
+                    List<dynamic> list = new List<dynamic>(); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    break;
+                case "4":
+                    Console.WriteLine("게임을 종료합니다.");
+                    Environment.Exit(0);
                     break;
                 default:
                     Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요. 아무키나 다시 입력해주세요.");
-                    Console.ReadKey();
+                    Console.ReadKey(); // 1,2,3,4 외에 다른 숫자 입력시 아무키나 입력하면 시작화면으로 돌아감
                     break;
 
 

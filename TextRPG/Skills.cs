@@ -355,7 +355,7 @@ namespace Team_RPG
             }
             activer.Mana -= skill.cost;
             // 스킬 효과 적용
-            if (skill.effect != null)
+            if (skill.effect != null) // 인스턴스 이름 수정 
             {
                 foreach (var eff in skill.effect)
                 {
@@ -377,8 +377,8 @@ namespace Team_RPG
                             passiver.CriticalChance += eff[1];
                             break;
                         case 6: // 상태이상 적용
-                            if (rand.Next(100) < eff[2]) // 확률 적용
-                                ApplyStatusEffect(passiver, eff[1], eff[3]); // 임시
+                            //if (rand.Next(100) < eff[2]) // 확률 적용
+                            //    ApplyStatusEffect(passiver, eff[1], eff[3]); // 차후 메소드 추가요청
                             break;
                     }
                 }
