@@ -17,6 +17,7 @@ namespace TextRPG
             battle = new Battle(order);
             while (true)
             {
+
                 ShowMainmenu();
 
             }
@@ -44,6 +45,7 @@ namespace TextRPG
                     break;
                 case "2":
                     break;
+                    //플레이어의 인벤토리를 보여줍니다.
                 case "3":
                     List<dynamic> list = new List<dynamic>(); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
                     break;
