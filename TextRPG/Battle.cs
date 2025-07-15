@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG
 {
-    internal class Battle
+    public class Battle
     {
         List<dynamic> order;
         int PlayerIndex;
