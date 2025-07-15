@@ -68,10 +68,11 @@ namespace TextRPG.Data
 
             #region Item
             string json = File.ReadAllText($"{JsonPath}/{ItemPath}");
-            Items t1 = JsonConvert.DeserializeObject<Items>(json);
-            foreach (var potion in t1.Potions) { Items.Add(potion.Id, potion); }
-            foreach (var armor in t1.Armors) { Items.Add(armor.Id, armor); }
-            foreach (var weapon in t1.Weapons) { Items.Add(weapon.Id, weapon); }
+            Items t1 = JsonConvert.DeserializeObject<Items>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            Items = t1._Items.ToDictionary(i => i.Id, i => i);
             #endregion
         }
         public MonsterLoot GenRandomLoot(ItemRarity type)
