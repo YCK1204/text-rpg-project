@@ -1,0 +1,108 @@
+{
+  "Monsters": [
+    {
+      "Id": 1,
+      "Status": {
+        "Name": "미니언",
+        "Health": 50,
+        "Attack": 10,
+        "RandomLevelRange": [ 1, 5 ]
+      },
+      "Reward": {
+        "Gold": 100,
+        "Exp": 100,
+        "Rarity": "Common"
+      }
+    },
+    {
+      "Id": 2,
+      "Status": {
+        "Name": "대포 미니언",
+        "Health": 70,
+        "Attack": 20,
+        "RandomLevelRange": [ 1, 5 ]
+      },
+      "Reward": {
+        "Gold": 200,
+        "Exp": 200,
+        "Rarity": "Rare"
+      }
+    },
+    {
+      "Id": 3,
+      "Status": {
+        "Name": "보이드 미니언",
+        "Health": 60,
+        "Attack": 15,
+        "RandomLevelRange": [ 1, 5 ]
+      },
+      "Reward": {
+        "Gold": 150,
+        "Exp": 150,
+        "Rarity": "Epic"
+      }
+    }
+  ],
+  "MonsterLoots": [
+    {
+      "Id": 1,
+      "Name": "평범한 몬스터 껍질",
+      "Type": "Common",
+      "Price": 10
+    },
+    {
+      "Id": 2,
+      "Name": "평범한 몬스터 꼬리 ",
+      "Type": "Common",
+      "Price": 10
+    },
+    {
+      "Id": 3,
+      "Name": "HP 포션",
+      "Type": "Common",
+      "Price": 10
+    },
+    {
+      "Id": 4,
+      "Name": "MP 포션",
+      "Type": "Common",
+      "Price": 10
+    },
+    {
+      "Id": 5,
+      "Name": "희귀한 마법 가루",
+      "Type": "Rare",
+      "Price": 20
+    },
+    {
+      "Id": 6,
+      "Name": "희귀한 마력 파편",
+      "Type": "Rare",
+      "Price": 20
+    },
+    {
+      "Id": 7,
+      "Name": "희귀한 몬스터의 정수",
+      "Type": "Rare",
+      "Price": 20
+    },
+    {
+      "Id": 8,
+      "Name": "에픽한 아이템1",
+      "Type": "Epic",
+      "Price": 50
+    },
+    {
+      "Id": 9,
+      "Name": "에픽한 아이템2",
+      "Type": "Epic",
+      "Price": 50
+    },
+    {
+      "Id": 10,
+      "Name": "전설의 엑스칼리버",
+      "Type": "Legendary",
+      "Price": 100
+    }
+  ]
+}

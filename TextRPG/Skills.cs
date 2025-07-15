@@ -1,0 +1,379 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Team_RPG
+{
+    internal class Skills
+    {
+        /*
+         * 필요 요소들: 스킬 id, 이름, 설명, 스킬 분류(타겟팅), 배율, 효과 
+         * 효과 id: (임시)
+         * 1: 공격력 변동
+         * 2: 방어력 변동
+         * 3: 체력 변동
+         * 4: 마나(스테미나) 변동
+         * 5: 급소율 변동
+         * 6: 상태이상(+)
+         * 직업 리스트: Not Available Yet
+         * 전사/마법사/궁수/도적/해적
+         * 
+         * 상태이상:
+         * 1: 화상 - 처음 입힌 데미지만큼 고정 데미지(매턴)
+         * 2: 중독 - 최대체력비례 데미지(매턴)
+         * 3: 출혈 - 공격력 비례 데미지(매턴)
+         * 4: 마비 - 행동 불가(20% 확률, 최대 5턴), 회피 불가
+         * 5: 침묵 - 스킬 사용 불가(특정 턴 동안)
+         * 6: 빙결 - 행동 불가(특정 턴 동안)
+         * 7: 혼란 - 자해를 포함한 랜덤 행동(자해 확률 33%, 최대 5턴)
+         * 8: 즉사 - 확률에 의한 즉사
+         * 상태이상 적용 시: [효과 id, 이상id, 적용 확률, 적용 턴]
+         */
+        private Random rand = new();
+        public int id { get; set; }
+        public string name { get; set; }
+        public int cost { get; set; }
+        public string description { get; set; }
+        public float coefficient { get; set; }
+        public Type type { get; set; }
+        public List<int[]>? effect {  get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴], ...]
+        public enum Type
+        {
+            all, enemy, self, any, random, player
+        }
+        public List<Skills> skillList { get; } = new();
+
+        Skills()
+        {
+            skillList.Add(new Skills()
+            {
+                id = 0,
+                name = "공격",
+                cost = 0,
+                description = "공격한다. 주먹을 휘두르든, 무기를 휘두르든.",
+                coefficient = 100,
+                type = Type.enemy,
+                effect = null
+            }); // 공격
+            skillList.Add(new Skills()
+            {
+                id = 1,
+                name = "방어",
+                cost = 0,
+                description = "적의 눈을 바라보고, 동태를 살피고, 몸을 지킨다.",
+                coefficient = 0,
+                type = Type.self,
+                effect = new List<int[]> { new int[] { 2, 50, 1 }, new int[] { 4, 30, 1 } }
+            }); // 방어
+            skillList.Add(new Skills()
+            {
+                id = 2,
+                name = "강타",
+                cost = 10,
+                description = "정신을 한 데 그러모아 크게 한 방 지른다.",
+                coefficient = 150,
+                type = Type.enemy,
+                effect = null
+            }); // 전사 1
+            skillList.Add(new Skills()
+            {
+                id = 3,
+                name = "전사의 포효",
+                cost = 30,
+                description = "마음 속 깊은 곳에서부터 끓어오르는 함성을 전방을 향해 지른다.",
+                coefficient = 0,
+                type = Type.self,
+                effect = new List<int[]> { new int[] { 1, 30, 3 } }
+            }); // 전사 2
+            skillList.Add(new Skills()
+            {
+                id = 4,
+                name = "투구깨기",
+                cost = 50,
+                description = "대검을 머리 위로 높게 들어, 적의 머리를 향해 내려친다. 단순하나, 그만큼 강력한 일격.",
+                coefficient = 250,
+                type = Type.enemy,
+                effect = new List<int[]> { new int[] { 6, 3, 70, 3 } }
+            }); // 전사 3
+            skillList.Add(new Skills()
+            {
+                id = 5,
+                name = "곡사",
+                cost = 30,
+                description = "하늘을 향해 화살을 쏘아 광범위한 비를 만든다. 다만, 평소보다 위력이 약할 뿐.",
+                coefficient = 70,
+                type = Type.all,
+                effect = null
+            }); // 궁수 1
+            skillList.Add(new Skills()
+            {
+                id = 6,
+                name = "강사",
+                cost = 40,
+                description = "정신을 그러모아 집중, 상대의 급소를 꿰뚫는다.",
+                coefficient = 200,
+                type = Type.enemy,
+                effect = new List<int[]> { new int[] { 5, 30, 1 } }
+            }); // 궁수 2
+            skillList.Add(new Skills()
+            {
+                id = 7,
+                name = "필중의 각오",
+                cost = 3,
+                description = "눈 앞의 적에게 집중해 움직임을 읽는다. 다음 공격에 급소를 맞추기를 빌면서.",
+                coefficient = 0,
+                type = Type.self,
+                effect = new List<int[]> { new int[] { 5, 20, 3 } }
+            }); // 궁수 3
+            skillList.Add(new Skills()
+            {
+                id = 8,
+                name = "파이어볼",
+                cost = 30,
+                description = "손에서 불덩이를 만들어 적에게 던진다. 끔찍하긴 하지만 맞추면 고기타는 냄새가 난다.",
+                coefficient = 80,
+                type = Type.enemy,
+                effect = new List<int[]> { new int[] { 6, 1, 100, 3 } }
+            }); // 법사 1
+            skillList.Add(new Skills()
+            {
+                id = 9,
+                name = "아이시클 랜스",
+                cost = 30,
+                description = "손 위에 얼음 창을 만들어 적에게 던진다. 마법으로 훨씬 경화된 물이다. 잘 깨지지 않는다.",
+                coefficient = 200,
+                type = Type.enemy,
+                effect = new List<int[]> { new int[] { 6, 6, 50, 3 } }
+            }); // 법사 2
+            skillList.Add(new Skills()
+            {
+                id = 10,
+                name = "힐",
+                cost = 40,
+                description = "따스한 빛을 비추어 체력을 회복한다. 이 빛은 마법일까, 기적일까.",
+                coefficient = 0,
+                type = Type.self,
+                effect = new List<int[]> { new int[] { 3, 30, 1 } }
+            }); // 법사 3
+            skillList.Add(new Skills()
+            {
+                id = 11,
+                name = "은신",
+                cost = 30,
+                description = "그림자에 숨어 기회를 노린다. 방심할 때의 급습은 치명타로 이어지겠지.",
+                coefficient = 0,
+                type = Type.self,
+                effect = new List<int[]> { new int[] { 5, 20, 3 } }
+            }); // 도적 1
+            skillList.Add(new Skills()
+            {
+                id = 12,
+                name = "맹독",
+                cost = 50,
+                description = "상대를 향해 맹독이 담긴 구슬을 던진다. 저 구슬 하나면 사람 수천은 능히 죽일 수 있다.",
+                coefficient = 0,
+                type = Type.all,
+                effect = new List<int[]> { new int[] { 6, 2, 80, 5 } }
+            }); // 도적 2
+            skillList.Add(new Skills()
+            {
+                id = 13,
+                name = "급습",
+                cost = 50,
+                description = "아무도 눈치채지 못할때, 가장 방심했을 때. 그 한 순간만을 노리고 심장에 칼을 박아넣는다.",
+                coefficient = 200,
+                type = Type.enemy,
+                effect = new List<int[]> { new int[] { 6, 8, 5, 1 } }
+            }); // 도적 3
+            skillList.Add(new Skills()
+            {
+                id = 14,
+                name = "약탈 선언",
+                cost = 40,
+                description = "해적은 바다의 무법자. 약탈할 수 있다면 약탈하는 것이 그들의 모토.",
+                coefficient = 0,
+                type = Type.self,
+                effect = new List<int[]> { new int[] { 1, 10, 3 }, new int[] { 2, 10, 3 }, new int[] { 5, 10, 3 } }
+            }); // 해적 1
+            skillList.Add(new Skills()
+            {
+                id = 15,
+                name = "집중사격",
+                cost = 30,
+                description = "보통이라면 산개할 탄환을 한데 그러모아 단 하나의 표적만을 노린다.",
+                coefficient = 200,
+                type = Type.enemy,
+                effect = null
+            }); // 해적 2
+            skillList.Add(new Skills()
+            {
+                id = 16,
+                name = "대출혈",
+                cost = 60,
+                description = "상처를 벌리고 찢고 헤집어. 그 상처에서 피가 멎을 일이 없도록.",
+                coefficient = 100,
+                type = Type.enemy,
+                effect = new List<int[]> { new int[] { 6, 3, 100, 5 }, new int[] { 6, 8, 1, 1 }, }
+            }); // 해적 3
+            skillList.Add(new Skills()
+            {
+                id = 16,
+                name = "물기",
+                cost = 20,
+                description = "",
+                coefficient = 150,
+                type = Type.player,
+                effect = null
+            }); // 적 1
+            skillList.Add(new Skills()
+            {
+                id = 17,
+                name = "깨물어부수기",
+                cost = 30,
+                description = "",
+                coefficient = 150,
+                type = Type.player,
+                effect = effect = new List<int[]> { new int[] { 6, 3, 30, 3 } }
+            }); // 적 2
+            skillList.Add(new Skills()
+            {
+                id = 18,
+                name = "베르세르크",
+                cost = 30,
+                description = "+체력 소모형 버프: 스스로의 공격력에 비례한 피해를 입고 공격력 증가",
+                coefficient = 50,
+                type = Type.self,
+                effect = effect = new List<int[]> { new int[] { 1, 60, 3 } }
+            }); // 적 3
+            skillList.Add(new Skills()
+            {
+                id = 19,
+                name = "저주파",
+                cost = 30,
+                description = "마비&혼란",
+                coefficient = 0,
+                type = Type.player,
+                effect = effect = new List<int[]> { new int[] { 6, 4, 30 }, new int[] { 6, 7, 30 }, }
+            }); // 적 4
+            skillList.Add(new Skills()
+            {
+                id = 20,
+                name = "괴력난신",
+                cost = 50,
+                description = "",
+                coefficient = 250,
+                type = Type.player,
+                effect = null
+            }); // 적 5
+            skillList.Add(new Skills()
+            {
+                id = 21,
+                name = "재장전",
+                cost = 10,
+                description = "모든 걸 버리고, 단 한 발을 위해.",
+                coefficient = 0,
+                type = Type.self,
+                effect = effect = new List<int[]> { new int[] { 1, 100, 2} }
+            }); // 재장전
+            skillList.Add(new Skills()
+            {
+                id = 22,
+                name = "공격",
+                cost = 0,
+                description = "혼란용 공격",
+                coefficient = 100,
+                type = Type.self,
+                effect = null
+            }); // 혼란 상태이상용 공격
+            skillList.Add(new Skills() 
+            {
+                id = 23,
+                name = "마탄 장전",
+                cost = 50,
+                description = "네 말대로, 뭐든 맞출 수 있는 탄환이로구나",
+                coefficient = 30,
+                type = Type.self,
+                effect = effect = new List<int[]> { new int[] { 1, 200, 2 } }
+            }); // 해적 4
+            skillList.Add(new Skills()
+            {
+                id = 21,
+                name = "참모아베기",
+                cost = 70,
+                description = "육중한 검의 무게와, 회전이 섞인 대운동. 용을 격퇴하는 일격이라고도 일컬어진다.",
+                coefficient = 500,
+                type = Type.self,
+                effect = effect = new List<int[]> { new int[] { 3, -50 , 1 } }
+            });
+            skillList.Add(new Skills()
+            {
+                id = 21,
+                name = "재장전",
+                cost = 10,
+                description = "모든 걸 버리고, 단 한 발을 위해.",
+                coefficient = 0,
+                type = Type.self,
+                effect = effect = new List<int[]> { new int[] { 1, 100, 2 } }
+            });
+            skillList.Add(new Skills()
+            {
+                id = 21,
+                name = "재장전",
+                cost = 10,
+                description = "모든 걸 버리고, 단 한 발을 위해.",
+                coefficient = 0,
+                type = Type.self,
+                effect = effect = new List<int[]> { new int[] { 1, 100, 2 } }
+            });
+        }
+       
+        public int ActivateSkill(int skillId, dynamic activer, dynamic passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+        {
+            Skills? skill = skillList.FirstOrDefault(s => s.id == skillId);
+            if (skill == null)
+            {
+                Console.WriteLine("해당 스킬이 존재하지 않습니다.");
+                return 0;
+            }
+            // 스킬 사용 시 플레이어의 마나 감소
+            if (activer.Mana < skill.cost)
+            {
+                Console.WriteLine("코스트가 부족합니다.");
+                return 0;
+            }
+            activer.Mana -= skill.cost;
+            // 스킬 효과 적용
+            if (skill.effect != null)
+            {
+                foreach (var eff in skill.effect)
+                {
+                    switch (eff[0])
+                    {
+                        case 1: // 공격력 변동
+                            passiver.Attack += (int)(passiver.Attack * eff[1] / 100.0f);
+                            break;
+                        case 2: // 방어력 변동
+                            passiver.Defense += (int)(passiver.Defense * eff[1] / 100.0f);
+                            break;
+                        case 3: // 체력 변동
+                            passiver.Health += (int)(passiver.Health * eff[1] / 100.0f);
+                            break;
+                        case 4: // 코스트 변동
+                            passiver.Mana += eff[1];
+                            break;
+                        case 5: // 치명 변동
+                            passiver.CriticalChance += eff[1];
+                            break;
+                        case 6: // 상태이상 적용
+                            //if (rand.Next(100) < eff[2]) // 확률 적용
+                                //ApplyStatusEffect(passiver, eff[1], eff[3]);
+                            break;
+                    }
+                }
+            }
+            return activer.Attack*skill.coefficient/100; // 데미지 반환
+        }
+    }
+}

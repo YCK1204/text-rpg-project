@@ -1,0 +1,78 @@
+{
+  "Potions": [
+    {
+      "Id": 1,
+      "Name": "HP포션",
+      "Rarity": "Common",
+      "Description": "빠빠 빨간맛 포션입니다",
+      "Price": 500,
+      "Heal": 20
+    },
+    {
+      "Id": 2,
+      "Name": "MP포션",
+      "Rarity": "Common",
+      "Description": "블루 하와이 포션입니다",
+      "Price": 500,
+      "Heal": 20
+    }
+  ],
+  "Armors": [
+    {
+      "Id": 3,
+      "Name": "수련자 갑옷",
+      "Rarity": "Common",
+      "Description": "수련에 도움을 주는 갑옷입니다",
+      "Price": 1000,
+      "Defense": 5,
+      "Equipped": false
+    },
+    {
+      "Id": 4,
+      "Name": "무쇠 갑옷",
+      "Rarity": "Rare",
+      "Description": "수련에 도움을 주는 갑옷입니다",
+      "Price": 1200,
+      "Defense": 9,
+      "Equipped": false
+    },
+    {
+      "Id": 5,
+      "Name": "스파르타의 갑옷",
+      "Rarity": "Epic",
+      "Description": "스파르타의 전사들이 사용했다는 전설의 갑옷입니다.",
+      "Price": 3500,
+      "Defense": 15,
+      "Equipped": false
+    }
+  ],
+  "Weapons": [
+    {
+      "Id": 6,
+      "Name": "낡은 검",
+      "Rarity": "Common",
+      "Description": "쉽게 볼 수 있는 낡은 검 입니다.",
+      "Price": 600,
+      "Attack": 2,
+      "Equipped": false
+    },
+    {
+      "Id": 7,
+      "Name": "청동 도끼",
+      "Rarity": "Rare",
+      "Description": "어디선가 사용됐던거 같은 도끼입니다.",
+      "Price": 1500,
+      "Attack": 5,
+      "Equipped": false
+    },
+    {
+      "Id": 8,
+      "Name": "스파르타의 창",
+      "Rarity": "Epic",
+      "Description": "스파르타의 전사들이 사용했다는 전설의 창입니다.",
+      "Price": 3500,
+      "Attack": 7,
+      "Equipped": false
+    }
+  ]
+}

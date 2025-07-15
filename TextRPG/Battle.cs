@@ -14,7 +14,7 @@ namespace TextRPG
         public Battle(List<dynamic> order)
         { 
             this.order = order;
-            this.PlayerIndex = order.FindIndex( p=> p == order.OfType<Player>().FirstOrDefault());
+            this.PlayerIndex = order.FindIndex( p => p == order.OfType<Player>().FirstOrDefault());
         }
 
         public void Combat(int active)
@@ -144,16 +144,23 @@ namespace TextRPG
             Console.WriteLine();
             Console.WriteLine("공격 대상을 선택해주세요.");
         }
-
+        //public int SkillActivation()
+        //{
+            
+        //}
         /*TODO:
          * 오더 흐름에 따라 턴제 채용
          * 플레이어 순서는 객체 스피드에 따라 차등 적용(constructor에서 입력)
          * 에너미 AI (추가기능 시 스킬 선택 추가) ** 차후 시간 남으면 추가.
-         * 회피기동(+)
-         * 급소(+)
+         * 회피기동(?: spd 값 차에 따른 판정 변주)
+         * 급소(?: LUK 값 또는 일정한 급소 값과 스킬로 인한 변동치에 따른 변주)
          * 
+         *
+         *
+         *
+         *
          */
-
+        
 
     }
 
