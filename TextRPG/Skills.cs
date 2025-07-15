@@ -332,9 +332,9 @@ namespace Team_RPG
                 id = 26,
                 name = "전탄발사",
                 cost = 70,
-                description = "남아있는 모든 화살을 단 한번의 일격을 위해",
-                coefficient = 0,
-                type = Type.self,
+                description = "남아있는 모든 화살을, 단 한번의 일격을 위해",
+                coefficient = 300,
+                type = Type.enemy,
                 effect = effect = new List<int[]> { new int[] { 1, 100, 2 } } //회심 최대적용
             }); // 궁수 4
         }
