@@ -24,7 +24,7 @@ namespace TextRPG.Utils
     {
         public int Gold { get; set; }
         public int Exp { get; set; }
-        public LootType LootType { get; set; }
+        public ItemRarity ItemRarity { get; set; }
     }
     public struct Monster
     {
@@ -36,7 +36,7 @@ namespace TextRPG.Utils
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public LootType Type { get; set; }
+        public ItemRarity Type { get; set; }
         public int Price { get; set; }
     }
     public struct MonsterLoots
@@ -50,7 +50,138 @@ namespace TextRPG.Utils
         public List<Monster> _Monsters { get; set; }
     }
     #endregion
+    public interface IUsable
+    {
+        void Use();
+    }
+    public interface IEquippable
+    {
+        bool Equipped { get; set; }
+        void Equip();
+        void Unequip();
+    }
+    public struct Potion : Item, IUsable
+    {
+        public int Heal { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public ItemRarity Rarity { get; set; }
 
+        public void Display()
+        {
+            // 포션 정보 출력
+        }
+
+        public void Use()
+        {
+            // 플레이어 체력 회복
+        }
+    }
+    public struct Armor : Item, IEquippable
+    {
+        public int Attack { get; set; }
+        public bool Equipped { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public ItemRarity Rarity { get; set; }
+
+        public void Display()
+        {
+            // 방어구 정보 출력
+        }
+
+        public void Equip()
+        {
+            // 플레이어 공격력 추가
+            // 착용중인 Weapon이 있다면 Unequip() 호출
+            // Equipped = true; // 장비 착용 상태로 변경
+        }
+
+        public void Unequip()
+        {
+            // 플레이어 공격력 제거
+            // Equipped = false; // 장비 착용 상태로 변경
+        }
+    }
+    public struct Weapon : Item, IEquippable
+    {
+        public int Defense { get; set; }
+        public bool Equipped { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public ItemRarity Rarity { get; set; }
+
+        public void Display()
+        {
+            // 무기 정보 출력
+        }
+
+        public void Equip()
+        {
+            // 플레이어 방어력 추가
+            // 착용중인 Armor가 있다면 Unequip() 호출
+            //Equipped = true; // 장비 착용 상태로 변경
+        }
+
+        public void Unequip()
+        {
+            // 플레이어 방어력 제거
+            //Equipped = false; // 장비 착용 상태로 변경
+        }
+    }
+    public interface Item
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Price { get; set; }
+        public ItemRarity Rarity { get; set; }
+        public void Display();
+    }
+    public struct Inventory
+    {
+        public List<Item> Items { get; set; }
+        public void UseItem(int idx)
+        {
+            if (idx < 0 || idx > Items.Count) return;
+            if (Items[idx - 1] is IUsable usableItem)
+            {
+                usableItem.Use();
+                Items.RemoveAt(idx);
+            }
+            else if (Items[idx - 1] is IEquippable equippableItem)
+            {
+                equippableItem.Equip(); // 장비 Item에서 Equipped 처리
+            }
+            else;// 사실상 없는 경우
+        }
+        public void UnUseItem(int idx)
+        {
+            if (idx < 0 || idx > Items.Count) return;
+            if (Items[idx - 1] is IEquippable equippableItem && equippableItem.Equipped)
+            {
+                equippableItem.Unequip(); // 장비 Item에서 Equipped 처리
+            }
+            else;// 사실상 없는 경우
+        }
+        public void DisplayInventory()
+        {
+            foreach (var item in Items)
+                item.Display();
+        }
+    }
+    public struct Items
+    {
+        public List<Potion> Potions { get; set; }
+        public List<Armor> Armors { get; set; }
+        public List<Weapon> Weapons { get; set; }
+    }
     public struct CharacterStatus
     {
         public int Level { get; set; }

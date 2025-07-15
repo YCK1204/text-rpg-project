@@ -11,7 +11,7 @@ namespace TextRPG.Utils
         Warrior,
         Mage,
     }
-    public enum LootType
+    public enum ItemRarity
     {
         Common,
         Rare,

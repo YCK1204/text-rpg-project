@@ -11,7 +11,7 @@
       "Reward": {
         "Gold": 100,
         "Exp": 100,
-        "LootType": "Common"
+        "Rarity": "Common"
       }
     },
     {
@@ -25,7 +25,7 @@
       "Reward": {
         "Gold": 200,
         "Exp": 200,
-        "LootType": "Rare"
+        "Rarity": "Rare"
       }
     },
     {
@@ -39,7 +39,7 @@
       "Reward": {
         "Gold": 150,
         "Exp": 150,
-        "LootType": "Epic"
+        "Rarity": "Epic"
       }
     }
   ],
