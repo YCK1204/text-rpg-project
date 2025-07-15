@@ -16,8 +16,6 @@ namespace TextRPG
         public int DropGold { get; protected set; }
         public int DropExp { get; protected set; }
 
-
-
         public abstract void AttackPlayer();
         
             //플레이어 체력-=미니언 공격
@@ -25,14 +23,6 @@ namespace TextRPG
         {
             this.Health -= damage;
         }
-        //
-        public event Action MonsterDied;
-
-        public void Die()
-        {
-            MonsterDied?.Invoke();
-        }
-        //
     }
     public class MInion : Monster
     {
