@@ -1,7 +1,7 @@
 {
-  "Items" :[
+  "Items": [
     {
-      "$type": "TextRPG.Utils.Potion, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Potion, TextRPG",
       "Id": 1,
       "Name": "HP포션",
       "Rarity": "Common",
@@ -10,7 +10,7 @@
       "Heal": 20
     },
     {
-      "$type": "TextRPG.Utils.Potion, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Potion, TextRPG",
       "Id": 2,
       "Name": "MP포션",
       "Rarity": "Common",
@@ -19,7 +19,7 @@
       "Heal": 20
     },
     {
-      "$type": "TextRPG.Utils.Armor, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Armor, TextRPG",
       "Id": 3,
       "Name": "수련자 갑옷",
       "Rarity": "Common",
@@ -29,7 +29,7 @@
       "Equipped": false
     },
     {
-      "$type": "TextRPG.Utils.Armor, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Armor, TextRPG",
       "Id": 4,
       "Name": "무쇠 갑옷",
       "Rarity": "Rare",
@@ -39,7 +39,7 @@
       "Equipped": false
     },
     {
-      "$type": "TextRPG.Utils.Armor, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Armor, TextRPG",
       "Id": 5,
       "Name": "스파르타의 갑옷",
       "Rarity": "Epic",
@@ -49,7 +49,7 @@
       "Equipped": false
     },
     {
-      "$type": "TextRPG.Utils.Weapon, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Weapon, TextRPG",
       "Id": 6,
       "Name": "낡은 검",
       "Rarity": "Common",
@@ -59,7 +59,7 @@
       "Equipped": false
     },
     {
-      "$type": "TextRPG.Utils.Weapon, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Weapon, TextRPG",
       "Id": 7,
       "Name": "청동 도끼",
       "Rarity": "Rare",
@@ -69,7 +69,7 @@
       "Equipped": false
     },
     {
-      "$type": "TextRPG.Utils.Weapon, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.Weapon, TextRPG",
       "Id": 8,
       "Name": "스파르타의 창",
       "Rarity": "Epic",
