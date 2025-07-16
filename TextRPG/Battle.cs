@@ -16,8 +16,21 @@ namespace TextRPG
             this.order = battlefield;
             this.PlayerIndex = order.FindIndex( p => p == order.OfType<Player>().FirstOrDefault());
         }
-
-        public void Combat(int active) // for이나 foreach문으로 order에서 하나씩 빼와서 반복 돌리시면 됩니다: 인터페이스 기초작업은 다 해뒀고 스킬 선택이랑 아이템 선택만 추가하시면 돼요.
+        public void turn() // 턴제 전투 시작
+        {
+            order = NewOrder(); // 속도값에 따라 순서를 재정렬
+            for (int i = 0; i < order.Count; i++)
+            {
+                if (order[i] is Player && order[i].Health <= 0) // 플레이어 사망 판정
+                    break;
+                if (IsEnemyDead) // 적 섬멸 판정
+                    break;
+                if (order[i].Health <= 0) // 죽은 캐릭터는 턴을 넘김
+                    continue;
+                Combat(i);
+            }
+        }
+        public void Combat(int active) // 스킬 선택이랑 아이템 선택만 추가 필요.
         {
             if (active == PlayerIndex)
             {
@@ -114,20 +127,20 @@ namespace TextRPG
         }
         public void PrintAttack()
         {
-            foreach (var i in order)
+            for(int i=0; i<order.Count; i++)
             {
-                if (i is Player)
+                if (order[i] is Player)
                     continue;
-                if (i.Health <= 0)
+                if (order[i].Health <= 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
-                    Console.WriteLine($"| HP:{i.Health}");
+                    RPGsys.ArrangePrint($"{i} Lv.{order[i].Level} {order[i].Name}", 25);
+                    Console.WriteLine($"| HP:{order[i].Health}");
                 }
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Gray;
-                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
+                    RPGsys.ArrangePrint($"{i} Lv.{order[i].Level} {order[i].Name}", 25);
                     Console.WriteLine("| Dead");
                 }
                 Console.ResetColor();
@@ -142,7 +155,7 @@ namespace TextRPG
             Console.WriteLine();
             Console.WriteLine("0. 취소");
             Console.WriteLine();
-            Console.WriteLine("공격 대상을 선택해주세요.");
+            Console.WriteLine("대상을 선택해주세요.");
         }
         //public int SkillActivation()
         //{
@@ -181,7 +194,17 @@ namespace TextRPG
             }
             return newOrder;
         }
-
+        public bool IsEnemyDead() // 적 사망 판정: order에 있는 객체들을 순서대로 돌리면서 공격을 진행합니다.
+        {
+            foreach (var i in order)
+            {
+                if (i is Player)
+                    continue;
+                if (i.Health > 0) // 적이 살아있으면 false 반환
+                    return false;
+            }
+            return true; // 모든 적이 죽었으면 true 반환
+        }
     }
 
     internal class RPGsys
