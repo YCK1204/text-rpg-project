@@ -32,7 +32,7 @@ namespace TextRPG
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기"); // 1 입력시 Player 스크립트에 입력된 상태 호출
             Console.WriteLine("2. 인벤토리 보기"); // 2 입력시 인벤토리 화면을 불러옴
-            Console.WriteLine("3. 전투 시작"); // 3 입력시 전투 시작 화면을 불러옴
+            Console.WriteLine("3. 던전 입장"); // 3 입력시 전투 시작 화면을 불러옴
             Console.WriteLine("4. 게임 종료");// 4 입력시 게임을 종료시킴
             Console.WriteLine();
             Console.Write("원하시는 행동을 입력해 주세요:"); // 1~3까지 숫자 입력 시 맞는 화면이 출력됨
@@ -50,8 +50,13 @@ namespace TextRPG
                     //인벤토리는 아직 완성되지 않음
                 case "3":
                     Console.Clear();
-                    Console.WriteLine("몬스터와 전투를 시작합니다!"); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
-                    // 전투 시작 화면을 알려주세요!
+                    Console.WriteLine("던전에 입장하였습니다."); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    Console.WriteLine("몬스터와 전투에서 승리하세요.");// 전투 시작 화면을 알려주세요!
+                    Console.WriteLine(); // 띄어쓰기
+                    Console.WriteLine("몬스터가 등장하였습니다!"); // 추가 메시지
+                    Console.WriteLine(); // 띄어쓰기
+                    // 이 후로는 배틀 스크립트에서 불러오는 내용이 출력되어야함 전투시작 몬스터 호출 등등
+                    //battle.Startbattle(player.monster)
                     break;
                 case "4":
                     Console.WriteLine("게임을 종료합니다.");
