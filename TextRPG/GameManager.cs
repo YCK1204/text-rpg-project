@@ -49,7 +49,8 @@ namespace TextRPG
                     //플레이어의 인벤토리를 보여줍니다.
                     //인벤토리는 아직 완성되지 않음
                 case "3":
-                    List<dynamic> list = new List<dynamic>(); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    Console.Clear();
+                    Console.WriteLine("몬스터와 전투를 시작합니다!"); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
                     // 전투 시작 화면을 알려주세요!
                     break;
                 case "4":
