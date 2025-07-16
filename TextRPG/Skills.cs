@@ -73,7 +73,7 @@ namespace Team_RPG
                 id = 2,
                 name = "강타",
                 cost = 10,
-                description = "정신을 한 데 그러모아 크게 한 방 지른다.",
+                description = "=Smite",
                 coefficient = 150,
                 type = Type.enemy,
                 effect = null
@@ -164,7 +164,7 @@ namespace Team_RPG
             skillList.Add(new Skills()
             {
                 id = 11,
-                name = "은신",
+                name = "유체화",
                 cost = 30,
                 description = "그림자에 숨어 기회를 노린다. 방심할 때의 급습은 치명타로 이어지겠지.",
                 coefficient = 0,
@@ -205,7 +205,7 @@ namespace Team_RPG
             skillList.Add(new Skills()
             {
                 id = 15,
-                name = "집중사격",
+                name = "집중포화",
                 cost = 30,
                 description = "보통이라면 산개할 탄환을 한데 그러모아 단 하나의 표적만을 노린다.",
                 coefficient = 200,
@@ -215,9 +215,9 @@ namespace Team_RPG
             skillList.Add(new Skills()
             {
                 id = 16,
-                name = "대출혈",
+                name = "파상포진",
                 cost = 60,
-                description = "상처를 벌리고 찢고 헤집어. 그 상처에서 피가 멎을 일이 없도록.",
+                description = "파상풍과 대상포진을 한번에! 이번만 특별 서비스입니다.",
                 coefficient = 100,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 3, 100, 5 }, new int[] { 6, 8, 1, 1 }, }
@@ -261,7 +261,7 @@ namespace Team_RPG
                 description = "마비&혼란",
                 coefficient = 0,
                 type = Type.player,
-                effect = effect = new List<int[]> { new int[] { 6, 4, 30 }, new int[] { 6, 7, 30 }, }
+                effect = effect = new List<int[]> { new int[] { 6, 4, 30 }, new int[] { 6, 7, 30 } }
             }); // 적 4
             skillList.Add(new Skills()
             {
@@ -328,7 +328,7 @@ namespace Team_RPG
             skillList.Add(new Skills()
             {
                 id = 26,
-                name = "심장부수기",
+                name = "시어 하트 어택",
                 cost = 80,
                 description = "그냥 툭 건드리는 것 같지만 사실은 굉장히 섬세한 기술. 심장만을 노려 터뜨리는, 도적의 극의.",
                 coefficient = 100,
@@ -338,7 +338,7 @@ namespace Team_RPG
             skillList.Add(new Skills()
             {
                 id = 26,
-                name = "전탄발사",
+                name = "원 포 원",
                 cost = 70,
                 description = "남아있는 모든 화살을, 단 한번의 일격을 위해",
                 coefficient = 300,
