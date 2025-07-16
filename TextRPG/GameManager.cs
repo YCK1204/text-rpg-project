@@ -30,7 +30,7 @@ namespace TextRPG
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
             Console.WriteLine();
             Console.WriteLine("1. 상태 보기"); // 1 입력시 Player 스크립트에 입력된 상태 호출
-            Console.WriteLine("2. 인벤토리 보기");
+            Console.WriteLine("2. 인벤토리 보기"); //
             Console.WriteLine("3. 전투 시작"); // 전투 화면을 불러옴
             Console.WriteLine("4. 게임 종료");
             Console.WriteLine();
@@ -45,7 +45,9 @@ namespace TextRPG
                 case "2":
                     break;
                 case "3":
-                    List<dynamic> list = new List<dynamic>(); // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    Console.Clear();
+                    Console.WriteLine("몬스터와 전투를 시작합니다!");
+                    // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
                     break;
                 case "4":
                     Console.WriteLine("게임을 종료합니다.");
