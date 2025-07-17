@@ -50,6 +50,17 @@ namespace TextRPG
                         EnemyTurn(enemy); // 몬스터 턴 메소드 호출
                     }
                 }
+                foreach(var creature in order) // 턴이 끝난 후 상태이상 효과 적용
+                {
+                    if (creature.StatusEffect != null)
+                    {
+                        for(int i = 0; i < creature.StatusEffect.Length; i++)
+                        {
+                            if (creature.StatusEffect[i][0] == 0) { continue; } // 상태이상 효과가 없는 경우는 무시
+                            creature.ApplyStatusEffect(i+1);
+                        }
+                    }
+                }
                 order = NewOrder(); // 턴 순서 재설정
             }
         }
