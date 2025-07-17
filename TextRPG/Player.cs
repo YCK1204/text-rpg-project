@@ -78,23 +78,7 @@ namespace TextRPG
         }
         public void UseItem(int idx, Creature passiver)
         {
-            if (idx < 0 || idx >= Inventory.Items.Count)
-            {
-                Console.WriteLine("잘못된 아이템 인덱스입니다.");
-                return;
-            }
-            Utils.DataModel.Item.Item item = Inventory.Items[idx];
-            if (item is IUsable usableItem)
-            {
-                usableItem.Use();
-                Inventory.Items.RemoveAt(idx);
-                Console.WriteLine($"{item.Name}을(를) 사용했습니다.");
-            }
-            else if (item is IEquippable equippableItem)
-            {
-                equippableItem.Equip();
-                Console.WriteLine($"{item.Name}을(를) 장착했습니다.");
-            }
+            // 아이템 사용 메소드: (아이템 인덱스, 사용 객체)
         }
         public void PrintSkillEffect(int effectId, Creature passiver, int? StatusId = null, bool increased = true)
         {
