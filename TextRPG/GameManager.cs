@@ -84,6 +84,7 @@ namespace TextRPG
                     Console.Clear();
                     Console.WriteLine("몬스터와 전투를 시작합니다!");
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+
                     break;
                 case "4":
                     Console.WriteLine("게임을 종료합니다.");
