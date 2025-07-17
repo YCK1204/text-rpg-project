@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TextRPG.Utils.DataModel.Creature.Job
 {
-    public class Thief : Character
+    public class Thief : Player
     {
     }
 }

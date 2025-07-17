@@ -14,7 +14,7 @@
 //        public Battle(List<dynamic> battlefield) // 전투 참여 객체 전부를 인자로 받음(플레이어, 몬스터 둘 다 포함)
 //        {
 //            this.order = battlefield;
-//            this.PlayerIndex = order.FindIndex( p => p == order.OfType<Player>().FirstOrDefault());
+//            this.PlayerIndex = order.FindIndex(p => p == order.OfType<Player>().FirstOrDefault());
 //        }
 //        public void turn() // 턴제 전투 시작
 //        {
@@ -60,14 +60,14 @@
 //                            {
 //                                Console.WriteLine("잘못된 입력입니다.");
 //                            }
-//                        break;
+//                            break;
 //                        }
 //                        else
 //                        {
 //                            Console.WriteLine("잘못된 입력입니다.");
 //                            break;
 //                        }
-//                            default:
+//                    default:
 //                        Console.WriteLine("잘못된 입력입니다.");
 //                        break;
 //                }
@@ -100,13 +100,13 @@
 //                if (i is Player)
 //                    continue;
 //                if (i.Health <= 0)
-//                { 
+//                {
 //                    Console.ForegroundColor = ConsoleColor.Green;
 //                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
 //                    Console.WriteLine($"| HP:{i.Health}");
 //                }
 //                else
-//                { 
+//                {
 //                    Console.ForegroundColor = ConsoleColor.Gray;
 //                    RPGsys.ArrangePrint("Lv." + i.Level.ToString + " " + i.Name, 25);
 //                    Console.WriteLine("| Dead");
@@ -127,7 +127,7 @@
 //        }
 //        public void PrintAttack()
 //        {
-//            for(int i=0; i<order.Count; i++)
+//            for (int i = 0; i < order.Count; i++)
 //            {
 //                if (order[i] is Player)
 //                    continue;
@@ -176,7 +176,7 @@
 //        public int SpeedDice(object obj) // 속도값 판정: (보정 = 최소: +0 최대 +5)
 //        {
 //            Random random = new Random();
-//            return random.Next(0, 6) + obj.Speed; 
+//            return random.Next(0, 6) + obj.Speed;
 //        }
 //        public List<dynamic> NewOrder() // 턴 시작 시 호출 요망: order 초기화 및 재설정
 //        {
