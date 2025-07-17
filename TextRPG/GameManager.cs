@@ -13,7 +13,7 @@ namespace TextRPG
         public Battle battle;
         public void run()
         {
-            player = new Player();
+            
             //battle = new Battle(order);
             while (true)
             {
