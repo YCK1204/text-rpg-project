@@ -3,6 +3,16 @@ using TextRPG.Utils.DataModel.Item;
 
 namespace TextRPG.Utils.DataModel.Creature
 {
+    public class CharacterClassData : Creature
+    {
+        public string ClassName { get; set; }
+        public int[] SkillsId { get; set; } // 스킬 ID 배열
+    }
+    public struct CharactersClassData
+    {
+        [JsonProperty("Data")]
+        public List<CharacterClassData> _CharactersClassData { get; set; }
+    }
     public class Character : Creature
     {
         public CharacterClass Class { get; set; }
