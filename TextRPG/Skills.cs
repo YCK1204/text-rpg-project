@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Utils.DataModel.Creature;
 
 namespace Team_RPG
 {
     internal class Skills
     {
         /*
+         * 스킬 부여 시기: 버프 종류는 공격 선언 시, 상태이상은 공격 종료 시
+         * 상태 이상 적용 시기: 턴 종료 시 일괄.
          * 필요 요소들: 스킬 id, 이름, 설명, 스킬 분류(타겟팅), 배율, 효과 
          * 효과 id: (임시)
          * 1: 공격력 변동 - 자신
@@ -38,12 +41,12 @@ namespace Team_RPG
         public string description { get; set; }
         public float coefficient { get; set; }
         public Type type { get; set; }
-        public List<int[]>? effect {  get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴, 대상id], ...]
+        public List<int[]>? effect { get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴, 대상id], ...]
         public enum Type
         {
             all, enemy, self, any, random, player
         }
-        public List<Skills> skillList { get; } = new();
+        public static List<Skills> skillList { get; } = new();
 
         Skills()
         {
@@ -77,7 +80,7 @@ namespace Team_RPG
                 coefficient = 150,
                 type = Type.enemy,
                 effect = null
-            }); // 전사 1 - 1
+            }); // 전사 1 - 1 3
             skillList.Add(new Skills()
             {
                 id = 3,
@@ -108,7 +111,7 @@ namespace Team_RPG
                 coefficient = 70,
                 type = Type.all,
                 effect = null
-            }); // 궁수 1 - 1
+            }); // 궁수 1 - 1 5
             skillList.Add(new Skills()
             {
                 id = 6,
@@ -139,7 +142,7 @@ namespace Team_RPG
                 coefficient = 80,
                 type = Type.enemy,
                 effect = new List<int[]> { new int[] { 6, 1, 100, 3 } }
-            }); // 법사 1 - 1
+            }); // 법사 1 - 1 8
             skillList.Add(new Skills()
             {
                 id = 9,
@@ -170,7 +173,7 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 5, 20, 3 } }
-            }); // 도적 1 - 1
+            }); // 도적 1 - 1 11
             skillList.Add(new Skills()
             {
                 id = 12,
@@ -201,7 +204,7 @@ namespace Team_RPG
                 coefficient = 0,
                 type = Type.self,
                 effect = new List<int[]> { new int[] { 1, 10, 3 }, new int[] { 2, 10, 3 }, new int[] { 5, 10, 3 } }
-            }); // 해적 1 - 1
+            }); // 해적 1 - 1 14
             skillList.Add(new Skills()
             {
                 id = 15,
@@ -232,7 +235,7 @@ namespace Team_RPG
                 coefficient = 150,
                 type = Type.player,
                 effect = null
-            }); // 적 1
+            }); // 적 1 16
             skillList.Add(new Skills()
             {
                 id = 17,
@@ -273,7 +276,6 @@ namespace Team_RPG
                 type = Type.player,
                 effect = null
             }); // 적 5
-            // 공통
             skillList.Add(new Skills()
             {
                 id = 21,
@@ -282,8 +284,9 @@ namespace Team_RPG
                 description = "모든 걸 버리고, 단 한 발을 위해.",
                 coefficient = 0,
                 type = Type.self,
-                effect = effect = new List<int[]> { new int[] { 1, 100, 2} }
+                effect = effect = new List<int[]> { new int[] { 1, 100, 2 } }
             }); // 재장전
+            //공통
             skillList.Add(new Skills()
             {
                 id = 22,
@@ -293,9 +296,9 @@ namespace Team_RPG
                 coefficient = 100,
                 type = Type.self,
                 effect = null
-            }); // 혼란 상태이상용 공격
+            }); // 혼란 상태이상용 공격 22
             // 궁극기
-            skillList.Add(new Skills() 
+            skillList.Add(new Skills()
             {
                 id = 23,
                 name = "마탄 장전",
@@ -304,7 +307,7 @@ namespace Team_RPG
                 coefficient = 30,
                 type = Type.self,
                 effect = effect = new List<int[]> { new int[] { 1, 200, 2 } }
-            }); // 해적 4 - 15
+            }); // 해적 4 - 15 23
             skillList.Add(new Skills()
             {
                 id = 24,
@@ -313,8 +316,8 @@ namespace Team_RPG
                 description = "육중한 검의 무게와, 회전이 섞인 대운동. 용을 격퇴하는 일격이라고도 일컬어진다.",
                 coefficient = 500,
                 type = Type.enemy,
-                effect = effect = new List<int[]> { new int[] { 3, -50 , 1 } } // 역회심
-            }); // 전사 4 - 15
+                effect = effect = new List<int[]> { new int[] { 3, -50, 1 } } // 역회심
+            }); // 전사 4 - 15 24
             skillList.Add(new Skills()
             {
                 id = 25,
@@ -324,7 +327,7 @@ namespace Team_RPG
                 coefficient = 350,
                 type = Type.all,
                 effect = effect = new List<int[]> { new int[] { 6, 1, 30, 3 }, new int[] { 6, 2, 30, 3 }, new int[] { 6, 3, 30, 3 }, new int[] { 6, 4, 30, 3 }, new int[] { 6, 5, 30, 3 }, new int[] { 6, 6, 30, 3 } }
-            }); // 법사 4 - 15
+            }); // 법사 4 - 15 25
             skillList.Add(new Skills()
             {
                 id = 26,
@@ -334,7 +337,7 @@ namespace Team_RPG
                 coefficient = 100,
                 type = Type.enemy,
                 effect = effect = new List<int[]> { new int[] { 6, 8, 50, 1 } }
-            }); // 도적 4 - 15
+            }); // 도적 4 - 15 26
             skillList.Add(new Skills()
             {
                 id = 26,
@@ -344,77 +347,49 @@ namespace Team_RPG
                 coefficient = 300,
                 type = Type.enemy,
                 effect = effect = new List<int[]> { new int[] { 1, 100, 2 } } //회심 최대적용
-            }); // 궁수 4 - 15
+            }); // 궁수 4 - 15 27
         }
-       
-        public int ActivateSkill(int skillId, object activer, object passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+
+        public void ActivateSkill(int skillId, Creature activer, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
             Skills? skill = skillList.FirstOrDefault(s => s.id == skillId); // errorbound
             if (skill == null)
             {
                 Console.WriteLine("해당 스킬이 존재하지 않습니다.");
-                return 0;
+                return;
             }
             // 코스트 감소
-            if (activer.cost < skill.cost)
+            if (activer.MP < skill.cost)
             {
                 Console.WriteLine("코스트가 부족합니다.");
-                return 0;
+                return;
             }
-            activer.Mana -= skill.cost;
+            activer.MP -= skill.cost;
             // 스킬 효과 적용
-            if (skill.effect != null) // 인스턴스 이름 수정 
-            {
-                foreach (var eff in skill.effect)
-                {
-                    switch (eff[0])
-                    {
-                        case 1: // 공격력 변동
-                            passiver.Attack += (int)(passiver.Attack * eff[1] / 100.0f);
-                            break;
-                        case 2: // 방어력 변동
-                            passiver.Defense += (int)(passiver.Defense * eff[1] / 100.0f);
-                            break;
-                        case 3: // 체력 변동
-                            passiver.Health += (int)(passiver.MaxHealth * eff[1] / 100.0f);
-                            break;
-                        case 4: // 코스트 변동
-                            passiver.Mana += eff[1];
-                            break;
-                        case 5: // 치명 변동
-                            passiver.CriticalChance += eff[1];
-                            break;
-                        case 6: // 상태이상 적용
-                            //if (rand.Next(100) < eff[2]) // 확률 적용
-                            //    ApplyStatusEffect(passiver, eff[1], eff[3]); // 차후 메소드 추가요청
-                            break;
-                    }
-                }
-            }
-            return (int)(activer.Attack * skill.coefficient/100.0f); // 데미지 반환
+            
         }
-    
-        public void PrintSkillEffect(int effectId, object passiver, int? StatusId=null, bool increased = true)
+
+        public void PrintSkillEffect(int effectId, Creature passiver, int? StatusId = null, bool increased = true)
         {
             switch (effectId)
             {
                 case 1: // 공격력 변동
-                    Console.WriteLine($"{passiver.Name}의 공격력이 {(increased? "상승했다":"하락했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 공격력이 {(increased ? "상승했다" : "하락했다")}!");
                     break;
                 case 2: // 방어력 변동
-                    Console.WriteLine($"{passiver.Name}의 방어력이 {(increased? "상승했다" : "하락했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 방어력이 {(increased ? "상승했다" : "하락했다")}!");
                     break;
                 case 3: // 체력 변동
-                    Console.WriteLine($"{passiver.Name}의 체력을 {/*recover(차후 입력요망)*/}만큼{(increased? "회복했다" : "지불했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 체력을 {1/*차후 수정*/}만큼{(increased ? "회복했다" : "지불했다")}!");
                     break;
                 case 4: // 코스트 변동
-                    Console.WriteLine($"{passiver.Name}의 코스트가 {(increased? "상승했다" : "하락했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 코스트가 {(increased ? "상승했다" : "하락했다")}!");
                     break;
                 case 5: // 치명타 확률 변동
-                    Console.WriteLine($"{passiver.Name}의 치명타 확률이 {(increased? "상승했다" : "하락했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 치명타 확률이 {(increased ? "상승했다" : "하락했다")}!");
                     break;
                 case 6: // 상태이상 적용
-                    swtich(StatusId)
+                    switch (StatusId)
                     {
                         case 1: // 화상
                             Console.WriteLine($"{passiver.Name}이(가) 화상에 걸렸다!");
@@ -443,45 +418,47 @@ namespace Team_RPG
                         default:
                             Console.WriteLine("알 수 없는 상태이상입니다.");
                             break;
-                        }
-                        default:
+                    }
+                    break;
+                default:
                     Console.WriteLine("알 수 없는 효과입니다.");
                     break;
-                }
             }
         }
 
-        public void PrintEffects(int damage, object passiver) // 스킬 효과 출력 메소드
+        public void PrintEffects(int damage, Creature passiver) // 스킬 효과 출력 메소드
         {
             if (passiver != null)
             {
-                foreach (var eff in passiver.effect)
+                for (int i = 0; i < passiver.StatusEffect.Length; i++)
                 {
-                    switch(passiver.effect[0])
+                    switch (i + 1)
                     {
                         // 상태이상 발동시 출력
-                    case 1: // 화상
-                        Console.WriteLine($"{passiver.Name}은(는) 화상으로 인해 {damage}의 피해를 입었다!");
-                        break;
-                    case 2: // 중독
-                        Console.WriteLine($"{passiver.Name}은(는) 독으로 인해 {passiver.MaxHealth/10}의 피해를 입었다!");
-                        break;
-                    case 3: // 출혈
-                        Console.WriteLine($"{passiver.Name}은(는) 출혈으로 인해 {passiver.Attack/2}의 피해를 입었다!");
-                        break;
-                    case 4: // 마비
-                        Console.WriteLine($"{passiver.Name}은(는) 몸이 저려 움직일 수 없다!");
-                        break;
-                    case 5: // 침묵
-                        Console.WriteLine($"{passiver.Name}은(는) 기술을 쓸 수 없다!");
-                        break;
-                    case 6: // 빙결
-                        Console.WriteLine($"{passiver.Name}은(는) 얼어버려 움직일 수 없다!");
-                        break;
-                    case 7: // 혼란
-                        Console.WriteLine($"{passiver.Name}은(는) 혼란에 빠져 영문도 모른 채 {damage}의 피해를 입었다!");
+                        case 1: // 화상
+                            Console.WriteLine($"{passiver.Name}은(는) 화상으로 인해 {damage}의 피해를 입었다!");
+                            break;
+                        case 2: // 중독
+                            Console.WriteLine($"{passiver.Name}은(는) 독으로 인해 {passiver.MaxHP / 10}의 피해를 입었다!");
+                            break;
+                        case 3: // 출혈
+                            Console.WriteLine($"{passiver.Name}은(는) 출혈으로 인해 {passiver.Attack / 2}의 피해를 입었다!");
+                            break;
+                        case 4: // 마비
+                            Console.WriteLine($"{passiver.Name}은(는) 몸이 저려 움직일 수 없다!");
+                            break;
+                        case 5: // 침묵
+                            Console.WriteLine($"{passiver.Name}은(는) 기술을 쓸 수 없다!");
+                            break;
+                        case 6: // 빙결
+                            Console.WriteLine($"{passiver.Name}은(는) 얼어버려 움직일 수 없다!");
+                            break;
+                        case 7: // 혼란
+                            Console.WriteLine($"{passiver.Name}은(는) 혼란에 빠져 영문도 모른 채 {damage}의 피해를 입었다!");
+                            break;
                     }
                 }
             }
         }
     }
+}
