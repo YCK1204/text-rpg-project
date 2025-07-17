@@ -50,8 +50,7 @@ namespace TextRPG
         }
          void run()
         {
-            player = new Player();
-            //battle = new Battle(order);
+            
             while (true)
             {
                 ShowMainmenu();
