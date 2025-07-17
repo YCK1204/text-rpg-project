@@ -4,6 +4,8 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Utils.DataModel.Creature;
+using TextRPG.Utils.DataModel.Creature.Job;
 
 namespace TextRPG
 {
@@ -11,16 +13,50 @@ namespace TextRPG
     {
         public Player player;
         //public Battle battle;
-        public void run()
+        public void StartGame()
         {
-            player = new Player();
-            //battle = new Battle(order);
+            Console.WriteLine(
+@"캐릭터 선택
+1. 전사
+2. 궁수
+3. 마법사
+4. 도적
+5. 해적");
+            int key = int.Parse(Console.ReadLine());
+            CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
+            switch (key)
+            {
+                case 1:
+                    //player = new Player("전사");
+                    break;
+                case 2:
+                    player = new Archer(data);
+                    break;
+                case 3:
+                    //player = new Player("마법사");
+                    break;
+                case 4:
+                    //player = new Player("도적");
+                    break;
+                case 5:
+                    //player = new Player("해적");
+                    break;
+                default:
+                    Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                    StartGame();
+                    return;
+            }
+            run();
+        }
+         void run()
+        {
+            
             while (true)
             {
                 ShowMainmenu();
 
             }
-            
+
         }
         private void ShowMainmenu()
         {
