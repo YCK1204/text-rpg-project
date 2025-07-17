@@ -14,7 +14,6 @@ namespace TextRPG.Utils.DataModel.Skill
         public float Coefficient { get; set; }
         public SkillType Type { get; set; }
         public List<int[]>? Effect { get; set; } // 2차원 배열, [[효과id, 적용 배율, 적용 턴, 대상id], ...]
-
     }
     public struct Skills
     {
