@@ -14,8 +14,9 @@ namespace TextRPG
     public class Player : Character
     {
         static Player instance { get; } = new Player();
+        private Random rand = new Random();
         public static Player Instance { get { return instance; } }
-        public int ActivateSkill(int skillId, Creature activer, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+        public int ActivateSkill(int skillId, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
             if (DataManager.Instance.Skills.ContainsKey(skillId) == false)
             {
@@ -24,44 +25,61 @@ namespace TextRPG
             }
             Skill skill = DataManager.Instance.Skills[skillId];
             // 코스트 감소
-            if (activer.MP < skill.Cost)
+            if (this.MP < skill.Cost)
             {
                 Console.WriteLine("코스트가 부족합니다.");
                 return 0;
             }
-            activer.MP -= skill.Cost;
+            this.MP -= skill.Cost;
             // 스킬 효과 적용
-            if (skill.Effect != null) // 인스턴스 이름 수정 
+            int damage;
+            if (skill.Effect != null)
             {
-                foreach (var eff in skill.Effect)
+                foreach (var i in skill.Effect)
                 {
-                    switch (eff[0])
+                    int id = 0;
+                    if (i[0] == 1 || i[0] == 2 || i[0] == 5) //
                     {
-                        case 1: // 공격력 변동
-                            passiver.Attack += (int)(passiver.Attack * eff[1] / 100.0f);
-                            break;
-                        case 2: // 방어력 변동
-                            passiver.Defense += (int)(passiver.Defense * eff[1] / 100.0f);
-                            break;
-                        case 3: // 체력 변동
-                            passiver.HP += (int)(passiver.MaxHP * eff[1] / 100.0f);
-                            break;
-                        case 4: // 코스트 변동
-                            passiver.MP += eff[1];
-                            break;
-                        case 5: // 치명 변동
-                            //passiver.CriticalChance += eff[1];
-                            break;
-                        case 6: // 상태이상 적용
-                            //if (rand.Next(100) < eff[2]) // 확률 적용
-                            //    ApplyStatusEffect(passiver, eff[1], eff[3]); // 차후 메소드 추가요청
-                            break;
+                        id = this.UpdateBuffDebuff(i[0], i[1], i[2]); // 버프/디버프 적용
+                        this.PrintSkillEffect(i[0], this, i[1], true); // 버프/디버프 효과 출력
+                    }
+                    if (i[0] == 3)
+                    // 체력 회복
+                    {
+                        this.ChangeHP(i[1] * this.MaxHP / 100);
+                        this.PrintSkillEffect(3, this, (i[1] * this.MaxHP / 100), true); // 버프/디버프 효과 출력
+                    }
+                    if (i[0] == 4)
+                    // 마나 회복
+                    {
+                        this.ChangeMP(i[1] * this.MaxMP / 100);
+                        this.PrintSkillEffect(4, this, (i[1] * this.MaxMP / 100), true); // 버프/디버프 효과 출력
                     }
                 }
+                damage = CalculateDamage(skillId, passiver);
+                passiver.ChangeHP(-damage);
             }
-            return (int)(activer.Attack * skill.Coefficient / 100.0f); // 데미지 반환
+            else
+            {
+                damage = CalculateDamage(skillId, passiver);
+                passiver.ChangeHP(-damage);
+                return damage;
+            }
+            
+            foreach (var i in skill.Effect)
+            {
+                if(i[0] == 6 && rand.Next(0,100)<= i[2]) // 상태이상 적용 확률 체크
+                {
+                    passiver.UpdateStatusEffect(i[1], i[3], damage);
+                    PrintSkillEffect(i[1], passiver, i[3]); // 상태이상 효과 출력
+                }
+            }
+            return damage;
         }
-
+        public void UseItem(int idx, Creature passiver)
+        {
+            // 아이템 사용 메소드: (아이템 인덱스, 사용 객체)
+        }
         public void PrintSkillEffect(int effectId, Creature passiver, int? StatusId = null, bool increased = true)
         {
             switch (effectId)
@@ -73,10 +91,10 @@ namespace TextRPG
                     Console.WriteLine($"{passiver.Name}의 방어력이 {(increased ? "상승했다" : "하락했다")}!");
                     break;
                 case 3: // 체력 변동
-                    //Console.WriteLine($"{passiver.Name}의 체력을 {/*recover(차후 입력요망)*/}만큼{(increased ? "회복했다" : "지불했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 체력을 {StatusId}만큼{(increased ? "회복했다" : "빼았겼다")}!");
                     break;
                 case 4: // 코스트 변동
-                    Console.WriteLine($"{passiver.Name}의 코스트가 {(increased ? "상승했다" : "하락했다")}!");
+                    Console.WriteLine($"{passiver.Name}의 마나가 {StatusId}만큼 {(increased ? "회복했다" : "뺴았겼다")}!");
                     break;
                 case 5: // 치명타 확률 변동
                     Console.WriteLine($"{passiver.Name}의 치명타 확률이 {(increased ? "상승했다" : "하락했다")}!");
