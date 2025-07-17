@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using TextRPG.Utils;
+using TextRPG.Utils.DataModel.Item;
+using TextRPG.Utils.DataModel.Creature;
 
 namespace TextRPG.Data
 {
@@ -17,7 +19,7 @@ namespace TextRPG.Data
         private DataManager() { }
 
         public Dictionary<int, Monster> Monsters = new Dictionary<int, Monster>();
-        Dictionary<int, MonsterLoot> MonsterLoots = new Dictionary<int, MonsterLoot>();
+        Dictionary<int, Item> MonsterLoots = new Dictionary<int, Item>();
         Dictionary<int, T2> MakeDict<T1, T2>(string path, Func<T1, Dictionary<int, T2>> func)
         {
             string json = File.ReadAllText(path);
@@ -35,7 +37,6 @@ namespace TextRPG.Data
                 return null;
             }
         }
-
         public Dictionary<int, Item> Items = new Dictionary<int, Item>();
         public void LoadData()
         {
@@ -46,38 +47,34 @@ namespace TextRPG.Data
                 for (int i = 0; i < t1._Monsters.Count; i++)
                 {
                     var monster = t1._Monsters[i];
-                    var status = monster.Status;
-                    status.Level = random.Next(monster.Status.RandomLevelRange[0], monster.Status.RandomLevelRange[1] + 1);
-                    status.Health += (status.Level * 10);
-                    status.Attack += (status.Level * 3);
-                    monster.Status = status;
-                    var reward = monster.Reward;
-                    reward.Gold += (status.Level * 10);
-                    reward.Exp += (status.Level * 10);
-                    monster.Reward = reward;
-                    t1._Monsters[i] = monster;
+                    monster.Level = random.Next(monster.RandomLevelRange[0], monster.RandomLevelRange[1] + 1);
+                    monster.HP += (monster.Level * 10);
+                    monster.Attack += (monster.Level * 3);
+                    monster.Reward.Gold += (monster.Level * 10);
+                    monster.Reward.Exp += (monster.Level * 10);
                 }
                 return t1._Monsters.ToDictionary(m => m.Id, m => m);
             });
             foreach (var monster in Monsters)
             {
-                Console.WriteLine($"Monster ID: {monster.Key}, Name: {monster.Value.Status.Name}, Health: {monster.Value.Status.Health}");
+                Console.WriteLine($"Monster ID: {monster.Key}, Name: {monster.Value.Name}, Health: {monster.Value.HP}");
             }
-            MonsterLoots = MakeDict<MonsterLoots, MonsterLoot>($"{JsonPath}/{MonsterPath}", (t1) => { return t1._MonsterLoots.ToDictionary(m => m.Id, m => m); });
+            //MonsterLoots = MakeDict<Items, Item>($"{JsonPath}/{MonsterPath}", (t1) => { return t1._Items.ToDictionary(m => m.Id, m => m); });
             #endregion
 
             #region Item
             string json = File.ReadAllText($"{JsonPath}/{ItemPath}");
-            Items t1 = JsonConvert.DeserializeObject<Items>(json);
-            foreach (var potion in t1.Potions) { Items.Add(potion.Id, potion); }
-            foreach (var armor in t1.Armors) { Items.Add(armor.Id, armor); }
-            foreach (var weapon in t1.Weapons) { Items.Add(weapon.Id, weapon); }
+            Items t1 = JsonConvert.DeserializeObject<Items>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            Items = t1._Items.ToDictionary(i => i.Id, i => i);
             #endregion
         }
-        public MonsterLoot GenRandomLoot(ItemRarity type)
+        public Item GenRandomLoot(ItemRarity rarity)
         {
-            List<MonsterLoot> filteredLoots = MonsterLoots.Values
-                .Where(loot => loot.Type == type)
+            List<Item> filteredLoots = MonsterLoots.Values
+                .Where(loot => loot.Rarity == rarity)
                 .ToList();
 
             Random random = new Random();

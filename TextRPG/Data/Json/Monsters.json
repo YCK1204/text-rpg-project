@@ -2,26 +2,22 @@
   "Monsters": [
     {
       "Id": 1,
-      "Status": {
-        "Name": "미니언",
-        "Health": 50,
-        "Attack": 10,
-        "RandomLevelRange": [ 1, 5 ]
-      },
+      "Name": "미니언",
+      "HP": 50,
+      "Attack": 10,
+      "RandomLevelRange": [ 1, 5 ],
       "Reward": {
         "Gold": 100,
         "Exp": 100,
         "Rarity": "Common"
-      }
+      },
     },
     {
       "Id": 2,
-      "Status": {
-        "Name": "대포 미니언",
-        "Health": 70,
-        "Attack": 20,
-        "RandomLevelRange": [ 1, 5 ]
-      },
+      "Name": "대포 미니언",
+      "HP": 70,
+      "Attack": 20,
+      "RandomLevelRange": [ 1, 5 ],
       "Reward": {
         "Gold": 200,
         "Exp": 200,
@@ -30,12 +26,10 @@
     },
     {
       "Id": 3,
-      "Status": {
-        "Name": "보이드 미니언",
-        "Health": 60,
-        "Attack": 15,
-        "RandomLevelRange": [ 1, 5 ]
-      },
+      "Name": "보이드 미니언",
+      "HP": 60,
+      "Attack": 15,
+      "RandomLevelRange": [ 1, 5 ],
       "Reward": {
         "Gold": 150,
         "Exp": 150,
