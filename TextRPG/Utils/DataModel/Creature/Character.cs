@@ -22,6 +22,7 @@ namespace TextRPG.Utils.DataModel.Creature
         public int Gold { get; set; }
         public int Exp { get; set; }
         public int NeedExp { get; set; }
+        public List<Skill.Skill> Skills { get; set; } = new List<Skill.Skill>();
         public Inventory Inventory { get; set; }
         public event Action PlayerDied;
     }
