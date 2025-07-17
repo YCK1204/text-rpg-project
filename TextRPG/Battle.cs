@@ -50,6 +50,17 @@ namespace TextRPG
                         EnemyTurn(enemy); // 몬스터 턴 메소드 호출
                     }
                 }
+                foreach(var creature in order) // 턴이 끝난 후 상태이상 효과 적용
+                {
+                    if (creature.StatusEffect != null)
+                    {
+                        for(int i = 0; i < creature.StatusEffect.Length; i++)
+                        {
+                            if (creature.StatusEffect[i][0] == 0) { continue; } // 상태이상 효과가 없는 경우는 무시
+                            creature.ApplyStatusEffect(i+1);
+                        }
+                    }
+                }
                 order = NewOrder(); // 턴 순서 재설정
             }
         }
@@ -267,7 +278,7 @@ namespace TextRPG
             // 여기에 죽은 몬스터의 카운팅 이벤트 코드 추가 가능
             //
             int skillId = new Random().Next(16, 24); // 랜덤으로 스킬 선택
-            if (skillId > 21)) { skillId -= 22; } // 스킬 ID 범위 조정
+            if (skillId > 21) { skillId -= 22; } // 스킬 ID 범위 조정
             
             Skill skill = DataManager.Instance.Skills[skillId];
             int damage = enemy.CalculateDamage(skillId, player);    
