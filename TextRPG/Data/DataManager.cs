@@ -4,6 +4,7 @@ using System.Reflection;
 using TextRPG.Utils;
 using TextRPG.Utils.DataModel.Item;
 using TextRPG.Utils.DataModel.Creature;
+using TextRPG.Utils.DataModel.Skill;
 
 namespace TextRPG.Data
 {
@@ -14,12 +15,16 @@ namespace TextRPG.Data
         const string JsonPath = CommonPath + "/Json";
         const string MonsterPath = "Monsters.json";
         const string ItemPath = "Items.json";
+        const string SkillPath = "Skills.json";
         const string PlayerPath = "Player.json";
-        const string CharacterStatusPath = "CharacterStatuses.json";
+        const string CharacterClassDataPath = "CharacterClassData.json";
         private DataManager() { }
 
         public Dictionary<int, Monster> Monsters = new Dictionary<int, Monster>();
         Dictionary<int, Item> MonsterLoots = new Dictionary<int, Item>();
+        public Dictionary<int, Item> Items = new Dictionary<int, Item>();
+        public Dictionary<int, Skill> Skills = new Dictionary<int, Skill>();
+        public Dictionary<int, CharacterClassData> CharacterClassData = new Dictionary<int, CharacterClassData>();
         Dictionary<int, T2> MakeDict<T1, T2>(string path, Func<T1, Dictionary<int, T2>> func)
         {
             string json = File.ReadAllText(path);
@@ -37,7 +42,6 @@ namespace TextRPG.Data
                 return null;
             }
         }
-        public Dictionary<int, Item> Items = new Dictionary<int, Item>();
         public void LoadData()
         {
             #region Monster
@@ -69,6 +73,20 @@ namespace TextRPG.Data
                 TypeNameHandling = TypeNameHandling.Auto
             });
             Items = t1._Items.ToDictionary(i => i.Id, i => i);
+            #endregion
+
+            #region Skills
+            Skills = MakeDict<Skills, Skill>($"{JsonPath}/{SkillPath}", (t1) =>
+            {
+                return t1._Skills.ToDictionary(s => s.Id, s => s);
+            });
+            #endregion
+
+            #region CharacterClassData
+            CharacterClassData = MakeDict<CharactersClassData, CharacterClassData>($"{JsonPath}/{CharacterClassDataPath}", (t1) =>
+            {
+                return t1._CharactersClassData.ToDictionary(c => c.Id, c => c);
+            });
             #endregion
         }
         public Item GenRandomLoot(ItemRarity rarity)

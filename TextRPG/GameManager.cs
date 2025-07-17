@@ -10,7 +10,7 @@ namespace TextRPG
     public class GameManager
     {
         public Player player;
-        public Battle battle;
+        //public Battle battle;
         public void run()
         {
             player = new Player();

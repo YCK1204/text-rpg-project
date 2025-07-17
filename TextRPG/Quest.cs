@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Utils.DataModel.Creature;
 
 namespace TextRPG
 {
@@ -39,9 +40,9 @@ namespace TextRPG
 
         public void VoidCatcherQuest()
         {
-            Quest quest = new Quest();
-            VoidMinion voidMinion = new VoidMinion();
-            quest.Subscribe(voidMinion);
+            //Quest quest = new Quest();
+            //VoidMinion voidMinion = new VoidMinion();
+            //quest.Subscribe(voidMinion);
         }
     }
 
