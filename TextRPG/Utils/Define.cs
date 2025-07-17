@@ -18,4 +18,13 @@ namespace TextRPG.Utils
         Epic,
         Legendary
     }
+    public enum SkillType
+    {
+        all,
+        enemy,
+        self,
+        any,
+        random,
+        player
+    }
 }

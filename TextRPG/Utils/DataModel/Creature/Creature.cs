@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Team_RPG;
 using TextRPG;
 namespace TextRPG.Utils.DataModel.Creature
 {
@@ -65,17 +64,18 @@ namespace TextRPG.Utils.DataModel.Creature
         }
         public int CalculateDamage(int SkillId, Creature passive)
         {
-            Random rand = new Random();
-            Skills skill = Skills.skillList[SkillId];
-            // 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
-            int damage = (int)((Attack * skill.coefficient) - passive.Defense);
-            if (damage < 0) damage = 1; // 방어력에 의해 데미지가 1 이하로 떨어지지 않도록: 최소 데미지 = 1
-            // 치명타 확률 적용
-            if (rand.Next(0,100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
-            {
-                damage = (int)(damage * 2); // 치명타 데미지: 2배
-            }
-            return damage; // 계산된 데미지 반환
+            return 1;
+            //Random rand = new Random();
+            //Skills skill = Skills.skillList[SkillId];
+            //// 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
+            //int damage = (int)((Attack * skill.coefficient) - passive.Defense);
+            //if (damage < 0) damage = 1; // 방어력에 의해 데미지가 1 이하로 떨어지지 않도록: 최소 데미지 = 1
+            //// 치명타 확률 적용
+            //if (rand.Next(0,100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
+            //{
+            //    damage = (int)(damage * 2); // 치명타 데미지: 2배
+            //}
+            //return damage; // 계산된 데미지 반환
         }
         public void UpdateBuffDebuff(int buffType, int percent, int turn) // 버프/디버프 변경 메소드
         {
