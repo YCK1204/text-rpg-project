@@ -11,7 +11,6 @@ namespace TextRPG
 {
     public class GameManager
     {
-        public Player player;
         //public Battle battle;
         public void StartGame()
         {
@@ -30,7 +29,7 @@ namespace TextRPG
                     CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
                     if (key < 1 || key > Data.DataManager.Instance.CharacterClassData.Count)
                         throw new FormatException();
-                    player = new Player(data);
+                    Player.Instance = new Player(data);
                     run();
                 }
             }
@@ -43,15 +42,13 @@ namespace TextRPG
         }
          void run()
         {
-            var json = JsonConvert.SerializeObject(player);
+            var json = JsonConvert.SerializeObject(Player.Instance);
             Console.WriteLine("캐릭터 생성 완료: " + json);
             //battle = new Battle(order);
             while (true)
             {
                 ShowMainmenu();
-
             }
-
         }
         private void ShowMainmenu()
         {
@@ -71,10 +68,10 @@ namespace TextRPG
             switch (input)
             {
                 case "1":
-                    player.playerinfo(); // 플레이어의 정보를 보여주는 화면
+                    Player.Instance.playerinfo(); // 플레이어의 정보를 보여주는 화면
                     break;
                 case "2":
-                    player.ShowInventory(); // 플레이어의 인벤토리를 보여주는 화면
+                    Player.Instance.ShowInventory(); // 플레이어의 인벤토리를 보여주는 화면
                     break;
                 case "3":
                     Console.Clear();
