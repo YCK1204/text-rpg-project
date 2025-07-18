@@ -13,14 +13,19 @@ namespace TextRPG
 
         private Random rand = new Random();
         [JsonIgnore]
-        public int ItemDefense { get; set; }
+        public int TotalAttack { get { return Attack + ItemAttack; } }
         [JsonIgnore]
-        public int ItemAttack { get; set; }
+        public int TotalDefense { get { return Defense + ItemDefense; } }
+        [JsonIgnore]
+        int ItemDefense { get; set; }
+        [JsonIgnore]
+        int ItemAttack { get; set; }
 
         [JsonIgnore]
         public List<Skill> Skills { get; set; } = new List<Skill>();
         [JsonIgnore]
         string ClassName { get; set; }
+        [JsonIgnore]
         Armor _armor;
         [JsonIgnore]
         Armor Armor
@@ -361,9 +366,9 @@ namespace TextRPG
                         if (item is Potion potion)
                         {
                             if (potion is HpPotion)
-                                HP += potion.Heal;
+                                HP = Math.Clamp(HP + potion.Heal, 0, MaxHP);
                             else if (potion is MpPotion)
-                                MP += potion.Heal;
+                                MP = Math.Clamp(MP + potion.Heal, 0, MaxMP);
                             Inventory.RemoveItem(potion);
                         }
                         else if (item is Armor armor)
