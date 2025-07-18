@@ -23,7 +23,20 @@ namespace TextRPG.Utils.DataModel.Creature
         public int[][] BuffDebuff { get; } = new int[3][]; // 버프/디버프 배열: [0] 공, [1] 방, [2] 치명
 
         public Creature()
-        { originalAttack = Attack; originalDefense = Defense; } // 기본 생성자: 공격력과 방어력 원본 저장
+        { 
+            originalAttack = Attack; originalDefense = Defense;
+            this.StatusEffect[0] = new int[] { 0, 0 }; // 화상 효과: [0] 적용 턴, [1] 데미지
+            this.StatusEffect[1] = new int[] { 0 }; // 중독 효과: [0] 적용 턴
+            this.StatusEffect[2] = new int[] { 0 }; // 출혈 효과: [0] 적용 턴
+            this.StatusEffect[3] = new int[] { 0 }; // 마비 효과: [0] 적용 턴
+            this.StatusEffect[4] = new int[] { 0 }; // 침묵 효과: [0] 적용 턴
+            this.StatusEffect[5] = new int[] { 0 }; // 빙결 효과: [0] 적용 턴
+            this.StatusEffect[6] = new int[] { 0 }; // 혼란 효과: [0] 적용 턴
+            this.BuffDebuff[0] = new int[] { 0, 0 }; // 공격력 버프: [0] 버프 수치, [1] 지속 턴
+            this.BuffDebuff[1] = new int[] { 0, 0 }; // 방어력 버프: [0] 버프 수치, [1] 지속 턴
+            this.BuffDebuff[2] = new int[] { 0, 0 }; // 치명타 확률 버프: [0] 버프 수치, [1] 지속 턴
+
+        } // 기본 생성자: 공격력과 방어력 원본 저장
 
         public void RollBack()
         {
@@ -68,7 +81,7 @@ namespace TextRPG.Utils.DataModel.Creature
             Random rand = new Random();
             TextRPG.Utils.DataModel.Skill.Skill skill = DataManager.Instance.Skills[SkillId];
             // 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
-            int damage = (int)((Attack * skill.Coefficient) - passive.Defense);
+            int damage = (int)((Attack * skill.Coefficient)/100 - passive.Defense);
             if (damage < 0) damage = 1; // 방어력에 의해 데미지가 1 이하로 떨어지지 않도록: 최소 데미지 = 1
             // 치명타 확률 적용
             if (rand.Next(0, 100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
@@ -79,6 +92,10 @@ namespace TextRPG.Utils.DataModel.Creature
         }
         public int UpdateBuffDebuff(int buffType, int percent, int turn) // 버프/디버프 변경 메소드
         {
+            if (this.BuffDebuff[0][0] == null)
+            {
+                
+            }
             // 버프/디버프 변경 로직
             switch (buffType)
             {
