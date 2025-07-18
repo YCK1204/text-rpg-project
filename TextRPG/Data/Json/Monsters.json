@@ -4,18 +4,20 @@
       "Id": 1,
       "Name": "미니언",
       "HP": 50,
+      "MaxHP": 50,
       "Attack": 10,
       "RandomLevelRange": [ 1, 5 ],
       "Reward": {
         "Gold": 100,
         "Exp": 100,
         "Rarity": "Common"
-      },
+      }
     },
     {
       "Id": 2,
       "Name": "대포 미니언",
       "HP": 70,
+      "MaxHP": 70,
       "Attack": 20,
       "RandomLevelRange": [ 1, 5 ],
       "Reward": {
@@ -28,6 +30,7 @@
       "Id": 3,
       "Name": "보이드 미니언",
       "HP": 60,
+      "MaxHP": 60,
       "Attack": 15,
       "RandomLevelRange": [ 1, 5 ],
       "Reward": {
