@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Data;
 using TextRPG.Utils.DataModel.Creature;
 
 namespace TextRPG
@@ -74,6 +75,11 @@ namespace TextRPG
                     Player.Instance.ShowInventory(); // 플레이어의 인벤토리를 보여주는 화면
                     break;
                 case "3":
+                    Battle battle = new Battle(new List<Monster>()
+                    {
+                        DataManager.Instance.Monsters[1].DeepClone(), // 몬스터 1번을 불러옴
+                    });
+                    battle.GamePlay();
                     Console.Clear();
                     Console.WriteLine("몬스터와 전투를 시작합니다!");
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
