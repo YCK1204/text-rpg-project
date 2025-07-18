@@ -67,6 +67,9 @@ namespace TextRPG
                 ItemAttack = Weapon.Attack;
             }
         }
+        public event Action EarnMoneyEvent;
+        public event Action LevelUpEvent;
+        public event Action UsePotionEvent;
         public Player(CharacterClassData data) // 캐릭터 생성으로 인한 플레이어 생성
         {
             Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
@@ -140,6 +143,10 @@ namespace TextRPG
             {
                 Exp -= neededExp;
                 Level += 1;
+                if(Level>=3)
+                {
+                    LevelUpEvent?.Invoke();
+                }
                 Console.WriteLine($"레벨업! 플레이어 레벨이{Level} 이 되었습니다");
                 Console.ReadKey();
                 neededExp = Level * Level * 100;
@@ -151,6 +158,10 @@ namespace TextRPG
         public void ChangeGold(int gold)
         {
             Gold += gold;
+            if( Gold >= 1000 )
+            {
+                EarnMoneyEvent?.Invoke();
+            }
             if (Gold < 0) Gold = 0; // 금액이 음수가 되지 않도록
         }
 
@@ -379,9 +390,14 @@ namespace TextRPG
                         if (item is Potion potion)
                         {
                             if (potion is HpPotion)
+                            {
                                 HP = Math.Clamp(HP + potion.Heal, 0, MaxHP);
+                                UsePotionEvent?.Invoke();
+                            }
                             else if (potion is MpPotion)
+                            {
                                 MP = Math.Clamp(MP + potion.Heal, 0, MaxMP);
+                            }
                             Inventory.RemoveItem(potion);
                         }
                         else if (item is Armor armor)

@@ -1,52 +1,130 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using TextRPG.Utils.DataModel.Creature;
+using TextRPG;
 
-namespace TextRPG
+namespace ConsoleApp1
 {
-
-    public class Quest
+    public abstract class Quest
     {
-        private Monster monster;
-        int targetcount = 5;
-        int currentcount = 0;
-        public void Subscribe(Monster monster)
-        {
-            this.monster = monster;
-            monster.MonsterDied += OnMonsterDied;
-        }
 
-        private void OnMonsterDied()
+        public abstract void AcceptQuest();
+        public abstract void DoQuest();
+        public string QuestName { get; set; }
+        public int QuestReward { get; set; }
+        public bool IsAlreadyTaken {  get; set; }
+
+    }
+    public class EarnMoneyQuest : Quest
+    {
+        public EarnMoneyQuest()
         {
-            currentcount++;
-            if (currentcount == targetcount)
+            QuestName = "돈을 1000G 까지 벌어보자";
+            QuestReward = 800;
+            IsAlreadyTaken = false;
+        }
+        public override void AcceptQuest()
+        {
+            if (IsAlreadyTaken == true)
             {
-                {
-                    Console.WriteLine("공허충 처치 퀘스트 완료");
-                    Unsubscribe();
-                }
+                Console.WriteLine("이미 수락했거나 완료한 퀘스트입니다.");
+                Console.WriteLine("아무키나 누르면 퀘스트 보드로 다시 돌아갑니다");
+                Console.ReadKey(true);
+                QuestManager.Instance.LoadQuestScene();
+                return;
             }
+            Player.Instance.EarnMoneyEvent += DoQuest;
+            Console.WriteLine($"'{QuestName}' 퀘스트 수락");
+            IsAlreadyTaken=true;
+            Console.ReadKey();
+            QuestManager.Instance.LoadQuestScene();
         }
-        private void Unsubscribe()
+        public override void DoQuest()
         {
-            monster.MonsterDied -= OnMonsterDied;
+            Console.WriteLine($"'{QuestName}' 퀘스트를 완료하였습니다");
+            Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다");
+            Player.Instance.EarnMoneyEvent -= DoQuest;
+            Player.Instance.ChangeGold(QuestReward);
+            
+            Console.ReadKey();
+            
         }
     }
-    public class QuestBoard
+    public class LevelUpQuest : Quest
     {
-
-        public void VoidCatcherQuest()
+        public LevelUpQuest()
         {
-            //Quest quest = new Quest();
-            //VoidMinion voidMinion = new VoidMinion();
-            //quest.Subscribe(voidMinion);
+            QuestName = "레벨을 3까지 올려보자";
+            QuestReward = 500;
+            IsAlreadyTaken = false;
+        }
+        public override void AcceptQuest()
+        {
+            if (IsAlreadyTaken == true)
+            {
+                Console.WriteLine("이미 수락했거나 완료한 퀘스트입니다.");
+                Console.WriteLine("아무키나 누르면 퀘스트 보드로 다시 돌아갑니다");
+                Console.ReadKey(true);
+                QuestManager.Instance.LoadQuestScene();
+                return;
+            }
+            Player.Instance.LevelUpEvent += DoQuest;
+            Console.WriteLine($"'{QuestName}' 퀘스트 수락");
+            IsAlreadyTaken=true;
+            Console.ReadKey();
+            QuestManager.Instance.LoadQuestScene();
+        }
+        public override void DoQuest()
+        {
+            Console.WriteLine($" '{QuestName}' 퀘스트를 완료하였습니다!");
+            Player.Instance.LevelUpEvent -= DoQuest;
+            Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다");
+            Player.Instance.ChangeGold(QuestReward);
+            Console.ReadKey();
+            
+           
         }
     }
 
-
+    public class PotionUseQuest : Quest
+    {
+        public PotionUseQuest()
+        {
+            QuestName = "HP 포션을 사용해보자";
+            QuestReward = 300;
+            IsAlreadyTaken = false;
+        }
+        public override void AcceptQuest()
+        {
+            if(IsAlreadyTaken==true)
+            {
+                Console.WriteLine("이미 수락했거나 완료한 퀘스트입니다.");
+                Console.WriteLine("아무키나 누르면 퀘스트 보드로 다시 돌아갑니다");
+                Console.ReadKey(true);
+                QuestManager.Instance.LoadQuestScene();
+                return;
+            }
+            Player.Instance.UsePotionEvent += DoQuest;
+            Console.WriteLine($"'{QuestName}' 퀘스트 수락");
+            IsAlreadyTaken=true;
+            Console.ReadKey();
+            QuestManager.Instance.LoadQuestScene();
+        }
+        public override void DoQuest()
+        {
+            Console.WriteLine($" '{QuestName}' 퀘스트를 완료하였습니다!");
+            Player.Instance.UsePotionEvent -= DoQuest;
+            Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다");
+            Player.Instance.ChangeGold(QuestReward);
+            Console.ReadKey();
+            
+        }
+    }
 
 
 }

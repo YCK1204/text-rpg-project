@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ConsoleApp1;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -143,7 +144,8 @@ namespace TextRPG
             Console.WriteLine("1. 상태 보기"); // 1 입력시 Player 스크립트에 입력된 상태 호출
             Console.WriteLine("2. 인벤토리 보기"); //
             Console.WriteLine("3. 전투 시작"); // 전투 화면을 불러옴
-            Console.WriteLine("4. 게임 종료");
+            Console.WriteLine("4. 퀘스트 게시판");
+            Console.WriteLine("5. 게임 종료");
             Console.WriteLine();
             Console.Write("원하시는 행동을 입력해 주세요:"); // 1~3까지 숫자 입력 시 맞는 화면이 출력됨
             string input = Console.ReadLine(); //유저가 번호를 입력하는 곳
@@ -190,6 +192,9 @@ namespace TextRPG
 
                     break;
                 case "4":
+                    QuestManager.Instance.LoadQuestScene();
+                    break;
+                case "5":
                     Console.WriteLine("게임을 종료합니다.");
                     Environment.Exit(0);
                     break;
