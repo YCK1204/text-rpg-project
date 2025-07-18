@@ -5,6 +5,8 @@ namespace TextRPG.Utils.DataModel.Creature
 {
     public class CharacterClassData : Creature
     {
+        public int? ArmorItemId { get; set; } // 장비 아이템 ID
+        public int? WeaponItemId { get; set; } // 장비 아이템 ID
         public string ClassName { get; set; }
         public int[] SkillsId { get; set; } // 스킬 ID 배열
     }
@@ -15,14 +17,9 @@ namespace TextRPG.Utils.DataModel.Creature
     }
     public class Character : Creature
     {
-        public CharacterClass Class { get; set; }
-        public string ClassName { get; set; }
-        public int ItemDefense { get; set; }
-        public int ItemAttack { get; set; }
         public int Gold { get; set; }
         public int Exp { get; set; }
         public int NeedExp { get; set; }
-        public List<Skill.Skill> Skills { get; set; } = new List<Skill.Skill>();
         public Inventory Inventory { get; set; }
         public event Action PlayerDied;
     }
