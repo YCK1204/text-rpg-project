@@ -143,11 +143,12 @@ namespace TextRPG
             {
                 Exp -= neededExp;
                 Level += 1;
-                if(Level>=3)
+               
+                Console.WriteLine($"레벨업! 플레이어 레벨이{Level} 이 되었습니다");
+                if (Level >= 3)
                 {
                     LevelUpEvent?.Invoke();
                 }
-                Console.WriteLine($"레벨업! 플레이어 레벨이{Level} 이 되었습니다");
                 Console.ReadKey();
                 neededExp = Level * Level * 100;
             }
