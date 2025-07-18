@@ -53,7 +53,7 @@ namespace ConsoleApp1
                 }
                 else if (key == 3)
                 {
-                    //potionUse.AcceptQuest();
+                    potionUse.AcceptQuest();
                 }
                 else if (key == 4)
                 {
