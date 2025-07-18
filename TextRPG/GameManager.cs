@@ -16,22 +16,50 @@ namespace TextRPG
         public void StartGame()
         {
             Console.Clear();
+            Console.WriteLine("1. 캐릭터 생성");
+            Console.WriteLine("2. 기존 캐릭터 선택");
+            if (int.TryParse(Console.ReadLine(), out int key))
+            {
+                if (key == 1)
+                {
+                    CreateCharacter();
+                }
+                else if (key == 2)
+                {
+                    SelectCharacter();
+                }
+                else
+                {
+                    Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                    Console.ReadKey(true);
+                    StartGame();
+                }
+            }
+            run();
+        }
+        void CreateCharacter()
+        {
             Console.WriteLine(
 @"캐릭터 선택
 1. 전사
 2. 궁수
 3. 마법사
 4. 도적
-5. 해적");
+5. 해적
+0. 뒤로가기");
             try
             {
                 if (int.TryParse(Console.ReadLine(), out int key))
                 {
+                    if (key == 0)
+                    {
+                        StartGame();
+                        return;
+                    }
                     CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
-                    if (key < 1 || key > Data.DataManager.Instance.CharacterClassData.Count)
+                    if (key < 0 || key > Data.DataManager.Instance.CharacterClassData.Count)
                         throw new FormatException();
                     Player.Instance = new Player(data);
-                    run();
                 }
             }
             catch (FormatException ex)
@@ -41,7 +69,47 @@ namespace TextRPG
                 return;
             }
         }
-         void run()
+        void SelectCharacter()
+        {
+            if (DataManager.Instance.PlayerCharacters.Count == 0)
+            {
+                Console.WriteLine("저장된 캐릭터가 없습니다. 캐릭터를 생성해주세요.");
+                Console.ReadKey(true);
+                StartGame();
+                return;
+            }
+
+            Console.WriteLine("-----------저장된 캐릭터 목록---------");
+            var list = DataManager.Instance.PlayerCharacters.ToList();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var character = list[i].Value;
+                Console.WriteLine($"{i + 1}. {character.Name} - {DataManager.Instance.CharacterClassData[character.CharacterClassId].ClassName}");
+            }
+            Console.WriteLine("0. 뒤로가기");
+            try
+            {
+                if (int.TryParse(Console.ReadLine(), out int key))
+                {
+                    if (key == 0)
+                    {
+                        StartGame();
+                        return;
+                    }
+                    var data = Data.DataManager.Instance.PlayerCharacters[key - 1];
+                    if (key < 0 || key > Data.DataManager.Instance.CharacterClassData.Count)
+                        throw new FormatException();
+                    Player.Instance = new Player(data);
+                }
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine("다시 시도해주세요.");
+                SelectCharacter();
+                return;
+            }
+        }
+        void run()
         {
             var json = JsonConvert.SerializeObject(Player.Instance);
             Console.WriteLine("캐릭터 생성 완료: " + json);
@@ -78,7 +146,7 @@ namespace TextRPG
                     Console.Clear();
                     Console.WriteLine("몬스터와 전투를 시작합니다!");
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
-                    
+
                     List<Monster> battlefield = new List<Monster>();
                     Random rand2 = new Random();
                     int y = rand2.Next(1, 5);
@@ -90,7 +158,7 @@ namespace TextRPG
                         Random rand = new();
                         int x = rand.Next(1, 4);
                         battlefield.Add(DataManager.Instance.Monsters[x].DeepClone());//깊은 복사 얇은 복사 이 키워드가 문제를 해결하는 힌트
-                         //(DataManager.Instance.Monsters[x])  이거에 대한 복사본을 만들어 클래스로 만든객체가 통일화되는걸 막는다.(깊은복사검색)           
+                                                                                      //(DataManager.Instance.Monsters[x])  이거에 대한 복사본을 만들어 클래스로 만든객체가 통일화되는걸 막는다.(깊은복사검색)           
                     }
 
                     //여기다가 몬스터를 추가해야 한다.

@@ -70,7 +70,7 @@ namespace TextRPG
         public Player() { }
         public Player(CharacterClassData data) // 캐릭터 생성으로 인한 플레이어 생성
         {
-            //Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
+            Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
             CharacterClassId = data.Id;
             ClassName = data.ClassName;
             HP = data.MaxHP;
@@ -89,11 +89,11 @@ namespace TextRPG
             foreach (var skillId in data.SkillsId)
                 Skills.Add(DataManager.Instance.Skills[skillId]);
 
-            //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
+            DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
             //DataManager.Instance.SaveData(); // 데이터 저장
             this.UpdateTotalStat(TotalAttack, TotalDefense); // 총 공격력과 방어력 업데이트
         }
-        public Player(Player data) // 기존 캐릭터 데이터 로드로 인한 플레이어 생성
+        public Player(Character data) // 기존 캐릭터 데이터 로드로 인한 플레이어 생성
         {
             Id = data.Id;
             Name = data.Name;
@@ -103,7 +103,7 @@ namespace TextRPG
             NeedExp = data.NeedExp;
             ItemsId = data.ItemsId;
             CharacterClassId = data.CharacterClassId;
-            ClassName = data.ClassName;
+            ClassName = DataManager.Instance.CharacterClassData[data.CharacterClassId].Name;
             HP = data.HP;
             MaxHP = data.MaxHP;
             MP = data.MP;
@@ -125,6 +125,7 @@ namespace TextRPG
             foreach (var itemId in data.ItemsId)
                 Inventory.Items.Add(DataManager.Instance.Items[itemId]);
 
+            DataManager.Instance.PlayerCharacters[Id] = this;
             //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
         }
 
@@ -240,7 +241,7 @@ namespace TextRPG
                     }
                     break;
                 default:
-                    Console.WriteLine("알 수 없는 효과입니다.");
+                    HandleInputError();
                     break;
             }
         }
@@ -301,45 +302,6 @@ namespace TextRPG
         {
             Console.Clear();
             Console.WriteLine("------------------- Item List -------------------");
-            Console.WriteLine(
-@"0. 인벤토리 창 나가기
-1. 아이템 사용/장착
-2. 아이템 팔기");
-            foreach (var item in Inventory.Items)
-                item.Display();
-
-            try
-            {
-
-                if (int.TryParse(Console.ReadLine(), out int val))
-                {
-                    switch (val)
-                    {
-                        case 0:
-                            return; // 뒤로가기
-                        case 1:
-                            ShowInventoryAndUseItem();
-                            break;
-                        case 2:
-                            // 판매할 아이템 선택
-                            break;
-                        default:
-                            Console.WriteLine("잘못된 입력입니다.");
-                            Console.ReadKey(true);
-                            ShowInventory();
-                            break;
-                    }
-                }
-            }
-            catch (FormatException)
-            {
-                HandleInputError();
-            }
-        }
-        void ShowInventoryAndUseItem()
-        {
-            Console.Clear();
-            Console.WriteLine("------------------- Item List -------------------");
             for (int i = 0; i < Inventory.Items.Count; i++)
             {
                 string e = "";
@@ -349,6 +311,7 @@ namespace TextRPG
                 Inventory.Items[i].Display();
             }
             Console.WriteLine("0. 뒤로가기");
+            Console.WriteLine("아이템 번호 입력 시 사용/장착(해제) 합니다.");
 
             try
             {
@@ -393,7 +356,7 @@ namespace TextRPG
             {
                 HandleInputError();
             }
-            ShowInventoryAndUseItem();
+            ShowInventory();
             this.UpdateTotalStat(TotalAttack, TotalDefense); // 총 공격력과 방어력 업데이트
         }
         void HandleInputError()
