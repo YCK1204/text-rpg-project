@@ -26,9 +26,12 @@ namespace TextRPG
         }
         public void GamePlay() // 플레이어가 죽던가, 모든 적을 처치할 때까지 반복되는 메소드(전투 풀)
         {
+            Console.WriteLine($"{EnemyList[0].Name}들을 만났다!");
+            Console.WriteLine($"=================================================");
             order = NewOrder(); // 턴 순서 초기화
             while (true)
             {
+                
                 foreach (var creature in order)
                 {
                     if (IsEnemiesDead()) // 플레이어만 남았을 때
@@ -65,16 +68,10 @@ namespace TextRPG
                     }
                 }
                 order = NewOrder(); // 턴 순서 재설정
-                Console.WriteLine("턴 끝");
-                Console.ReadKey(true);
             }
-            Console.WriteLine("다른 턴 끝이거나 먼가 잘못됨");
-            Console.ReadKey(true);
         }
         public void MainScript() //플레이어 전투 시작용
         {
-            Console.WriteLine($"{EnemyList[0].Name}들을 만났다!");
-            Console.WriteLine($"=================================================");
             for (int i = 0; i < EnemyList.Count; i++)
             {
                 if (EnemyList[i].HP <= 0) // 적이 죽었을 경우
@@ -87,16 +84,21 @@ namespace TextRPG
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     RPGsys.ArrangePrint($"Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
-                    Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}");
+                    Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}   ATK:{EnemyList[i].TotalAttack}");
                 }
                 Console.ResetColor();
             }
+            Console.WriteLine("=================================================");
+            Console.WriteLine("플레이어 정보:");
+            Console.WriteLine($"{player.Name} ({player.ClassName})   ATK:{player.TotalAttack}");
+            Console.WriteLine($"HP: {player.HP}/{player.MaxHP}     |     MP:{player.MP}/{player.MaxMP}");
             Console.WriteLine("=================================================");
             Console.WriteLine("무엇을 할까?");
             Console.WriteLine("1. 공격");
             Console.WriteLine("2. 방어");
             Console.WriteLine("3. 스킬");
             Console.WriteLine("4. 아이템");
+            
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
                 switch (choice)
@@ -124,8 +126,6 @@ namespace TextRPG
                 Console.WriteLine("잘못된 입력입니다.(숫자가 아님)");
                 MainScript(); // 재귀 호출로 다시 입력 받기
             }
-            Console.WriteLine("메인 끝");
-            Console.ReadKey(true);
         }
         public void Attack()
         {
@@ -152,7 +152,13 @@ namespace TextRPG
             {
                 try
                 {
-                    int damage = player.CalculateDamage(0, EnemyList[--choice]);
+                    if(EnemyList[--choice].HP <= 0)
+                    {
+                        Console.WriteLine("이미 죽은 몬스터입니다. 다시 시도해주세요.");
+                        Attack();
+                        return;
+                    }
+                    int damage = player.CalculateDamage(0, EnemyList[choice]);
                     //if (damage == 0) // 오류 판정
                     //{
                     //    Attack(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
@@ -164,7 +170,7 @@ namespace TextRPG
                     EnemyList[choice].ChangeHP(-damage); // 데미지 적용
                     Console.WriteLine($"{EnemyList[choice].Name}의 HP: {oldHP} -> {(EnemyList[choice].HP > 0 ? EnemyList[choice].HP : "Dead")}");
                 }
-                catch (IndexOutOfRangeException) // 인덱스 에러바운딩
+                catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                 {
                     Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
                     Attack(); // 재귀 호출로 다시 입력 받기
@@ -175,14 +181,10 @@ namespace TextRPG
                 Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
                 Attack(); // 재귀 호출로 다시 입력 받기
             }
-            Console.WriteLine("공격 끝");
-            Console.ReadKey(true);
         }
         public void Defend()
         {
             Console.WriteLine($"{player.Name}은(는) 방어 자세를 취했다!");
-            Console.WriteLine($"{player.Name}의 방어력이 잠시 올랐다!");
-            Console.WriteLine($"{player.Name}의 MP가 조금 회복되었다!");
             player.ActivateSkill(1, player); // 방어 스킬 사용
         }
         public void UseSkill()
@@ -190,37 +192,55 @@ namespace TextRPG
             Console.WriteLine("사용할 스킬을 선택하세요.");
             for (int i = 0; i < player.Skills.Count-2; i++)
             {
-                RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i + 2].Name} | {player.Skills[i].Description}", 100);
+                RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i + 2].Name} |", 30);
+                Console.WriteLine($" {player.Skills[i + 2].Description}");
             }
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
                 try
                 {
-                    if (player.Skills[--choice].Type == Utils.SkillType.all)
+                    if (player.Skills[++choice].Type == Utils.SkillType.all)
                     {
                         foreach (var enemy in EnemyList)
                         {
                             int damage = player.ActivateSkill(player.Skills[choice].Id, enemy); // 스킬 사용
-                            if (damage == 0) // 오류 판정
+                            if (damage < 0) // 오류 판정
                             {
-                                UseSkill(); // 데미지가 0일 경우(오류가 났을 경우) 다시 스킬 입력 받기
+                                Console.WriteLine("알 수 없는 오류");
+                                UseSkill(); // 데미지가 0보다 작을 경우(오류가 났을 경우) 다시 스킬 입력 받기
                                 return;
                             }
                             int oldHP = enemy.HP; // 공격 전 HP 저장
                             Console.WriteLine($"{player.Name}의 {player.Skills[choice].Name}!");
                             Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!");
-                            Console.WriteLine($"{EnemyList[choice].Name}의 HP: {oldHP} -> {(EnemyList[choice].HP > 0 ? EnemyList[choice].HP : "Dead")}");
+                            Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
                         }
                     }
                     else if (player.Skills[choice].Type == Utils.SkillType.enemy)
                     {
+                        for (int i = 0; i < EnemyList.Count; i++)
+                        {
+                            if (EnemyList[i].HP <= 0) // 적이 죽었을 경우
+                            {
+                                Console.ForegroundColor = ConsoleColor.DarkGray;
+                                RPGsys.ArrangePrint($"{i + 1}. Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
+                                Console.WriteLine($"| Dead");
+                            }
+                            else // 적이 살아있을 경우
+                            {
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                RPGsys.ArrangePrint($"{i + 1}. Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
+                                Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}");
+                            }
+                            Console.ResetColor();
+                        }
                         Console.WriteLine("=================================================");
                         Console.WriteLine("누구를 공격할까?");
-                        if (int.TryParse(Console.ReadLine(), out int choice2))
+                        if (int.TryParse(Console.ReadLine(), out int choice2) && EnemyList[--choice2].HP > 0)
                         {
                             try
                             {
-                                int damage = player.ActivateSkill(player.Skills[--choice2].Id, EnemyList[choice2]);
+                                int damage = player.ActivateSkill(player.Skills[choice].Id, EnemyList[choice2]);
                                 if (damage == 0) // 오류 판정
                                 {
                                     Attack(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
@@ -229,15 +249,21 @@ namespace TextRPG
                                 int oldHP = EnemyList[choice2].HP; // 공격 전 HP 저장
                                 Console.WriteLine($"{player.Name}의 {player.Skills[choice].Name}!");
                                 Console.WriteLine($"{EnemyList[choice2].Name}에게 {damage}만큼의 데미지를 입혔다!");
-                                EnemyList[choice].ChangeHP(-damage); // 데미지 적용
+                                EnemyList[choice2].ChangeHP(-damage); // 데미지 적용
                                 Console.WriteLine($"{EnemyList[choice2].Name}의 HP: {oldHP} -> {(EnemyList[choice2].HP > 0 ? EnemyList[choice2].HP : "Dead")}");
                             }
-                            catch (IndexOutOfRangeException) // 인덱스 에러바운딩
+                            catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                             {
-                                Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                                Console.WriteLine("잘못된 입력1입니다. 다시 시도해주세요.");
                                 UseSkill(); // 재귀 호출로 다시 입력 받기
                                 return;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("이미 죽은 몬스터입니다. 다시 시도해주세요.");
+                            UseSkill(); // 재귀 호출로 다시 입력 받기
+                            return;
                         }
                     }
                     else if (player.Skills[choice].Type == Utils.SkillType.self)
@@ -256,15 +282,15 @@ namespace TextRPG
                         return;
                     }
                 }
-                catch (IndexOutOfRangeException) // 인덱스 에러바운딩
+                catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                 {
-                    Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                    Console.WriteLine("잘못된 입력2입니다. 다시 시도해주세요.");
                     UseSkill(); // 재귀 호출로 다시 입력 받기
                 }
             }
             else // 입력이 숫자가 아닐 경우
             {
-                Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
+                Console.WriteLine("잘못된 입력3입니다. 다시 시도해주세요.");
                 UseSkill(); // 재귀 호출로 다시 입력 받기
             }
         }

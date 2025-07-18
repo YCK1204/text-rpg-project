@@ -24,7 +24,7 @@ namespace TextRPG
         [JsonIgnore]
         public List<Skill> Skills { get; set; } = new List<Skill>();
         [JsonIgnore]
-        string ClassName { get; set; }
+        public string ClassName { get; set; }
         [JsonIgnore]
         Armor _armor;
         [JsonIgnore]
@@ -129,6 +129,25 @@ namespace TextRPG
             //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
         }
 
+        public override int CalculateDamage(int SkillId, Creature passive) // TotalAtack 적용을 위한 오버라이딩
+        {
+            Random rand = new Random();
+            TextRPG.Utils.DataModel.Skill.Skill skill = DataManager.Instance.Skills[SkillId];
+            
+            // 테스트용
+            //Console.WriteLine($"스킬 출력: {skill.Name}, {skill.Description}, mult:{skill.Coefficient}, damage:{TotalAttack} {(int)((TotalAttack * skill.Coefficient) / 100)} {-passive.TotalDefense}");
+            
+            // 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
+            int damage = (int)((this.TotalAttack * skill.Coefficient) / 100 - passive.Defense);
+            if (damage < 0) damage = 0; // 방어력에 의해 데미지가 0 이하로 떨어지지 않도록: 최소 데미지 = 0
+            // 치명타 확률 적용
+            if (rand.Next(0, 100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
+            {
+                damage = (int)(damage * 2); // 치명타 데미지: 2배
+            }
+            return damage; // 계산된 데미지 반환
+        }
+
         public int ActivateSkill(int skillId, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
             if (DataManager.Instance.Skills.ContainsKey(skillId) == false)
@@ -145,7 +164,9 @@ namespace TextRPG
             }
             this.MP -= skill.Cost;
             // 스킬 효과 적용
+
             int damage;
+
             if (skill.Effect != null)
             {
                 foreach (var i in skill.Effect)
@@ -170,6 +191,7 @@ namespace TextRPG
                     }
                 }
                 damage = CalculateDamage(skillId, passiver);
+                Console.WriteLine(damage);
                 passiver.ChangeHP(-damage);
             }
             else

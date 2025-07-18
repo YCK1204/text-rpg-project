@@ -26,8 +26,10 @@ namespace TextRPG.Utils.DataModel.Creature
 
         public Creature()
         { 
-            TotalAttack = Attack; TotalDefense = Defense;
-            originalAttack = Attack; originalDefense = Defense;
+            TotalAttack = Attack;
+            TotalDefense = Defense;
+            originalAttack = TotalAttack ; 
+            originalDefense = TotalDefense;
             this.StatusEffect[0] = new int[] { 0, 0 }; // 화상 효과: [0] 적용 턴, [1] 데미지
             this.StatusEffect[1] = new int[] { 0 }; // 중독 효과: [0] 적용 턴
             this.StatusEffect[2] = new int[] { 0 }; // 출혈 효과: [0] 적용 턴
@@ -81,13 +83,17 @@ namespace TextRPG.Utils.DataModel.Creature
             if (Defense < 0) Defense = 0;
             // 방어력 증감에 한도 없음. + 버프로 인해 증가한 수치 감소용 로직(또는 메소드) 필요
         }
-        public int CalculateDamage(int SkillId, Creature passive)
+        public virtual int CalculateDamage(int SkillId, Creature passive)
         { 
             Random rand = new Random();
             TextRPG.Utils.DataModel.Skill.Skill skill = DataManager.Instance.Skills[SkillId];
+            
+            // 테스트용
+            //Console.WriteLine($"스킬 출력: {skill.Name}, {skill.Description}, mult:{skill.Coefficient}, damage:{TotalAttack} {(int)((TotalAttack * skill.Coefficient) / 100)} {-passive.TotalDefense}");
+            
             // 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
-            int damage = (int)((TotalAttack * skill.Coefficient)/100 - passive.TotalDefense);
-            if (damage < 0) damage = 1; // 방어력에 의해 데미지가 1 이하로 떨어지지 않도록: 최소 데미지 = 1
+            int damage = (int)((this.Attack * skill.Coefficient)/100 - passive.TotalDefense);
+            if (damage < 0) damage = 0; // 방어력에 의해 데미지가 0 이하로 떨어지지 않도록: 최소 데미지 = 0
             // 치명타 확률 적용
             if (rand.Next(0, 100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
             {
