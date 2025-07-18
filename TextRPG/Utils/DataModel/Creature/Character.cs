@@ -15,25 +15,20 @@ namespace TextRPG.Utils.DataModel.Creature
     }
     public class Character : Creature
     {
-        public CharacterClass Class { get; set; }
-        public string ClassName { get; set; }
-        public int ItemDefense { get; set; }
-        public int ItemAttack { get; set; }
+        public int? ArmorItemId { get; set; } // 장비 아이템 ID
+        public int? WeaponItemId { get; set; } // 장비 아이템 ID
         public int Gold { get; set; }
         public int Exp { get; set; }
         public int NeedExp { get; set; }
-        public List<Skill.Skill> Skills { get; set; } = new List<Skill.Skill>();
-        public Inventory Inventory { get; set; }
+        public List<int> ItemsId { get; set; } = new List<int>(); // 아이템 ID 배열
+        public int CharacterClassId { get; set; } // 캐릭터 클래스 ID
+        [JsonIgnore]
+        public Inventory Inventory { get; set; } = new Inventory();
         public event Action PlayerDied;
-    }
-    public struct Characters
-    {
-        [JsonProperty("Characters")]
-        public List<Character> _Characters { get; set; }
     }
     public struct PlayerCharacters
     {
-        [JsonProperty("PlayerCharacters")]
+        [JsonProperty("Characters")]
         public List<Character> _PlayerCharacters { get; set; }
     }
 }

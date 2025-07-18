@@ -4,77 +4,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Utils.DataModel.Creature;
 
 namespace TextRPG.Utils.DataModel.Item
 {
     public interface IUsable
     {
-        void Use();
-        void Use<T>(T target) where T : GameObject;
     }
     public interface IEquippable
     {
-        bool Equipped { get; set; }
-        void Equip();
-        void Unequip();
     }
-    public class Potion : Item, IUsable
+    public abstract class Potion : Item, IUsable
     {
         public int Heal { get; set; }
+    }
+    public class HpPotion : Potion
+    {
         public override void Display()
         {
-            Console.WriteLine($"{Name.PadRight(10)} | 회복력: {Heal.ToString().PadRight(5)} | {Description}");
+            Console.WriteLine($"{Name.PadRight(20)} | 회복력: {Heal.ToString().PadRight(5)} | {Description}");
         }
-        public void Use()
+    }
+    public class MpPotion : Potion
+    {
+        public override void Display()
         {
-            //Math.Clamp(Player.HP + Heal, 0, Player.MaxHP);
-        }
-
-        public void Use<T>(T target) where T : GameObject
-        {
-            // target 체력 회복
+            Console.WriteLine($"{Name.PadRight(20)} | 회복력: {Heal.ToString().PadRight(5)} | {Description}");
         }
     }
     public class Armor : Item, IEquippable
     {
         public int Defense { get; set; }
-        public bool Equipped { get; set; }
         public override void Display()
         {
-            Console.WriteLine($"{Name.PadRight(10)} | 방어력: {Defense.ToString().PadRight(5)} | {Description}");
-        }
-
-        public void Equip()
-        {
-            //Player.UnEquipItemArmor();
-            //Player.ItemDefense += Defense;
-            Equipped = true;
-        }
-
-        public void Unequip()
-        {
-            //Player.ItemDefense -= Defense;
-            Equipped = false;
+            Console.WriteLine($"{Name.PadRight(20)} | 방어력: {Defense.ToString().PadRight(5)} | {Description}");
         }
     }
     public class Weapon : Item, IEquippable
     {
         public int Attack { get; set; }
-        public bool Equipped { get; set; }
         public override void Display()
         {
-            Console.WriteLine($"{Name.PadRight(10)} | 방어력: {Attack.ToString().PadRight(5)} | {Description}");
-        }
-        public void Equip()
-        {
-            //Player.UnEquipItemWeapon();
-            //Player.ItemAttack += Attack;
-            Equipped = true;
-        }
-        public void Unequip()
-        {
-            //Player.ItemAttack -= Attack;s
-            Equipped = false;
+            Console.WriteLine($"{Name.PadRight(20)} | 공격력: {Attack.ToString().PadRight(5)} | {Description}");
         }
     }
     public abstract class Item : GameObject

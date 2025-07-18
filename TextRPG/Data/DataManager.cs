@@ -16,7 +16,7 @@ namespace TextRPG.Data
         const string MonsterPath = "Monsters.json";
         const string ItemPath = "Items.json";
         const string SkillPath = "Skills.json";
-        const string PlayerPath = "Player.json";
+        const string PlayerPath = "PlayerCharacters.json";
         const string CharacterClassDataPath = "CharacterClassData.json";
         private DataManager() { }
 
@@ -25,6 +25,7 @@ namespace TextRPG.Data
         public Dictionary<int, Item> Items = new Dictionary<int, Item>();
         public Dictionary<int, Skill> Skills = new Dictionary<int, Skill>();
         public Dictionary<int, CharacterClassData> CharacterClassData = new Dictionary<int, CharacterClassData>();
+        public Dictionary<int, Character> PlayerCharacters = new Dictionary<int, Character>();
         Dictionary<int, T2> MakeDict<T1, T2>(string path, Func<T1, Dictionary<int, T2>> func)
         {
             string json = File.ReadAllText(path);
@@ -88,6 +89,13 @@ namespace TextRPG.Data
                 return t1._CharactersClassData.ToDictionary(c => c.Id, c => c);
             });
             #endregion
+
+            #region PlayerCharacters
+            PlayerCharacters = MakeDict<PlayerCharacters, Character>($"{JsonPath}/{PlayerPath}", (t1) =>
+            {
+                return t1._PlayerCharacters.ToDictionary(c => c.Id, c => c);
+            });
+            #endregion
         }
         public Item GenRandomLoot(ItemRarity rarity)
         {
@@ -100,7 +108,15 @@ namespace TextRPG.Data
         }
         public void SaveData()
         {
-
+            string json = JsonConvert.SerializeObject(PlayerCharacters.Values);
+            Console.WriteLine(json);
+            while (true) ;
+        }
+        public int GenerateLastId()
+        {
+            if (PlayerCharacters.Count == 0)
+                return 1;
+            return PlayerCharacters.Keys.Max() + 1;
         }
     }
 }

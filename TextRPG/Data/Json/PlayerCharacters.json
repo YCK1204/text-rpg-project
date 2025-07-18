@@ -1,0 +1,25 @@
+{
+  "Characters": [
+    {
+      "ArmorItemId": null,
+      "WeaponItemId": null,
+      "Gold": 0,
+      "Exp": 0,
+      "NeedExp": 0,
+      "ItemsId": [],
+      "CharacterClassId": 1,
+      "HP": 100,
+      "MaxHP": 100,
+      "MP": 100,
+      "MaxMP": 100,
+      "Attack": 10,
+      "Defense": 5,
+      "Level": 0,
+      "Speed": 5,
+      "StatusEffect": [ null, null, null, null, null, null, null ],
+      "BuffDebuff": [ null, null, null ],
+      "Id": 0,
+      "Name": null
+    }
+  ]
+}

@@ -50,6 +50,17 @@ namespace TextRPG
                         EnemyTurn(enemy); // 몬스터 턴 메소드 호출
                     }
                 }
+                foreach (var creature in order) // 턴이 끝난 후 상태이상 효과 적용
+                {
+                    if (creature.StatusEffect != null)
+                    {
+                        for (int i = 0; i < creature.StatusEffect.Length; i++)
+                        {
+                            if (creature.StatusEffect[i][0] == 0) { continue; } // 상태이상 효과가 없는 경우는 무시
+                            creature.ApplyStatusEffect(i + 1);
+                        }
+                    }
+                }
                 order = NewOrder(); // 턴 순서 재설정
             }
         }
@@ -115,7 +126,7 @@ namespace TextRPG
                 if (order[i] is not Player)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    RPGsys.ArrangePrint($"{i+1}. Lv.{order[i].Level} {order[i].Name}", 25);
+                    RPGsys.ArrangePrint($"{i + 1}. Lv.{order[i].Level} {order[i].Name}", 25);
                     Console.WriteLine($"| HP:{order[i].HP}/{order[i].MaxHP}");
                 }
                 else
@@ -142,7 +153,7 @@ namespace TextRPG
                     Console.WriteLine($"{player.Name}의 공격!");
                     Console.WriteLine($"{EnemyList[choice].Name}에게 {damage}만큼의 데미지를 입혔다!");
                     EnemyList[choice].ChangeHP(-damage); // 데미지 적용
-                    Console.WriteLine($"{EnemyList[choice].Name}의 HP: {oldHP} -> {(EnemyList[choice].HP>0 ? EnemyList[choice].HP : "Dead")}");
+                    Console.WriteLine($"{EnemyList[choice].Name}의 HP: {oldHP} -> {(EnemyList[choice].HP > 0 ? EnemyList[choice].HP : "Dead")}");
                 }
                 catch (IndexOutOfRangeException) // 인덱스 에러바운딩
                 {
@@ -164,11 +175,11 @@ namespace TextRPG
             player.ActivateSkill(1, player); // 방어 스킬 사용
         }
         public void UseSkill()
-                    {
+        {
             Console.WriteLine("사용할 스킬을 선택하세요.");
             for (int i = 0; i < player.Skills.Count; i++)
             {
-                RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i+2].Name} | {player.Skills[i].Description}", 100);
+                RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i + 2].Name} | {player.Skills[i].Description}", 100);
             }
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
@@ -229,7 +240,7 @@ namespace TextRPG
                         }
                     }
                     else
-                                            {
+                    {
                         Console.WriteLine("잘못된 스킬 타입입니다."); // 잘못된 스킬 타입일 경우의 에러 메세지
                         return;
                     }
@@ -267,10 +278,10 @@ namespace TextRPG
             // 여기에 죽은 몬스터의 카운팅 이벤트 코드 추가 가능
             //
             int skillId = new Random().Next(16, 24); // 랜덤으로 스킬 선택
-            if (skillId > 21)) { skillId -= 22; } // 스킬 ID 범위 조정
-            
+            if (skillId > 21) { skillId -= 22; } // 스킬 ID 범위 조정
+
             Skill skill = DataManager.Instance.Skills[skillId];
-            int damage = enemy.CalculateDamage(skillId, player);    
+            int damage = enemy.CalculateDamage(skillId, player);
             int oldHP = player.HP; // 공격 전 플레이어 HP 저장
             Console.WriteLine($"{enemy.Name}의 {skill.Name}!");
             Console.WriteLine($"{player.Name}에게 {damage}만큼의 데미지를 입혔다!");
@@ -309,27 +320,27 @@ namespace TextRPG
     }
 
     internal class RPGsys
-{
-    public static void ArrangePrint(string text, int columnWidth) // 문자열 출력 길이 통합용 메소드
     {
-        int visualLength = 0;
-
-        foreach (char c in text)
+        public static void ArrangePrint(string text, int columnWidth) // 문자열 출력 길이 통합용 메소드
         {
-            if (char.IsDigit(c) || char.IsLetter(c) || char.IsPunctuation(c) || char.IsWhiteSpace(c))
-                visualLength += 1;
-            else if (c >= '\uAC00' && c <= '\uD7AF') // 유니코드 한글 범위
-                visualLength += 2;
-            else
-                visualLength += 1; // 기타 문자
+            int visualLength = 0;
+
+            foreach (char c in text)
+            {
+                if (char.IsDigit(c) || char.IsLetter(c) || char.IsPunctuation(c) || char.IsWhiteSpace(c))
+                    visualLength += 1;
+                else if (c >= '\uAC00' && c <= '\uD7AF') // 유니코드 한글 범위
+                    visualLength += 2;
+                else
+                    visualLength += 1; // 기타 문자
+            }
+
+            int padding = columnWidth - visualLength;
+            if (padding < 0) padding = 0;
+
+            Console.Write(text);
+            Console.Write(new string(' ', padding));
         }
 
-        int padding = columnWidth - visualLength;
-        if (padding < 0) padding = 0;
-
-        Console.Write(text);
-        Console.Write(new string(' ', padding));
     }
-
-}
 }
