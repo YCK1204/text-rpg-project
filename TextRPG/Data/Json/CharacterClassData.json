@@ -3,19 +3,19 @@
     {
       "Id": 0,
       "ClassName": "전사",
-      "MaxHP": 100,
-      "MaxMP": 100,
+      "MaxHP": 120,
+      "MaxMP": 120,
       "Attack": 10,
-      "Defense": 5,
+      "Defense": 8,
       "Speed": 5,
       "SkillsId": [ 0, 1, 2, 3, 4, 25 ]
     },
     {
       "Id": 1,
       "ClassName": "궁수",
-      "MaxHP": 10000,
-      "MaxMP": 10000,
-      "Attack": 10,
+      "MaxHP": 100,
+      "MaxMP": 120,
+      "Attack": 12,
       "Defense": 5,
       "Speed": 5,
       "SkillsId": [ 0, 1, 5, 6, 7, 28 ]
@@ -23,30 +23,30 @@
     {
       "Id": 2,
       "ClassName": "마법사",
-      "MaxHP": 100,
-      "MaxMP": 100,
-      "Attack": 10,
-      "Defense": 5,
+      "MaxHP": 80,
+      "MaxMP": 200,
+      "Attack": 14,
+      "Defense": 4,
       "Speed": 5,
       "SkillsId": [ 0, 1, 8, 9, 10, 26 ]
     },
     {
       "Id": 3,
       "ClassName": "도적",
-      "MaxHP": 10000,
-      "MaxMP": 10000,
-      "Attack": 10,
-      "Defense": 5,
+      "MaxHP": 90,
+      "MaxMP": 150,
+      "Attack": 15,
+      "Defense": 3,
       "Speed": 5,
       "SkillsId": [ 0, 1, 11, 12, 13, 27 ]
     },
     {
       "Id": 4,
       "ClassName": "해적",
-      "MaxHP": 10000,
-      "MaxMP": 10000,
-      "Attack": 10,
-      "Defense": 5,
+      "MaxHP": 100,
+      "MaxMP": 100,
+      "Attack": 12,
+      "Defense": 7,
       "Speed": 5,
       "SkillsId": [ 0, 1, 14, 15, 16, 24 ]
     }
