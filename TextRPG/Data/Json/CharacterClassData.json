@@ -13,8 +13,8 @@
     {
       "Id": 1,
       "ClassName": "궁수",
-      "MaxHP": 100,
-      "MaxMP": 100,
+      "MaxHP": 10000,
+      "MaxMP": 10000,
       "Attack": 10,
       "Defense": 5,
       "Speed": 5,

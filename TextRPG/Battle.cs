@@ -155,7 +155,7 @@ namespace TextRPG
                     if(EnemyList[--choice].HP <= 0)
                     {
                         Console.WriteLine("이미 죽은 몬스터입니다. 다시 시도해주세요.");
-                        Attack();
+                        MainScript();
                         return;
                     }
                     int damage = player.CalculateDamage(0, EnemyList[choice]);
@@ -173,13 +173,13 @@ namespace TextRPG
                 catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                 {
                     Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
-                    Attack(); // 재귀 호출로 다시 입력 받기
+                    MainScript(); // 재귀 호출로 다시 입력 받기
                 }
             }
             else // 입력이 숫자가 아닐 경우
             {
                 Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
-                Attack(); // 재귀 호출로 다시 입력 받기
+                MainScript(); // 재귀 호출로 다시 입력 받기
             }
         }
         public void Defend()
@@ -207,7 +207,7 @@ namespace TextRPG
                             if (damage < 0) // 오류 판정
                             {
                                 Console.WriteLine("알 수 없는 오류");
-                                UseSkill(); // 데미지가 0보다 작을 경우(오류가 났을 경우) 다시 스킬 입력 받기
+                                MainScript(); // 데미지가 0보다 작을 경우(오류가 났을 경우) 다시 스킬 입력 받기
                                 return;
                             }
                             int oldHP = enemy.HP; // 공격 전 HP 저장
@@ -243,7 +243,7 @@ namespace TextRPG
                                 int damage = player.ActivateSkill(player.Skills[choice].Id, EnemyList[choice2]);
                                 if (damage == 0) // 오류 판정
                                 {
-                                    Attack(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
+                                    MainScript(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
                                     return;
                                 }
                                 int oldHP = EnemyList[choice2].HP; // 공격 전 HP 저장
@@ -255,14 +255,14 @@ namespace TextRPG
                             catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                             {
                                 Console.WriteLine("잘못된 입력1입니다. 다시 시도해주세요.");
-                                UseSkill(); // 재귀 호출로 다시 입력 받기
+                                MainScript(); // 재귀 호출로 다시 입력 받기
                                 return;
                             }
                         }
                         else
                         {
                             Console.WriteLine("이미 죽은 몬스터입니다. 다시 시도해주세요.");
-                            UseSkill(); // 재귀 호출로 다시 입력 받기
+                            MainScript(); // 재귀 호출로 다시 입력 받기
                             return;
                         }
                     }
@@ -272,7 +272,7 @@ namespace TextRPG
                         int damage = player.ActivateSkill(player.Skills[choice].Id, player); // 스킬 사용
                         if (damage == 0) // 오류 판정
                         {
-                            UseSkill(); // 데미지가 0일 경우(오류가 났을 경우) 다시 스킬 입력 받기
+                            MainScript(); // 데미지가 0일 경우(오류가 났을 경우) 다시 스킬 입력 받기
                             return;
                         }
                     }
@@ -285,13 +285,13 @@ namespace TextRPG
                 catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                 {
                     Console.WriteLine("잘못된 입력2입니다. 다시 시도해주세요.");
-                    UseSkill(); // 재귀 호출로 다시 입력 받기
+                    MainScript(); // 재귀 호출로 다시 입력 받기
                 }
             }
             else // 입력이 숫자가 아닐 경우
             {
                 Console.WriteLine("잘못된 입력3입니다. 다시 시도해주세요.");
-                UseSkill(); // 재귀 호출로 다시 입력 받기
+                MainScript(); // 재귀 호출로 다시 입력 받기
             }
         }
         public void UseItem()

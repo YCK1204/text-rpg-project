@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TextRPG;
@@ -107,23 +108,30 @@ namespace TextRPG.Utils.DataModel.Creature
             {
                 
             }
-            // 버프/디버프 변경 로직
-            switch (buffType)
+            try
             {
-                case 1: // 공격력 버프
-                    BuffDebuff[buffType-1][0] = percent; //
-                    BuffDebuff[buffType-1][1] = turn; // 버프 지속 턴
-                    return 1;
-                case 2: // 방어력 버프
-                    BuffDebuff[buffType - 1][0] += percent; // 
-                    BuffDebuff[buffType - 1][1] = turn; // 버프 지속 턴
-                    return 2;
-                case 3: // 치명타 확률 버프
-                    BuffDebuff[buffType - 1][0] += percent; //
-                    BuffDebuff[buffType - 1][1] = turn; // 버프 지속 턴
-                    return 5;
-                default:
-                    throw new ArgumentException("Unknown buff type");
+                // 버프/디버프 변경 로직
+                switch (buffType)
+                {
+                    case 1: // 공격력 버프
+                        BuffDebuff[buffType - 1][0] = percent; //
+                        BuffDebuff[buffType - 1][1] = turn; // 버프 지속 턴
+                        return 1;
+                    case 2: // 방어력 버프
+                        BuffDebuff[buffType - 1][0] += percent; // 
+                        BuffDebuff[buffType - 1][1] = turn; // 버프 지속 턴
+                        return 2;
+                    case 5: // 치명타 확률 버프
+                        BuffDebuff[buffType - 3][0] += percent; //
+                        BuffDebuff[buffType - 3][1] = turn; // 버프 지속 턴
+                        return 5;
+                    default:
+                        throw new ArgumentException("Unknown buff type");
+                }
+            }
+            catch (ArgumentException)
+            {
+                return 0; // 잘못된 버프/디버프 타입일 경우 0 반환
             }
         }
         public int[] ApplyBuffDebuff() // 버프/디버프 적용 및 턴계산 메소드
