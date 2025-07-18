@@ -61,11 +61,6 @@ namespace TextRPG.Data
                 }
                 return t1._Monsters.ToDictionary(m => m.Id, m => m);
             });
-            foreach (var monster in Monsters)
-            {
-                Console.WriteLine($"Monster ID: {monster.Key}, Name: {monster.Value.Name}, Health: {monster.Value.HP}");
-            }
-            //MonsterLoots = MakeDict<Items, Item>($"{JsonPath}/{MonsterPath}", (t1) => { return t1._Items.ToDictionary(m => m.Id, m => m); });
             #endregion
 
             #region Item
@@ -110,8 +105,6 @@ namespace TextRPG.Data
         public void SaveData()
         {
             string json = $"{{\"Characters\":{JsonConvert.SerializeObject(PlayerCharacters.Values)}}}";
-            Console.WriteLine(json);
-            while (true) ;
         }
         public int GenerateLastId()
         {

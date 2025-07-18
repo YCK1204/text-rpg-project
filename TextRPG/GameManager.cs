@@ -59,6 +59,8 @@ namespace TextRPG
                     CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
                     if (key < 0 || key > Data.DataManager.Instance.CharacterClassData.Count)
                         throw new FormatException();
+                    string name = SetCharacterName();
+                    data.Name = name;
                     Player.Instance = new Player(data);
                 }
             }
@@ -68,6 +70,18 @@ namespace TextRPG
                 StartGame();
                 return;
             }
+        }
+        string SetCharacterName()
+        {
+            Console.Clear();
+            Console.Write("캐릭터 이름을 입력해주세요: ");
+            string name = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("이름은 비워둘 수 없습니다. 다시 입력해주세요.");
+                return SetCharacterName();
+            }
+            return name;
         }
         void SelectCharacter()
         {
@@ -112,7 +126,6 @@ namespace TextRPG
         void run()
         {
             var json = JsonConvert.SerializeObject(Player.Instance);
-            Console.WriteLine("캐릭터 생성 완료: " + json);
             //battle = new Battle(order);
             while (true)
             {

@@ -12,13 +12,7 @@ namespace TextRPG.Utils.DataModel.Item
         public void RemoveItem(Item item)
         {
             if (Items.Contains(item))
-            {
                 Items.Remove(item);
-            }
-            else
-            {
-                Console.WriteLine("아이템이 인벤토리에 없습니다.");
-            }
         }
     }
 }
