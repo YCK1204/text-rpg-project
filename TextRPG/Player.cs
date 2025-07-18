@@ -141,6 +141,8 @@ namespace TextRPG
             {
                 Exp -= neededExp;
                 Level += 1;
+                Console.WriteLine($"레벨업! 플레이어 레벨이{Level} 이 되었습니다");
+                Console.ReadKey();
             }
         }
 
