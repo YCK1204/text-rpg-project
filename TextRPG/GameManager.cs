@@ -75,11 +75,6 @@ namespace TextRPG
                     Player.Instance.ShowInventory(); // 플레이어의 인벤토리를 보여주는 화면
                     break;
                 case "3":
-                    Battle battle = new Battle(new List<Monster>()
-                    {
-                        DataManager.Instance.Monsters[1].DeepClone(), // 몬스터 1번을 불러옴
-                    });
-                    battle.GamePlay();
                     Console.Clear();
                     Console.WriteLine("몬스터와 전투를 시작합니다!");
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
@@ -93,7 +88,7 @@ namespace TextRPG
                     for (int i = 0; i < y; i++)
                     {
                         Random rand = new();
-                        int x = rand.Next(0, 3);
+                        int x = rand.Next(1, 4);
                         battlefield.Add(DataManager.Instance.Monsters[x]);//깊은 복사 얇은 복사 이 키워드가 문제를 해결하는 힌트
                          //(DataManager.Instance.Monsters[x])  이거에 대한 복사본을 만들어 클래스로 만든객체가 통일화되는걸 막는다.(깊은복사검색)           
                     }
