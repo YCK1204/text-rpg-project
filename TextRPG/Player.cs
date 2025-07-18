@@ -137,13 +137,15 @@ namespace TextRPG
         private void LevelUp(int levelexp)
         {
             int neededExp = Level * Level * 100;
-            if(Exp>=neededExp)
+            while (Exp >= neededExp)
             {
                 Exp -= neededExp;
                 Level += 1;
                 Console.WriteLine($"레벨업! 플레이어 레벨이{Level} 이 되었습니다");
                 Console.ReadKey();
             }
+
+
         }
 
         public void ChangeGold(int gold)
