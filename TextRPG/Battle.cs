@@ -34,16 +34,19 @@ namespace TextRPG
                     if (IsEnemiesDead()) // 플레이어만 남았을 때
                     {
                         Console.WriteLine("승리!");
+                        Console.ReadKey(true);
                         return;
                     }
                     if (player.HP <= 0) // 플레이어가 죽었을 때
                     {
                         Console.WriteLine("플레이어가 죽었습니다. 게임 오버.");
+                        Console.ReadKey(true);
                         return;
                     }
                     if (creature is Player) // 플레이어 턴
                     {
                         MainScript(); // 플레이어 전투 시작용 메소드 호출
+                        Console.ReadKey(true);
                     }
                     else if (creature is Monster enemy) // 몬스터 턴
                     {
@@ -62,25 +65,29 @@ namespace TextRPG
                     }
                 }
                 order = NewOrder(); // 턴 순서 재설정
+                Console.WriteLine("턴 끝");
+                Console.ReadKey(true);
             }
+            Console.WriteLine("다른 턴 끝이거나 먼가 잘못됨");
+            Console.ReadKey(true);
         }
         public void MainScript() //플레이어 전투 시작용
         {
-            Console.WriteLine($"{order[0].Name}들을 만났다!");
+            Console.WriteLine($"{EnemyList[0].Name}들을 만났다!");
             Console.WriteLine($"=================================================");
-            for (int i = 0; i < order.Count; i++)
+            for (int i = 0; i < EnemyList.Count; i++)
             {
-                if (order[i] is not Player)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    RPGsys.ArrangePrint($"Lv.{order[i].Level} {order[i].Name}", 25);
-                    Console.WriteLine($"| HP:{order[i].HP}/{order[i].MaxHP}");
-                }
-                else
+                if (EnemyList[i].HP <= 0) // 적이 죽었을 경우
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    RPGsys.ArrangePrint($"Lv.{order[i].Level} {order[i].Name}", 25);
+                    RPGsys.ArrangePrint($"Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
                     Console.WriteLine($"| Dead");
+                }
+                else // 적이 살아있을 경우
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    RPGsys.ArrangePrint($"Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
+                    Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}");
                 }
                 Console.ResetColor();
             }
@@ -107,33 +114,35 @@ namespace TextRPG
                         UseItem();
                         break;
                     default:
-                        Console.WriteLine("잘못된 입력입니다."); // 잘못된 입력 범위
+                        Console.WriteLine("잘못된 입력입니다.(숫자 범위 벗어남)"); // 잘못된 입력 범위
                         MainScript(); // 재귀 호출로 다시 입력 받기
                         break;
                 }
             }
             else // 입력이 숫자가 아닐 경우
             {
-                Console.WriteLine("잘못된 입력입니다.");
+                Console.WriteLine("잘못된 입력입니다.(숫자가 아님)");
                 MainScript(); // 재귀 호출로 다시 입력 받기
             }
+            Console.WriteLine("메인 끝");
+            Console.ReadKey(true);
         }
         public void Attack()
         {
             Console.WriteLine($"=================================================");
-            for (int i = 0; i < order.Count; i++)
+            for (int i = 0; i < EnemyList.Count; i++)
             {
-                if (order[i] is not Player)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    RPGsys.ArrangePrint($"{i + 1}. Lv.{order[i].Level} {order[i].Name}", 25);
-                    Console.WriteLine($"| HP:{order[i].HP}/{order[i].MaxHP}");
-                }
-                else
+                if (EnemyList[i].HP <= 0) // 적이 죽었을 경우
                 {
                     Console.ForegroundColor = ConsoleColor.DarkGray;
-                    RPGsys.ArrangePrint($"Lv.{order[i].Level} {order[i].Name}", 25);
+                    RPGsys.ArrangePrint($"{i + 1}. Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
                     Console.WriteLine($"| Dead");
+                }
+                else // 적이 살아있을 경우
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    RPGsys.ArrangePrint($"{i+1}. Lv.{EnemyList[i].Level} {EnemyList[i].Name}", 25);
+                    Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}");
                 }
                 Console.ResetColor();
             }
@@ -144,11 +153,11 @@ namespace TextRPG
                 try
                 {
                     int damage = player.CalculateDamage(0, EnemyList[--choice]);
-                    if (damage == 0) // 오류 판정
-                    {
-                        Attack(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
-                        return;
-                    }
+                    //if (damage == 0) // 오류 판정
+                    //{
+                    //    Attack(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
+                    //    return;
+                    //}
                     int oldHP = EnemyList[choice].HP; // 공격 전 HP 저장
                     Console.WriteLine($"{player.Name}의 공격!");
                     Console.WriteLine($"{EnemyList[choice].Name}에게 {damage}만큼의 데미지를 입혔다!");
@@ -166,6 +175,8 @@ namespace TextRPG
                 Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
                 Attack(); // 재귀 호출로 다시 입력 받기
             }
+            Console.WriteLine("공격 끝");
+            Console.ReadKey(true);
         }
         public void Defend()
         {
@@ -280,6 +291,7 @@ namespace TextRPG
             Console.WriteLine($"{player.Name}에게 {damage}만큼의 데미지를 입혔다!");
             player.ChangeHP(-damage); // 데미지 적용
             Console.WriteLine($"{player.Name}의 HP: {oldHP} -> {(player.HP > 0 ? player.HP : "Dead")}");
+            Console.ReadKey(true);
         }
         public int SpeedDice(Creature obj) // 속도값 판정: (보정 = 최소: +0 최대 +5)
         {
