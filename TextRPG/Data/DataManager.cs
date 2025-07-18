@@ -109,7 +109,7 @@ namespace TextRPG.Data
         }
         public void SaveData()
         {
-            string json = JsonConvert.SerializeObject(PlayerCharacters.Values);
+            string json = $"{{\"Characters\":{JsonConvert.SerializeObject(PlayerCharacters.Values)}}}";
             Console.WriteLine(json);
             while (true) ;
         }

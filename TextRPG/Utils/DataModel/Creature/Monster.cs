@@ -19,6 +19,11 @@ namespace TextRPG.Utils.DataModel.Creature
         public int[] RandomLevelRange { get; set; }
         public MonsterReward Reward { get; set; }
         public event Action MonsterDied;
+        public Monster DeepClone()
+        {
+            var json = JsonConvert.SerializeObject(this);
+            return JsonConvert.DeserializeObject<Monster>(json);
+        }
     }
     public struct Monsters
     {

@@ -6,8 +6,45 @@
       "Gold": 0,
       "Exp": 0,
       "NeedExp": 0,
-      "ItemsId": [],
+      "ItemsId": [1],
       "CharacterClassId": 1,
+      "HP": 100,
+      "MaxHP": 100,
+      "MP": 100,
+      "MaxMP": 100,
+      "Attack": 10,
+      "TotalAttack": 0,
+      "Defense": 5,
+      "TotalDefense": 0,
+      "Level": 0,
+      "Speed": 5,
+      "StatusEffect": [
+        [ 0, 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ]
+      ],
+      "BuffDebuff": [
+        [ 0, 0 ],
+        [ 0, 0 ],
+        [ 0, 0 ]
+      ],
+      "Id": 0,
+      "Name": null
+    },
+    {
+      "TotalAttack": 0,
+      "TotalDefense": 0,
+      "ArmorItemId": null,
+      "WeaponItemId": null,
+      "Gold": 0,
+      "Exp": 0,
+      "NeedExp": 0,
+      "ItemsId": [],
+      "CharacterClassId": 0,
       "HP": 100,
       "MaxHP": 100,
       "MP": 100,
@@ -16,9 +53,21 @@
       "Defense": 5,
       "Level": 0,
       "Speed": 5,
-      "StatusEffect": [ null, null, null, null, null, null, null ],
-      "BuffDebuff": [ null, null, null ],
-      "Id": 0,
+      "StatusEffect": [
+        [ 0, 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ],
+        [ 0 ]
+      ],
+      "BuffDebuff": [
+        [ 0, 0 ],
+        [ 0, 0 ],
+        [ 0, 0 ]
+      ],
+      "Id": 1,
       "Name": null
     }
   ]
