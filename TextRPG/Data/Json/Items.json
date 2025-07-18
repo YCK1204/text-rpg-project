@@ -1,7 +1,7 @@
 {
   "Items": [
     {
-      "$type": "TextRPG.Utils.DataModel.Item.Potion, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.HpPotion, TextRPG",
       "Id": 1,
       "Name": "HP포션",
       "Rarity": "Common",
@@ -10,7 +10,7 @@
       "Heal": 20
     },
     {
-      "$type": "TextRPG.Utils.DataModel.Item.Potion, TextRPG",
+      "$type": "TextRPG.Utils.DataModel.Item.MpPotion, TextRPG",
       "Id": 2,
       "Name": "MP포션",
       "Rarity": "Common",

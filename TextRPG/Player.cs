@@ -1,22 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 using TextRPG.Data;
 using TextRPG.Utils;
 using TextRPG.Utils.DataModel.Creature;
+using TextRPG.Utils.DataModel.Item;
 using TextRPG.Utils.DataModel.Skill;
 
 namespace TextRPG
 {
     public class Player : Character
     {
-        static Player instance { get; } = new Player();
         private Random rand = new Random();
-        public static Player Instance { get { return instance; } }
-        public int ActivateSkill(int skillId, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+        [JsonIgnore]
+        public int ItemDefense { get; set; }
+        [JsonIgnore]
+        public int ItemAttack { get; set; }
+
+        [JsonIgnore]
+        List<Skill> Skills { get; set; } = new List<Skill>();
+        [JsonIgnore]
+        string ClassName { get; set; }
+        Armor _armor;
+        [JsonIgnore]
+        Armor Armor
+        {
+            get
+            {
+                return _armor;
+            }
+            set
+            {
+                _armor = value;
+                if (value == null)
+                {
+                    ItemDefense = 0;
+                    return;
+                }
+
+                ItemDefense = Armor.Defense;
+            }
+        }
+        [JsonIgnore]
+        Weapon _weapon;
+        [JsonIgnore]
+        Weapon Weapon
+        {
+            get
+            {
+                return _weapon;
+            }
+            set
+            {
+                _weapon = value;
+                if (value == null)
+                {
+                    ItemAttack = 0;
+                    return;
+                }
+
+                ItemAttack = Weapon.Attack;
+            }
+        }
+        public Player(CharacterClassData data)
+        {
+            ClassName = data.ClassName;
+            HP = data.HP;
+            MaxHP = data.MaxHP;
+            MP = data.MP;
+            MaxMP = data.MaxMP;
+
+            if (data.ArmorItemId != null)
+                Armor = DataManager.Instance.Items[data.ArmorItemId.Value] as Armor;
+            if (data.WeaponItemId != null)
+                Weapon = DataManager.Instance.Items[data.WeaponItemId.Value] as Weapon;
+
+            Inventory = new Inventory();
+            Inventory.Items = new List<Item>();
+            Inventory.Items.Add(new HpPotion() { Name = "소형 HP회복 물약", Heal = 50, Description = "체력을 50만큼 회복합니다.", Price = 100, Rarity = ItemRarity.Common });
+            Inventory.Items.Add(new MpPotion() { Name = "소형 MP회복 물약", Heal = 50, Description = "마나를 50만큼 회복합니다.", Price = 100, Rarity = ItemRarity.Common });
+            Inventory.Items.Add(new Armor() { Name = "초급 방어구", Defense = 10, Description = "방어력을 10만큼 증가시킵니다.", Price = 200, Rarity = ItemRarity.Common });
+            Inventory.Items.Add(new Weapon() { Name = "초급 검", Attack = 10, Description = "공격력을 10만큼 증가시킵니다.", Price = 200, Rarity = ItemRarity.Common });
+
+            foreach (var skillId in data.SkillsId)
+                Skills.Add(DataManager.Instance.Skills[skillId]);
+        }
+
+        public int ActivateSkill(int skillId, Creature activer, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
             if (DataManager.Instance.Skills.ContainsKey(skillId) == false)
             {
@@ -75,10 +143,6 @@ namespace TextRPG
                 }
             }
             return damage;
-        }
-        public void UseItem(int idx, Creature passiver)
-        {
-            // 아이템 사용 메소드: (아이템 인덱스, 사용 객체)
         }
         public void PrintSkillEffect(int effectId, Creature passiver, int? StatusId = null, bool increased = true)
         {
@@ -173,16 +237,124 @@ namespace TextRPG
         }
         public void playerinfo()
         {
+            string itemDefense = ItemDefense > 0 ? $"({ItemDefense.ToString()})" : "";
+            string itemAttack = ItemAttack > 0 ? $"({ItemAttack.ToString()})" : "";
+
             Console.WriteLine($"Level: {Level}");
             Console.WriteLine($"Name: {Name}");
-            Console.WriteLine($"Class: {Class}");
-            Console.WriteLine($"Attack: {Attack}");
-            Console.WriteLine($"Defense:{Defense}");
+            Console.WriteLine($"Class: {ClassName}");
+            Console.WriteLine($"Attack: {Attack}{itemAttack}");
+            Console.WriteLine($"Defense:{Defense}{itemDefense}");
             Console.WriteLine($"HP: {HP}/{MaxHP}");
+            Console.WriteLine($"MP: {MP}/{MaxMP}");
             Console.WriteLine($"Gold: {Gold}");
             Console.WriteLine($"Exp: {Exp}/{NeedExp}");
             Console.WriteLine("아무키나 입력시 시작화면으로 돌아갑니다.");
             Console.ReadKey();
+        }
+        public void ShowInventory()
+        {
+            Console.Clear();
+            Console.WriteLine("------------------- Item List -------------------");
+            Console.WriteLine(
+@"0. 인벤토리 창 나가기
+1. 아이템 사용/장착
+2. 아이템 팔기");
+            foreach (var item in Inventory.Items)
+                item.Display();
+
+            try
+            {
+
+                if (int.TryParse(Console.ReadLine(), out int val))
+                {
+                    switch (val)
+                    {
+                        case 0:
+                            return; // 뒤로가기
+                        case 1:
+                            ShowInventoryAndUseItem();
+                            break;
+                        case 2:
+                            // 판매할 아이템 선택
+                            break;
+                        default:
+                            Console.WriteLine("잘못된 입력입니다.");
+                            Console.ReadKey(true);
+                            ShowInventory();
+                            break;
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                HandleInputError();
+            }
+        }
+        void ShowInventoryAndUseItem()
+        {
+            Console.Clear();
+            Console.WriteLine("------------------- Item List -------------------");
+            for (int i = 0; i < Inventory.Items.Count; i++)
+            {
+                string e = "";
+                if (Inventory.Items[i] == Armor || Inventory.Items[i] == Weapon)
+                    e = "E ";
+                Console.Write($"{i + 1}. {e}");
+                Inventory.Items[i].Display();
+            }
+            Console.WriteLine("0. 뒤로가기");
+
+            try
+            {
+                if (int.TryParse(Console.ReadLine(), out int val))
+                {
+                    if (val == 0)
+                        return;
+
+                    if (val < 0 || val > Inventory.Items.Count)
+                    {
+                        throw new FormatException();
+                    }
+                    else
+                    {
+                        var item = Inventory.Items[val - 1];
+                        if (item is Potion potion)
+                        {
+                            if (potion is HpPotion)
+                                HP += potion.Heal;
+                            else if (potion is MpPotion)
+                                MP += potion.Heal;
+                            Inventory.RemoveItem(potion);
+                        }
+                        else if (item is Armor armor)
+                        {
+                            if (Armor == item)
+                                Armor = null;
+                            else
+                                Armor = armor;
+                        }
+                        else if (item is Weapon weapon)
+                        {
+                            if (Weapon == item)
+                                Weapon = null;
+                            else
+                                Weapon = weapon;
+                        }
+                    }
+                }
+            }
+            catch (FormatException)
+            {
+                HandleInputError();
+            }
+            ShowInventoryAndUseItem();
+        }
+        void HandleInputError()
+        {
+            Console.Clear();
+            Console.WriteLine("잘못된 입력입니다. 숫자를 입력해주세요.");
+            Console.ReadKey(true);
         }
     }
 }

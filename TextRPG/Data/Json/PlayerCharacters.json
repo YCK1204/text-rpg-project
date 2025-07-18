@@ -1,0 +1,26 @@
+{
+  "Characters": [
+    {
+      "ClassName": "±Ã¼ö",
+      "ItemDefense": 0,
+      "ItemAttack": 0,
+      "Gold": 0,
+      "Exp": 0,
+      "NeedExp": 0,
+      "SkillsId": [ 0, 1, 5, 6, 7, 23, 28 ],
+      "Inventory": null,
+      "HP": 100,
+      "MaxHP": 100,
+      "MP": 100,
+      "MaxMP": 100,
+      "Attack": 0,
+      "Defense": 0,
+      "Level": 0,
+      "Speed": 0,
+      "StatusEffect": [ null, null, null, null, null, null, null ],
+      "BuffDebuff": [ null, null, null ],
+      "Id": 0,
+      "Name": null
+    }
+  ]
+}
