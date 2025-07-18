@@ -54,6 +54,7 @@ namespace TextRPG.Data
                     var monster = t1._Monsters[i];
                     monster.Level = random.Next(monster.RandomLevelRange[0], monster.RandomLevelRange[1] + 1);
                     monster.HP += (monster.Level * 10);
+                    monster.MaxHP = monster.HP;
                     monster.Attack += (monster.Level * 3);
                     monster.Reward.Gold += (monster.Level * 10);
                     monster.Reward.Exp += (monster.Level * 10);
