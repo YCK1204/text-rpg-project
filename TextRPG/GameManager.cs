@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Data;
 using TextRPG.Utils.DataModel.Creature;
 
 namespace TextRPG
@@ -77,6 +78,29 @@ namespace TextRPG
                     Console.Clear();
                     Console.WriteLine("몬스터와 전투를 시작합니다!");
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    
+                    List<Monster> battlefield = new List<Monster>();
+                    Random rand2 = new Random();
+                    int y = rand2.Next(1, 5);
+                    //몬스터가 1~4마리까지 필요하고 반복문을 적용한다.
+                    //랜덤값을 부여하고 이걸 토대로 랜덤값을 먼저 부여하고 그 다음 반복문으로 몬스터가 생성될지 말지를 정한다.
+                    // 랜덤에서 나온 값 만큼 몬스터 생성을 반복한다.
+                    for (int i = 0; i < y; i++)
+                    {
+                        Random rand = new Random();
+                        int x = rand.Next(1, 5);
+                        battlefield.Add(DataManager.Instance.Monsters[x]);//깊은 복사 얇은 복사 이 키워드가 문제를 해결하는 힌트
+                    }
+
+                    //여기다가 몬스터를 추가해야 한다.
+                    //몬스터가 몇마리가 나오는지 1~4마리까지 그럼 배열을 1,5? 0,4? 해야하나
+                    // 몬스터가 중복해서 나오는지 확인하기. 객체만 같다면 이름은 같아도 상관 없음
+                    // 인스턴스 몬스터에서 어떻게 가져와서 넣을지 
+
+
+                    //x라는 숫자에 랜덤을 부여하기 이게 배열값이 된다.
+                    Battle battle = new Battle(battlefield); //Battle클래스 battle변수이름 = new새 객체 Battle객체(battlefield)함수;
+                    battle.MainScript();
 
                     break;
                 case "4":
