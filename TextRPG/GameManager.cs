@@ -112,7 +112,6 @@ namespace TextRPG
         void run()
         {
             var json = JsonConvert.SerializeObject(Player.Instance);
-            Console.WriteLine("캐릭터 생성 완료: " + json);
             //battle = new Battle(order);
             while (true)
             {
