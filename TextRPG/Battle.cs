@@ -37,6 +37,8 @@ namespace TextRPG
                     if (IsEnemiesDead()) // 플레이어만 남았을 때
                     {
                         Console.WriteLine("승리!");
+                        int[] rewards = Reward(); // 보상 지급 메소드 호출
+                        Console.WriteLine($"{rewards[0]}경험치와, {rewards[1]}골드를 얻었다!");
                         Console.ReadKey(true);
                         return;
                     }
@@ -350,6 +352,20 @@ namespace TextRPG
                 if (enemy.HP > 0) return false; // 적이 아직 살아있으면 false 반환
             }
             return true; // 모든 적이 죽었으면 true 반환
+        }
+
+        public int[] Reward()
+        {
+            int totalExp = 0;
+            int totalGold = 0;
+            foreach (var enemy in EnemyList)
+            {
+                totalExp += enemy.Reward.Exp;
+                totalGold += enemy.Reward.Gold;// 적의 경험치 합산
+            }
+            player.ChangeExp(totalExp); // 플레이어 경험치 증가
+            player.ChangeGold(totalGold);
+            return [totalExp, totalGold]; // 경험치와 골드 반환
         }
     }
 

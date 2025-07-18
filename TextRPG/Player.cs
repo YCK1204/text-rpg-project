@@ -144,6 +144,11 @@ namespace TextRPG
             }
         }
 
+        public void ChangeGold(int gold)
+        {
+            Gold += gold;
+            if (Gold < 0) Gold = 0; // 금액이 음수가 되지 않도록
+        }
 
         public override int CalculateDamage(int SkillId, Creature passive) // TotalAtack 적용을 위한 오버라이딩
         {
