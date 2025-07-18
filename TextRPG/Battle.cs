@@ -145,30 +145,31 @@ namespace TextRPG
                     Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}");
                 }
                 Console.ResetColor();
-            }
+            }// 적 출력
             Console.WriteLine("=================================================");
             Console.WriteLine("누구를 공격할까?");
             if (int.TryParse(Console.ReadLine(), out int choice))
             {
+                var enemy = EnemyList[--choice]; // 선택한 몬스터
                 try
                 {
-                    if(EnemyList[--choice].HP <= 0)
+                    if(enemy.HP <= 0)
                     {
                         Console.WriteLine("이미 죽은 몬스터입니다. 다시 시도해주세요.");
                         MainScript();
                         return;
                     }
-                    int damage = player.CalculateDamage(0, EnemyList[choice]);
+                    int damage = player.CalculateDamage(0, enemy);
                     //if (damage == 0) // 오류 판정
                     //{
                     //    Attack(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
                     //    return;
                     //}
-                    int oldHP = EnemyList[choice].HP; // 공격 전 HP 저장
+                    int oldHP = enemy.HP; // 공격 전 HP 저장
                     Console.WriteLine($"{player.Name}의 공격!");
-                    Console.WriteLine($"{EnemyList[choice].Name}에게 {damage}만큼의 데미지를 입혔다!");
-                    EnemyList[choice].ChangeHP(-damage); // 데미지 적용
-                    Console.WriteLine($"{EnemyList[choice].Name}의 HP: {oldHP} -> {(EnemyList[choice].HP > 0 ? EnemyList[choice].HP : "Dead")}");
+                    Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!");
+                    enemy.ChangeHP(-damage); // 데미지 적용
+                    Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
                 }
                 catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                 {
@@ -205,6 +206,7 @@ namespace TextRPG
                         Console.WriteLine(choice);
                         foreach (var enemy in EnemyList)
                         {
+                            int oldHP = enemy.HP; // 공격 전 HP 저장
                             int damage = player.ActivateSkill(skill.Id, enemy); // 스킬 사용
                             if (damage < 0) // 오류 판정
                             {
@@ -212,7 +214,6 @@ namespace TextRPG
                                 MainScript(); // 데미지가 0보다 작을 경우(오류가 났을 경우) 다시 스킬 입력 받기
                                 return;
                             }
-                            int oldHP = enemy.HP; // 공격 전 HP 저장
                             Console.WriteLine($"{player.Name}의 {skill.Name}!");
                             Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!");
                             Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
@@ -235,23 +236,24 @@ namespace TextRPG
                                 Console.WriteLine($"| HP:{EnemyList[i].HP}/{EnemyList[i].MaxHP}");
                             }
                             Console.ResetColor();
-                        }
+                        } // 적 출력
                         Console.WriteLine("=================================================");
                         Console.WriteLine("누구를 공격할까?");
                         if (int.TryParse(Console.ReadLine(), out int choice2) && EnemyList[--choice2].HP > 0)
                         {
+                            var enemy = EnemyList[choice2]; // 선택한 몬스터
                             try
                             {
-                                int damage = player.ActivateSkill(skill.Id, EnemyList[choice2]);
+                                int oldHP = enemy.HP; // 공격 전 HP 저장
+                                int damage = player.ActivateSkill(skill.Id, enemy);
                                 if (damage == 0) // 오류 판정
                                 {
                                     MainScript(); // 데미지가 0일 경우(오류가 났을 경우) 다시 공격 입력 받기
                                     return;
                                 }
-                                int oldHP = EnemyList[choice2].HP; // 공격 전 HP 저장
                                 Console.WriteLine($"{player.Name}의 {skill.Name}!");
-                                Console.WriteLine($"{EnemyList[choice2].Name}에게 {damage}만큼의 데미지를 입혔다!"); // 데미지 적용
-                                Console.WriteLine($"{EnemyList[choice2].Name}의 HP: {oldHP} -> {(EnemyList[choice2].HP > 0 ? EnemyList[choice2].HP : "Dead")}");
+                                Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!"); // 데미지 적용
+                                Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
                             }
                             catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
                             {

@@ -33,8 +33,8 @@
     {
       "Id": 3,
       "ClassName": "도적",
-      "MaxHP": 100,
-      "MaxMP": 100,
+      "MaxHP": 10000,
+      "MaxMP": 10000,
       "Attack": 10,
       "Defense": 5,
       "Speed": 5,
@@ -43,8 +43,8 @@
     {
       "Id": 4,
       "ClassName": "해적",
-      "MaxHP": 100,
-      "MaxMP": 100,
+      "MaxHP": 10000,
+      "MaxMP": 10000,
       "Attack": 10,
       "Defense": 5,
       "Speed": 5,

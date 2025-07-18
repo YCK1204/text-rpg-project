@@ -190,7 +190,8 @@ namespace TextRPG
                         this.ChangeMP(i[1] * this.MaxMP / 100);
                         this.PrintSkillEffect(4, this, (i[1] * this.MaxMP / 100), true); // 버프/디버프 효과 출력
                     }
-                }
+                } // 버프 적용
+
                 damage = CalculateDamage(skillId, passiver);
                 Console.WriteLine(damage);
                 passiver.ChangeHP(-damage);
@@ -264,7 +265,7 @@ namespace TextRPG
                     }
                     break;
                 default:
-                    HandleInputError();
+                    Console.WriteLine("알 수 없는 효과 코드입니다.");
                     break;
             }
         }

@@ -164,6 +164,7 @@ namespace TextRPG.Utils.DataModel.Creature
         }
         public void UpdateStatusEffect(int effectType, int duration, int damage = 1) // 상태이상 효과 변경 메소드
         {
+            Console.WriteLine($"effectType: {effectType}");
             // 상태이상 효과 적용 로직: 다른 상태이상 효과가 적용되어 있을 시 덮어씌움.
             switch (effectType)
             {
