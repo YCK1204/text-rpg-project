@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 using TextRPG.Data;
 using TextRPG.Utils;
 using TextRPG.Utils.DataModel.Creature;
@@ -9,6 +9,8 @@ namespace TextRPG
 {
     public class Player : Character
     {
+        public static Player Instance = new Player();
+
         private Random rand = new Random();
         [JsonIgnore]
         public int ItemDefense { get; set; }
@@ -16,7 +18,7 @@ namespace TextRPG
         public int ItemAttack { get; set; }
 
         [JsonIgnore]
-        List<Skill> Skills { get; set; } = new List<Skill>();
+        public List<Skill> Skills { get; set; } = new List<Skill>();
         [JsonIgnore]
         string ClassName { get; set; }
         Armor _armor;
@@ -60,21 +62,20 @@ namespace TextRPG
                 ItemAttack = Weapon.Attack;
             }
         }
-        public Player(CharacterClassData data)
+        public Player() { }
+        public Player(CharacterClassData data) // 캐릭터 생성으로 인한 플레이어 생성
         {
+            //Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
+            CharacterClassId = data.Id;
             ClassName = data.ClassName;
-            HP = data.HP;
+            HP = data.MaxHP;
             MaxHP = data.MaxHP;
-            MP = data.MP;
+            MP = data.MaxMP;
             MaxMP = data.MaxMP;
+            Speed = data.Speed;
+            Attack = data.Attack;
+            Defense = data.Defense;
 
-            if (data.ArmorItemId != null)
-                Armor = DataManager.Instance.Items[data.ArmorItemId.Value] as Armor;
-            if (data.WeaponItemId != null)
-                Weapon = DataManager.Instance.Items[data.WeaponItemId.Value] as Weapon;
-
-            Inventory = new Inventory();
-            Inventory.Items = new List<Item>();
             Inventory.Items.Add(new HpPotion() { Name = "소형 HP회복 물약", Heal = 50, Description = "체력을 50만큼 회복합니다.", Price = 100, Rarity = ItemRarity.Common });
             Inventory.Items.Add(new MpPotion() { Name = "소형 MP회복 물약", Heal = 50, Description = "마나를 50만큼 회복합니다.", Price = 100, Rarity = ItemRarity.Common });
             Inventory.Items.Add(new Armor() { Name = "초급 방어구", Defense = 10, Description = "방어력을 10만큼 증가시킵니다.", Price = 200, Rarity = ItemRarity.Common });
@@ -82,9 +83,46 @@ namespace TextRPG
 
             foreach (var skillId in data.SkillsId)
                 Skills.Add(DataManager.Instance.Skills[skillId]);
+
+            //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
+            //DataManager.Instance.SaveData(); // 데이터 저장
+        }
+        public Player(Player data) // 기존 캐릭터 데이터 로드로 인한 플레이어 생성
+        {
+            Id = data.Id;
+            Name = data.Name;
+            Level = data.Level;
+            Gold = data.Gold;
+            Exp = data.Exp;
+            NeedExp = data.NeedExp;
+            ItemsId = data.ItemsId;
+            CharacterClassId = data.CharacterClassId;
+            ClassName = data.ClassName;
+            HP = data.HP;
+            MaxHP = data.MaxHP;
+            MP = data.MP;
+            MaxMP = data.MaxMP;
+            Speed = data.Speed;
+            Attack = data.Attack;
+            Defense = data.Defense;
+
+            if (data.ArmorItemId != null)
+                Armor = DataManager.Instance.Items[data.ArmorItemId.Value] as Armor;
+            if (data.WeaponItemId != null)
+                Weapon = DataManager.Instance.Items[data.WeaponItemId.Value] as Weapon;
+
+            var classData = DataManager.Instance.CharacterClassData[CharacterClassId];
+
+            foreach (var skillId in classData.SkillsId)
+                Skills.Add(DataManager.Instance.Skills[skillId]);
+            ClassName = classData.ClassName;
+            foreach (var itemId in data.ItemsId)
+                Inventory.Items.Add(DataManager.Instance.Items[itemId]);
+
+            //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
         }
 
-        public int ActivateSkill(int skillId, Creature activer, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+        public int ActivateSkill(int skillId, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
             if (DataManager.Instance.Skills.ContainsKey(skillId) == false)
             {
@@ -133,10 +171,10 @@ namespace TextRPG
                 passiver.ChangeHP(-damage);
                 return damage;
             }
-            
+
             foreach (var i in skill.Effect)
             {
-                if(i[0] == 6 && rand.Next(0,100)<= i[2]) // 상태이상 적용 확률 체크
+                if (i[0] == 6 && rand.Next(0, 100) <= i[2]) // 상태이상 적용 확률 체크
                 {
                     passiver.UpdateStatusEffect(i[1], i[3], damage);
                     PrintSkillEffect(i[1], passiver, i[3]); // 상태이상 효과 출력
@@ -249,6 +287,7 @@ namespace TextRPG
             Console.WriteLine($"MP: {MP}/{MaxMP}");
             Console.WriteLine($"Gold: {Gold}");
             Console.WriteLine($"Exp: {Exp}/{NeedExp}");
+            Console.WriteLine($"Speed: {Speed}");
             Console.WriteLine("아무키나 입력시 시작화면으로 돌아갑니다.");
             Console.ReadKey();
         }
@@ -355,6 +394,15 @@ namespace TextRPG
             Console.Clear();
             Console.WriteLine("잘못된 입력입니다. 숫자를 입력해주세요.");
             Console.ReadKey(true);
+        }
+        void AddItem(Item item)
+        {
+            Inventory.Items.Add(item);
+            ItemsId.Add(item.Id);
+        }
+        void AddItem(int id)
+        {
+            AddItem(DataManager.Instance.Items[id]);
         }
     }
 }
