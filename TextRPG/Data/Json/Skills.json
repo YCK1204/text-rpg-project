@@ -51,7 +51,7 @@
     {
       "Id": 5,
       "Name": "곡사",
-      "Cost": 30,
+      "Cost": 10,
       "Description": "하늘을 향해 화살을 쏘아 광범위한 비를 만든다. 다만, 평소보다 위력이 약할 뿐.",
       "Coefficient": 70,
       "Type": "all",
@@ -253,7 +253,7 @@
     {
       "Id": 26,
       "Name": "제네시스",
-      "Cost": 80,
+      "Cost": 40,
       "Description": "처음, 그 무엇도 구분되지 않았던 시절을 이 일격에 담아.",
       "Coefficient": 350,
       "Type": "all",
