@@ -14,8 +14,10 @@ namespace TextRPG.Utils.DataModel.Creature
         public int MP { get; set; }
         public int MaxMP { get; set; }
         public int Attack { get; set; }
+        public int TotalAttack { get; set;} // 최종 공격력
         private int originalAttack; // 원래 공격력 저장용
         public int Defense { get; set; }
+        public int TotalDefense {get; set;} // 최종 방어력
         private int originalDefense; // 원래 방어력 저장용
         public int Level { get; set; }
         public int Speed { get; set; }
@@ -24,6 +26,7 @@ namespace TextRPG.Utils.DataModel.Creature
 
         public Creature()
         { 
+            TotalAttack = Attack; TotalDefense = Defense;
             originalAttack = Attack; originalDefense = Defense;
             this.StatusEffect[0] = new int[] { 0, 0 }; // 화상 효과: [0] 적용 턴, [1] 데미지
             this.StatusEffect[1] = new int[] { 0 }; // 중독 효과: [0] 적용 턴
@@ -38,15 +41,21 @@ namespace TextRPG.Utils.DataModel.Creature
 
         } // 기본 생성자: 공격력과 방어력 원본 저장
 
+        public void UpdateTotalStat(int atk, int def) // 합계공격력 업데이트
+        {
+            TotalAttack = atk;
+            TotalDefense = def;
+        }
+        
         public void RollBack()
         {
-            Attack = originalAttack; // 공격력 원본으로 되돌리기
-            Defense = originalDefense; // 방어력 원본으로 되돌리기
+            TotalAttack = originalAttack; // 공격력 원본으로 되돌리기
+            TotalDefense = originalDefense; // 방어력 원본으로 되돌리기
         }
         public void UpdateOriginalStatus()
         {
-            Attack = originalAttack; // 현재 공격력을 원본 공격력으로 저장
-            Defense = originalDefense; // 현재 방어력을 원본 방어력으로 저장
+            TotalAttack = originalAttack; // 현재 공격력을 원본 공격력으로 저장
+            TotalDefense = originalDefense; // 현재 방어력을 원본 방어력으로 저장
         }
         public int ChangeHP(int amount)
         {
@@ -66,13 +75,13 @@ namespace TextRPG.Utils.DataModel.Creature
         }
         public void ChangeAttack(int amount)
         {
-            Attack = originalAttack + amount;
+            TotalAttack = originalAttack + amount;
             if (Attack < 0) Attack = 0;
             // 공격력 증감에 한도 없음. + 버프로 인해 증가한 수치 감소용 로직(또는 메소드) 필요
         }
         public void ChangeDefense(int amount)
         {
-            Defense = originalDefense + amount;
+            TotalDefense = originalDefense + amount;
             if (Defense < 0) Defense = 0;
             // 방어력 증감에 한도 없음. + 버프로 인해 증가한 수치 감소용 로직(또는 메소드) 필요
         }
@@ -81,7 +90,7 @@ namespace TextRPG.Utils.DataModel.Creature
             Random rand = new Random();
             TextRPG.Utils.DataModel.Skill.Skill skill = DataManager.Instance.Skills[SkillId];
             // 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
-            int damage = (int)((Attack * skill.Coefficient)/100 - passive.Defense);
+            int damage = (int)((TotalAttack * skill.Coefficient)/100 - passive.TotalDefense);
             if (damage < 0) damage = 1; // 방어력에 의해 데미지가 1 이하로 떨어지지 않도록: 최소 데미지 = 1
             // 치명타 확률 적용
             if (rand.Next(0, 100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
