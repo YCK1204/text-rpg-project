@@ -66,7 +66,7 @@ namespace TextRPG
         }
         public void MainScript() //플레이어 전투 시작용
         {
-            Console.WriteLine($"{order[0]}들을 만났다!");
+            Console.WriteLine($"{order[0].Name}들을 만났다!");
             Console.WriteLine($"=================================================");
             for (int i = 0; i < order.Count; i++)
             {
