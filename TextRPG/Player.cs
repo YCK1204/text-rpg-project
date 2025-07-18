@@ -208,7 +208,7 @@ namespace TextRPG
                 if (i[0] == 6 && rand.Next(0, 100) <= i[2]) // 상태이상 적용 확률 체크
                 {
                     passiver.UpdateStatusEffect(i[1], i[3], damage);
-                    PrintSkillEffect(i[1], passiver, i[3]); // 상태이상 효과 출력
+                    PrintSkillEffect(i[0], passiver,i[1]); // 상태이상 효과 출력
                 }
             }
             return damage;
