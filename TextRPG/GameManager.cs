@@ -11,7 +11,6 @@ namespace TextRPG
 {
     public class GameManager
     {
-        public Player player;
         //public Battle battle;
         public void StartGame()
         {
@@ -30,7 +29,7 @@ namespace TextRPG
                     CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
                     if (key < 1 || key > Data.DataManager.Instance.CharacterClassData.Count)
                         throw new FormatException();
-                    player = new Player(data);
+                    Player.Instance = new Player(data);
                     run();
                 }
             }
@@ -49,9 +48,7 @@ namespace TextRPG
             while (true)
             {
                 ShowMainmenu();
-
             }
-
         }
         private void ShowMainmenu()
         {

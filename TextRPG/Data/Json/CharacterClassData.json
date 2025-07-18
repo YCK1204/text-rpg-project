@@ -3,9 +3,7 @@
     {
       "Id": 0,
       "ClassName": "전사",
-      "HP": 100,
       "MaxHP": 100,
-      "MP": 100,
       "MaxMP": 100,
       "Attack": 10,
       "Defense": 5,
@@ -15,9 +13,7 @@
     {
       "Id": 1,
       "ClassName": "궁수",
-      "HP": 100,
       "MaxHP": 100,
-      "MP": 100,
       "MaxMP": 100,
       "Attack": 10,
       "Defense": 5,
@@ -27,9 +23,7 @@
     {
       "Id": 2,
       "ClassName": "마법사",
-      "HP": 100,
       "MaxHP": 100,
-      "MP": 100,
       "MaxMP": 100,
       "Attack": 10,
       "Defense": 5,
@@ -39,9 +33,7 @@
     {
       "Id": 3,
       "ClassName": "도적",
-      "HP": 100,
       "MaxHP": 100,
-      "MP": 100,
       "MaxMP": 100,
       "Attack": 10,
       "Defense": 5,
@@ -51,9 +43,7 @@
     {
       "Id": 4,
       "ClassName": "해적",
-      "HP": 100,
       "MaxHP": 100,
-      "MP": 100,
       "MaxMP": 100,
       "Attack": 10,
       "Defense": 5,

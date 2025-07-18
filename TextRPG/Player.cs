@@ -18,7 +18,7 @@ namespace TextRPG
         public int ItemAttack { get; set; }
 
         [JsonIgnore]
-        List<Skill> Skills { get; set; } = new List<Skill>();
+        public List<Skill> Skills { get; set; } = new List<Skill>();
         [JsonIgnore]
         string ClassName { get; set; }
         Armor _armor;
@@ -65,7 +65,7 @@ namespace TextRPG
         public Player() { }
         public Player(CharacterClassData data) // 캐릭터 생성으로 인한 플레이어 생성
         {
-            Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
+            //Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
             CharacterClassId = data.Id;
             ClassName = data.ClassName;
             HP = data.MaxHP;
@@ -84,8 +84,8 @@ namespace TextRPG
             foreach (var skillId in data.SkillsId)
                 Skills.Add(DataManager.Instance.Skills[skillId]);
 
-            DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
-            DataManager.Instance.SaveData(); // 데이터 저장
+            //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
+            //DataManager.Instance.SaveData(); // 데이터 저장
         }
         public Player(Player data) // 기존 캐릭터 데이터 로드로 인한 플레이어 생성
         {
@@ -118,10 +118,10 @@ namespace TextRPG
             ClassName = classData.ClassName;
             foreach (var itemId in data.ItemsId)
                 Inventory.Items.Add(DataManager.Instance.Items[itemId]);
-            DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
+            //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
         }
 
-        public int ActivateSkill(int skillId, Creature activer, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
+        public int ActivateSkill(int skillId, Creature passiver) // 스킬 사용 메소드: (스킬 id, 사용 객체, 효과&공격 대상 객체)
         {
             if (DataManager.Instance.Skills.ContainsKey(skillId) == false)
             {
