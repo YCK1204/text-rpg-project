@@ -87,9 +87,10 @@ namespace TextRPG
                     // 랜덤에서 나온 값 만큼 몬스터 생성을 반복한다.
                     for (int i = 0; i < y; i++)
                     {
-                        Random rand = new Random();
-                        int x = rand.Next(1, 5);
+                        Random rand = new();
+                        int x = rand.Next(0, 3);
                         battlefield.Add(DataManager.Instance.Monsters[x]);//깊은 복사 얇은 복사 이 키워드가 문제를 해결하는 힌트
+                         //(DataManager.Instance.Monsters[x])  이거에 대한 복사본을 만들어 클래스로 만든객체가 통일화되는걸 막는다.(깊은복사검색)           
                     }
 
                     //여기다가 몬스터를 추가해야 한다.
