@@ -81,7 +81,7 @@ namespace TextRPG.Utils.DataModel.Creature
             Random rand = new Random();
             TextRPG.Utils.DataModel.Skill.Skill skill = DataManager.Instance.Skills[SkillId];
             // 스킬에 따른 데미지 계산 로직: 스킬 배율*공격력 - 피격체 방어력
-            int damage = (int)((Attack * skill.Coefficient) - passive.Defense);
+            int damage = (int)((Attack * skill.Coefficient)/100 - passive.Defense);
             if (damage < 0) damage = 1; // 방어력에 의해 데미지가 1 이하로 떨어지지 않도록: 최소 데미지 = 1
             // 치명타 확률 적용
             if (rand.Next(0, 100) <= 20 + BuffDebuff[2][1]) // 치명타 확률: 기본 20% + 버프로 인해 증가한 수치
