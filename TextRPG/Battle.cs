@@ -260,14 +260,7 @@ namespace TextRPG
         public void UseItem()
         {
             Console.WriteLine("사용할 아이템을 선택하세요.");
-            for (int i = 0; i < player.Inventory.Items.Count; i++)
-            {
-                RPGsys.ArrangePrint($"{i + 1}. {player.Inventory.Items[i].Name} | {player.Inventory.Items[i].Description}", 100);
-            }
-            if (int.TryParse(Console.ReadLine(), out int choice))
-            {
-                // 아이템 사용 출력
-            }
+            player.ShowInventory(); // 플레이어의 인벤토리와 아이템 사용 메소드 호출
         }
         public void EnemyTurn(Monster enemy) // 몬스터 턴
         {
