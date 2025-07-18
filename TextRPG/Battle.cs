@@ -39,6 +39,8 @@ namespace TextRPG
                         Console.WriteLine("승리!");
                         int[] rewards = Reward(); // 보상 지급 메소드 호출
                         Console.WriteLine($"{rewards[0]}경험치와, {rewards[1]}골드를 얻었다!");
+                        player.AddItem(rewards[2]);
+                        Console.WriteLine($"{DataManager.Instance.Items[rewards[2]].Name}을 획득했다!");
                         Console.ReadKey(true);
                         return;
                     }
@@ -365,7 +367,14 @@ namespace TextRPG
             }
             player.ChangeExp(totalExp); // 플레이어 경험치 증가
             player.ChangeGold(totalGold);
-            return [totalExp, totalGold]; // 경험치와 골드 반환
+            int dropitemId = 1;
+            Random rand = new Random();
+            for (int i=0; i<EnemyList.Count; i++)
+            {
+                if (rand.Next(0, 100) < 40)
+                    dropitemId = rand.Next(1, 9); //40% 확률로 아이템 변환
+            }
+            return [totalExp, totalGold, dropitemId]; // 경험치와 골드 반환
         }
     }
 

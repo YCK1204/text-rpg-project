@@ -420,7 +420,7 @@ namespace TextRPG
             Inventory.Items.Add(item);
             ItemsId.Add(item.Id);
         }
-        void AddItem(int id)
+        public void AddItem(int id)
         {
             AddItem(DataManager.Instance.Items[id]);
         }
