@@ -91,6 +91,7 @@ namespace TextRPG
 
             //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
             //DataManager.Instance.SaveData(); // 데이터 저장
+            this.UpdateTotalStat(TotalAttack, TotalDefense); // 총 공격력과 방어력 업데이트
         }
         public Player(Player data) // 기존 캐릭터 데이터 로드로 인한 플레이어 생성
         {
@@ -393,6 +394,7 @@ namespace TextRPG
                 HandleInputError();
             }
             ShowInventoryAndUseItem();
+            this.UpdateTotalStat(TotalAttack, TotalDefense); // 총 공격력과 방어력 업데이트
         }
         void HandleInputError()
         {
