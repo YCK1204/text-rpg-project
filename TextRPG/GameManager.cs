@@ -139,6 +139,7 @@ namespace TextRPG
             Console.WriteLine("스파르타 마을에 오신 여러분을 환영합니다.");
             Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
             Console.WriteLine();
+            Console.WriteLine("0. 게임 저장");
             Console.WriteLine("1. 상태 보기"); // 1 입력시 Player 스크립트에 입력된 상태 호출
             Console.WriteLine("2. 인벤토리 보기"); //
             Console.WriteLine("3. 전투 시작"); // 전투 화면을 불러옴
@@ -149,6 +150,9 @@ namespace TextRPG
 
             switch (input)
             {
+                case "0":
+                    DataManager.Instance.SaveData();
+                    break;
                 case "1":
                     Player.Instance.playerinfo(); // 플레이어의 정보를 보여주는 화면
                     break;

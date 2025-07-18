@@ -18,7 +18,7 @@ namespace TextRPG.Data
         const string SkillPath = "Skills.json";
         const string PlayerPath = "PlayerCharacters.json";
         const string CharacterClassDataPath = "CharacterClassData.json";
-        private DataManager() { }
+        private DataManager() { LoadData(); }
 
         public Dictionary<int, Monster> Monsters = new Dictionary<int, Monster>();
         Dictionary<int, Item> MonsterLoots = new Dictionary<int, Item>();
@@ -104,12 +104,22 @@ namespace TextRPG.Data
         }
         public void SaveData()
         {
+            if (Player.Instance == null)
+            {
+                Console.Clear();
+                Console.WriteLine("게임 플레이어가 설정되지 않았습니다.");
+                return;
+            }
             string json = $"{{\"Characters\":{JsonConvert.SerializeObject(PlayerCharacters.Values)}}}";
+            File.WriteAllText($"{JsonPath}/{PlayerPath}", json);
+            Console.Clear();
+            Console.WriteLine("게임 데이터가 저장되었습니다.");
+            Console.ReadKey(true);
         }
         public int GenerateLastId()
         {
             if (PlayerCharacters.Count == 0)
-                return 1;
+                return 0;
             return PlayerCharacters.Keys.Max() + 1;
         }
     }

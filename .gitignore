@@ -3,7 +3,5 @@ TextRPG/bin
 TextRPG/obj
 .vs
 TextRPG/Build/Debug/net8.0/TextRPG.pdb
-TextRPG/Data/Json/Monsters.json
-TextRPG/Data/DataManager.cs
 TextRPG/Build
 .gitignore
