@@ -177,7 +177,7 @@ namespace TextRPG
         public void UseSkill()
         {
             Console.WriteLine("사용할 스킬을 선택하세요.");
-            for (int i = 0; i < player.Skills.Count; i++)
+            for (int i = 0; i < player.Skills.Count-2; i++)
             {
                 RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i + 2].Name} | {player.Skills[i].Description}", 100);
             }
