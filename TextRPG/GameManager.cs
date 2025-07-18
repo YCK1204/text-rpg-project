@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TextRPG.Utils.DataModel.Creature;
-using TextRPG.Utils.DataModel.Creature.Job;
 
 namespace TextRPG
 {
@@ -15,6 +15,7 @@ namespace TextRPG
         //public Battle battle;
         public void StartGame()
         {
+            Console.Clear();
             Console.WriteLine(
 @"캐릭터 선택
 1. 전사
@@ -22,35 +23,28 @@ namespace TextRPG
 3. 마법사
 4. 도적
 5. 해적");
-            int key = int.Parse(Console.ReadLine());
-            CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
-            switch (key)
+            try
             {
-                case 1:
-                    //player = new Player("전사");
-                    break;
-                case 2:
-                    player = new Archer(data);
-                    break;
-                case 3:
-                    //player = new Player("마법사");
-                    break;
-                case 4:
-                    //player = new Player("도적");
-                    break;
-                case 5:
-                    //player = new Player("해적");
-                    break;
-                default:
-                    Console.WriteLine("잘못된 입력입니다. 다시 시도해주세요.");
-                    StartGame();
-                    return;
+                if (int.TryParse(Console.ReadLine(), out int key))
+                {
+                    CharacterClassData data = Data.DataManager.Instance.CharacterClassData[key - 1];
+                    if (key < 1 || key > Data.DataManager.Instance.CharacterClassData.Count)
+                        throw new FormatException();
+                    player = new Player(data);
+                    run();
+                }
             }
-            run();
+            catch (FormatException ex)
+            {
+                Console.WriteLine("다시 시도해주세요.");
+                StartGame();
+                return;
+            }
         }
          void run()
         {
-            player = new Player();
+            var json = JsonConvert.SerializeObject(player);
+            Console.WriteLine("캐릭터 생성 완료: " + json);
             //battle = new Battle(order);
             while (true)
             {
@@ -80,6 +74,7 @@ namespace TextRPG
                     player.playerinfo(); // 플레이어의 정보를 보여주는 화면
                     break;
                 case "2":
+                    player.ShowInventory(); // 플레이어의 인벤토리를 보여주는 화면
                     break;
                 case "3":
                     Console.Clear();
@@ -91,11 +86,9 @@ namespace TextRPG
                     Environment.Exit(0);
                     break;
                 default:
-                    Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요. 아무키나 다시 입력해주세요.");
-                    Console.ReadKey(); // 1,2,3,4 외에 다른 숫자 입력시 아무키나 입력하면 시작화면으로 돌아감
+                    Console.WriteLine("잘못된 입력입니다. 다시 입력해 주세요. 아무키나 다시 입력해주세요."); // 다시 메인메뉴로
+                    ShowMainmenu();
                     break;
-
-
             }
         }
     }

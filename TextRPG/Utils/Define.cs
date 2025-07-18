@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace TextRPG.Utils
 {
-    public enum CharacterClass
-    {
-        Warrior,
-        Mage,
-    }
     public enum ItemRarity
     {
         Common,
