@@ -129,6 +129,21 @@ namespace TextRPG
             DataManager.Instance.PlayerCharacters[Id] = this;
             //DataManager.Instance.PlayerCharacters.Add(Id, this); // 플레이어 캐릭터 목록에 추가
         }
+        public void ChangeExp(int exp)
+        {
+            Exp += exp;
+            LevelUp(Exp);
+        }
+        private void LevelUp(int levelexp)
+        {
+            int neededExp = Level * Level * 100;
+            if(Exp>=neededExp)
+            {
+                Exp -= neededExp;
+                Level += 1;
+            }
+        }
+
 
         public override int CalculateDamage(int SkillId, Creature passive) // TotalAtack 적용을 위한 오버라이딩
         {
