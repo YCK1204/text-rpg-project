@@ -80,6 +80,7 @@ namespace TextRPG
             Speed = data.Speed;
             Attack = data.Attack;
             Defense = data.Defense;
+            Name = data.Name;
 
             Inventory.Items.Add(new HpPotion() { Name = "소형 HP회복 물약", Heal = 50, Description = "체력을 50만큼 회복합니다.", Price = 100, Rarity = ItemRarity.Common });
             Inventory.Items.Add(new MpPotion() { Name = "소형 MP회복 물약", Heal = 50, Description = "마나를 50만큼 회복합니다.", Price = 100, Rarity = ItemRarity.Common });
@@ -304,6 +305,7 @@ namespace TextRPG
         }
         public void playerinfo()
         {
+            Console.Clear();
             string itemDefense = ItemDefense > 0 ? $"({ItemDefense.ToString()})" : "";
             string itemAttack = ItemAttack > 0 ? $"({ItemAttack.ToString()})" : "";
 
