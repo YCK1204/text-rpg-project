@@ -60,18 +60,14 @@ namespace TextRPG.Utils.DataModel.Creature
         public int ChangeHP(int amount)
         {
             int original = HP;
-            HP += amount;
-            if (HP < 0) HP = 0;
-            if (HP > MaxHP) HP = MaxHP;
-            return ((Math.Abs(HP - original) < Math.Abs(amount) ? HP - original : Math.Abs(amount))); // 변경된 HP 반환(콘솔 표시용)
+            HP = Math.Clamp(HP + amount, 0, MaxHP);
+            return HP;
         }
         public int ChangeMP(int amount)
         {
             int original = MP;
-            MP += amount;
-            if (MP < 0) MP = 0;
-            if (MP > MaxMP) MP = MaxMP;
-            return ((Math.Abs(HP - original) < Math.Abs(amount) ? HP - original : Math.Abs(amount))); // 변경된 MP 반환(콘솔 표시용)
+            MP = Math.Clamp(MP + amount, 0, MaxMP);
+            return MP;
         }
         public void ChangeAttack(int amount)
         {
