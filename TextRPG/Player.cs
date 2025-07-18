@@ -9,7 +9,7 @@ namespace TextRPG
 {
     public class Player : Character
     {
-        public static Player Instance = new Player();
+        public static Player Instance;
 
         private Random rand = new Random();
         [JsonIgnore]
@@ -67,7 +67,6 @@ namespace TextRPG
                 ItemAttack = Weapon.Attack;
             }
         }
-        public Player() { }
         public Player(CharacterClassData data) // 캐릭터 생성으로 인한 플레이어 생성
         {
             Id = DataManager.Instance.GenerateLastId(); // 새로운 ID 생성
@@ -332,8 +331,8 @@ namespace TextRPG
         public void playerinfo()
         {
             Console.Clear();
-            string itemDefense = ItemDefense > 0 ? $"({ItemDefense.ToString()})" : "";
-            string itemAttack = ItemAttack > 0 ? $"({ItemAttack.ToString()})" : "";
+            string itemDefense = ItemDefense > 0 ? $"(+{ItemDefense.ToString()})" : "";
+            string itemAttack = ItemAttack > 0 ? $"(+{ItemAttack.ToString()})" : "";
 
             Console.WriteLine($"Level: {Level}");
             Console.WriteLine($"Name: {Name}");

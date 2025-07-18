@@ -7,10 +7,8 @@ namespace TextRPG
     {
         static void Main(string[] args)
         {
-            DataManager.Instance.LoadData();
             GameManager runer = new GameManager();
             runer.StartGame();
-            //runer.run();
         }
     }
 }
