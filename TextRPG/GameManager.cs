@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using TextRPG.Data;
 using TextRPG.Utils.DataModel.Creature;
 using TextRPG.Utils.DataModel.Creature.Job;
 
@@ -84,7 +88,22 @@ namespace TextRPG
                     Console.Clear();
                     Console.WriteLine("몬스터와 전투를 시작합니다!");
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
+                    DataManager.Instance.Monsters;
+                    List<Monster> battlefield = new List<Monster>();
+                    int x = Monsters.next[1, 5];
+                    battlefield.Add(DataManager.Instance.Monsters[x]);//여기다가 몬스터를 추가해야 한다.
+                        //몬스터가 몇마리가 나오는지 1~4마리까지 그럼 배열을 1,5? 0,4? 해야하나
+                        // 몬스터가 중복해서 나오는지 확인하기. 객체만 같다면 이름은 같아도 상관 없음
+                        // 인스턴스 몬스터에서 어떻게 가져와서 넣을지 
 
+
+                    //x라는 숫자에 랜덤을 부여하기 이게 배열값이 된다.
+
+
+
+                    Battle  battlestart = new Battle(battlefield);
+                    
+                    
                     break;
                 case "4":
                     Console.WriteLine("게임을 종료합니다.");
