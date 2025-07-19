@@ -40,8 +40,10 @@ namespace ConsoleApp1
             Console.WriteLine();
             if (earnMoney.IsAlreadyTaken == true) { Console.Write("[수락완료]  "); }
             Console.WriteLine($"1. '{earnMoney.QuestName}'  보상: {earnMoney.QuestReward} G");
+            Console.WriteLine();
             if (levelUp.IsAlreadyTaken == true) { Console.Write("[수락완료]  "); }
             Console.WriteLine($"2. '{levelUp.QuestName}'  보상: {levelUp.QuestReward} G");
+            Console.WriteLine();
             if (potionUse.IsAlreadyTaken == true) { Console.Write("[수락완료]"); }
             Console.WriteLine($"3. '{potionUse.QuestName}'  보상: {potionUse.QuestReward} G");
             Console.WriteLine("");

@@ -163,7 +163,7 @@ namespace TextRPG
                     break;
                 case "3":
                     Console.Clear();
-                    Console.WriteLine("몬스터와 전투를 시작합니다!");
+                    
                     // 3번 입력시 전투 화면을 불러옴 플레이어vs몬스터
 
                     List<Monster> battlefield = new List<Monster>();

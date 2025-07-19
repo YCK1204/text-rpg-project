@@ -16,6 +16,7 @@ namespace TextRPG
         List<Creature> order;
         List<Monster> EnemyList;
         Player player = Player.Instance;
+        
         public Battle(List<Monster> battlefield) // 인자로 받는 건 전투에 참여하는 모든 몬스터들
         {
             // battlefield는 List<Creature> 타입으로 몬스터 객체들이 들어옴
@@ -26,6 +27,22 @@ namespace TextRPG
         }
         public void GamePlay() // 플레이어가 죽던가, 모든 적을 처치할 때까지 반복되는 메소드(전투 풀)
         {
+            Console.WriteLine("당신은 어둑한 던전의 입구에 도착했다.");
+            Console.WriteLine("희미한 횃불 아래, 알 수 없는 소리가 들려온다.");
+            Console.ReadKey();
+            Console.WriteLine();
+            Console.WriteLine("던전 깊은 곳을 조심스럽게 걷다가 뒤를 돌아보니");
+            Console.WriteLine("바닥에서 꿈틀거리는 몬스터들이 모습을 드러낸다.");
+            Console.WriteLine("몬스터들은 기괴한 소리를 내며 주위를 맴돈다.");
+            Console.ReadKey(true);
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("이곳에서 살아나가려면,");
+            Console.WriteLine("이들을 모두 쓰러뜨려야 한다!");
+            Console.ResetColor();
+            Console.ReadKey();
+            Console.Clear();
+            Console.WriteLine("==================================================");
             Console.WriteLine($"{EnemyList[0].Name}들을 만났다!");
             Console.WriteLine($"=================================================");
             order = NewOrder(); // 턴 순서 초기화
@@ -36,8 +53,12 @@ namespace TextRPG
                 {
                     if (IsEnemiesDead()) // 플레이어만 남았을 때
                     {
-                        Console.WriteLine("승리!");
+                        Console.Clear();
+                        Console.WriteLine("==============전투 승리!===================");
+                        Console.WriteLine();
+                        Console.WriteLine();
                         int[] rewards = Reward(); // 보상 지급 메소드 호출
+                        Console.WriteLine();
                         Console.WriteLine($"{rewards[0]}경험치와, {rewards[1]}골드를 얻었다!");
                         player.AddItem(rewards[2]);
                         Console.WriteLine($"{DataManager.Instance.Items[rewards[2]].Name}을 획득했다!");
@@ -93,9 +114,11 @@ namespace TextRPG
                 Console.ResetColor();
             }
             Console.WriteLine("=================================================");
+            Console.WriteLine();
             Console.WriteLine("플레이어 정보:");
             Console.WriteLine($"{player.Name} ({player.ClassName})   ATK:{player.TotalAttack}");
             Console.WriteLine($"HP: {player.HP}/{player.MaxHP}     |     MP:{player.MP}/{player.MaxMP}");
+            Console.WriteLine();
             Console.WriteLine("=================================================");
             Console.WriteLine("무엇을 할까?");
             Console.WriteLine("1. 공격");
@@ -171,7 +194,9 @@ namespace TextRPG
                     //}
                     int oldHP = enemy.HP; // 공격 전 HP 저장
                     Console.WriteLine($"{player.Name}의 공격!");
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!");
+                    Console.ResetColor();
                     enemy.ChangeHP(-damage); // 데미지 적용
                     Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
                 }
@@ -197,7 +222,10 @@ namespace TextRPG
             Console.WriteLine("사용할 스킬을 선택하세요.");
             for (int i = 0; i < player.Skills.Count-2; i++)
             {
-                RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i + 2].Name} |", 30);
+                RPGsys.ArrangePrint($"{i + 1}. {player.Skills[i + 2].Name} |", 15);
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.Write($"MP: {player.Skills[i + 2].Cost}  ");
+                Console.ResetColor();
                 Console.WriteLine($" {player.Skills[i + 2].Description}");
             }
             if (int.TryParse(Console.ReadLine(), out int choice))
@@ -219,7 +247,9 @@ namespace TextRPG
                                 return;
                             }
                             Console.WriteLine($"{player.Name}의 {skill.Name}!");
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!");
+                            Console.ResetColor();
                             Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
                         }
                     }
@@ -256,7 +286,9 @@ namespace TextRPG
                                     return;
                                 }
                                 Console.WriteLine($"{player.Name}의 {skill.Name}!");
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine($"{enemy.Name}에게 {damage}만큼의 데미지를 입혔다!"); // 데미지 적용
+                                Console.ResetColor();
                                 Console.WriteLine($"{enemy.Name}의 HP: {oldHP} -> {(enemy.HP > 0 ? enemy.HP : "Dead")}");
                             }
                             catch (ArgumentOutOfRangeException) // 인덱스 에러바운딩
@@ -320,10 +352,14 @@ namespace TextRPG
             Skill skill = DataManager.Instance.Skills[skillId];
             int damage = enemy.CalculateDamage(skillId, player);
             int oldHP = player.HP; // 공격 전 플레이어 HP 저장
+            Console.WriteLine();
             Console.WriteLine($"{enemy.Name}의 {skill.Name}!");
-            Console.WriteLine($"{player.Name}에게 {damage}만큼의 데미지를 입혔다!");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{player.Name} 은 {damage}만큼의 데미지를 입었다!");
+            Console.ResetColor();
             player.ChangeHP(-damage); // 데미지 적용
             Console.WriteLine($"{player.Name}의 HP: {oldHP} -> {(player.HP > 0 ? player.HP : "Dead")}");
+            Console.WriteLine();
             Console.ReadKey(true);
         }
         public int SpeedDice(Creature obj) // 속도값 판정: (보정 = 최소: +0 최대 +5)
@@ -389,7 +425,7 @@ namespace TextRPG
                 if (char.IsDigit(c) || char.IsLetter(c) || char.IsPunctuation(c) || char.IsWhiteSpace(c))
                     visualLength += 1;
                 else if (c >= '\uAC00' && c <= '\uD7AF') // 유니코드 한글 범위
-                    visualLength += 2;
+                    visualLength += 1;
                 else
                     visualLength += 1; // 기타 문자
             }
