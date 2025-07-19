@@ -33,13 +33,20 @@ namespace ConsoleApp1
 
         public void LoadQuestScene()
         {
+            Console.Clear();
             Console.WriteLine("=========================퀘스트 보드================================");
+            Console.WriteLine();
             Console.WriteLine("어느 퀘스트를 수락하시겠습니까?");
+            Console.WriteLine();
+            if (earnMoney.IsAlreadyTaken == true) { Console.Write("[수락완료]  "); }
             Console.WriteLine($"1. '{earnMoney.QuestName}'  보상: {earnMoney.QuestReward} G");
+            if (levelUp.IsAlreadyTaken == true) { Console.Write("[수락완료]  "); }
             Console.WriteLine($"2. '{levelUp.QuestName}'  보상: {levelUp.QuestReward} G");
+            if (potionUse.IsAlreadyTaken == true) { Console.Write("[수락완료]"); }
             Console.WriteLine($"3. '{potionUse.QuestName}'  보상: {potionUse.QuestReward} G");
             Console.WriteLine("");
-            Console.WriteLine("5. 나가기");
+            Console.WriteLine("====================================================================");
+            Console.WriteLine("4. 나가기");
             Console.WriteLine(">>>");
             if (int.TryParse(Console.ReadLine(), out int key))
             {

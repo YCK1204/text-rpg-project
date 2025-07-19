@@ -46,11 +46,14 @@ namespace ConsoleApp1
         }
         public override void DoQuest()
         {
+            var prevColor= Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"'{QuestName}' 퀘스트를 완료하였습니다");
-            Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다");
             Player.Instance.EarnMoneyEvent -= DoQuest;
+            Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다"); 
             Player.Instance.ChangeGold(QuestReward);
-            
+            Console.ForegroundColor = prevColor;
+
             Console.ReadKey();
             
         }
@@ -81,10 +84,13 @@ namespace ConsoleApp1
         }
         public override void DoQuest()
         {
+            var prevColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($" '{QuestName}' 퀘스트를 완료하였습니다!");
             Player.Instance.LevelUpEvent -= DoQuest;
             Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다");
             Player.Instance.ChangeGold(QuestReward);
+            Console.ForegroundColor = prevColor;
             Console.ReadKey();
             
            
@@ -117,10 +123,13 @@ namespace ConsoleApp1
         }
         public override void DoQuest()
         {
+            var prevColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($" '{QuestName}' 퀘스트를 완료하였습니다!");
             Player.Instance.UsePotionEvent -= DoQuest;
             Console.WriteLine($"퀘스트 완료 보상으로 {QuestReward} G 를 획득하였습니다");
             Player.Instance.ChangeGold(QuestReward);
+            Console.ForegroundColor = prevColor;
             Console.ReadKey();
             
         }
