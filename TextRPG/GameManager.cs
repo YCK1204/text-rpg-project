@@ -123,6 +123,12 @@ namespace TextRPG
                 SelectCharacter();
                 return;
             }
+            catch (KeyNotFoundException)
+                 {
+                Console.WriteLine("다시 시도해주세요.");
+                SelectCharacter();
+                return;
+            }
         }
         void run()
         {
