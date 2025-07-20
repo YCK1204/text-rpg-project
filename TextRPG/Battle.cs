@@ -373,7 +373,7 @@ namespace TextRPG
             int[] speedList = new int[order.Count];
             for (int i = 0; i < order.Count; i++)
             {
-                speedList[0] = (SpeedDice(order[i]));
+                speedList[i] = (SpeedDice(order[i]));
             }
             for (int i = 0; i < order.Count; i++)
             {
