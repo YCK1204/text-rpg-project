@@ -239,6 +239,60 @@ namespace TextRPG.Utils.DataModel.Creature
             }
             return null; // 턴 스킵 효과가 아닐 시 null 반환
         }
-
+    public void PrintEffects() // 스킬 효과 출력 메소드
+    {
+        if (this.StatusEffect != null)
+        {
+            for(int i=0; i<this.StatusEffect.Length; i++)
+            {
+                switch (i+1)
+                {
+                    // 상태이상 발동시 출력
+                    case 1: // 화상
+                        if (this.StatusEffect[i][0] <= 0) continue; // 화상 지속 턴이 0 이하일 경우 출력하지 않음
+                        Console.Write($"{this.Name}은(는) 화상으로 인해");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write($" {this.StatusEffect[0][1]} ");
+                        Console.ResetColor();
+                        Console.WriteLine("만큼의 데미지를 입었다!");
+                        break;
+                    case 2: // 중독
+                        if (this.StatusEffect[i][0] <= 0) continue; // 중독 지속 턴이 0 이하일 경우 출력하지 않음
+                            Console.Write($"{this.Name}은(는) 독으로 인해");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write($" {this.MaxHP/10} ");
+                            Console.ResetColor();
+                            Console.WriteLine("만큼의 데미지를 입었다!");
+                        break;
+                    case 3: // 출혈
+                        if (this.StatusEffect[i][0] <= 0) continue; // 출혈 지속 턴이 0 이하일 경우 출력하지 않음
+                        Console.Write($"{this.Name}은(는) 출혈로 인해");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write($" {this.Attack} ");
+                        Console.ResetColor();
+                        Console.WriteLine("만큼의 데미지를 입었다!");
+                        break;
+                    case 4: // 마비
+                        if (this.StatusEffect[i][0] <= 0) continue; // 마비 지속 턴이 0 이하일 경우 출력하지 않음
+                            Console.WriteLine($"{this.Name}은(는) 몸이 저려 움직일 수 없었다!");
+                        break;
+                    case 5: // 침묵
+                        if (this.StatusEffect[i][0] <= 0) continue; // 침묵 지속 턴이 0 이하일 경우 출력하지 않음
+                        Console.WriteLine($"{this.Name}은(는) 기술을 쓸 수 없다!");
+                        break;
+                    case 6: // 빙결
+                        if (this.StatusEffect[i][0] <= 0) continue; // 빙결 지속 턴이 0 이하일 경우 출력하지 않음
+                        Console.WriteLine($"{this.Name}은(는) 얼어버려 움직일 수 없다!");
+                        break;
+                    case 7: // 혼란
+                        if (this.StatusEffect[i][0] <= 0) continue; // 혼란 지속 턴이 0 이하일 경우 출력하지 않음
+                        Console.WriteLine($"{this.Name}은(는) 혼란에 빠져 영문도 모른 채 {this.Attack} 의 피해를 입었다!");
+                        break;
+                    default: // 이 이상 출력할 상태이상은 없다.
+                        break;
+                    }
+                }
+            }
+        }   
     }
 }
