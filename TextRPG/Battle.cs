@@ -346,8 +346,11 @@ namespace TextRPG
             // 이미 죽은 몬스터는 무시
             // 여기에 죽은 몬스터의 카운팅 이벤트 코드 추가 가능
             //
-            int skillId = new Random().Next(16, 24); // 랜덤으로 스킬 선택
-            if (skillId > 21) { skillId -= 22; } // 스킬 ID 범위 조정
+            if (enemy.StatusEffect[3][0]>0 && new Random().Next(0,100)<50) {return;} // 마비
+            if (enemy.StatusEffect[5][0]>0) {return;} // 빙결
+            int skillId = new Random().Next(17, 24); // 랜덤으로 스킬 선택
+            if (enemy.StatusEffect[4][0] >0] {skillId = 0; } // 침묵
+            if (skillId > 21) { skillId = 0; } // 스킬 ID 범위 조정
 
             Skill skill = DataManager.Instance.Skills[skillId];
             int damage = enemy.CalculateDamage(skillId, player);
