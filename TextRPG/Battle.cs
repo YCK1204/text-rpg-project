@@ -91,8 +91,8 @@ namespace TextRPG
                         {
                             if (creature.StatusEffect[i][0] == 0 || creature.HP <= 0) { continue; } // 상태이상 효과가 없는 경우는 무시
                             creature.ApplyStatusEffect(i + 1); // 상태이상 적용
-                            creature.PrintEffects(); // 상태이상 메세지 출력
                         }
+                        if (creaturen.HP>0) {creature.PrintEffects();} // 상태이상 메세지 출력
                     }
                 }
                 order = NewOrder(); // 턴 순서 재설정
