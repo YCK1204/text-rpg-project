@@ -67,7 +67,9 @@ namespace TextRPG
                     }
                     if (player.HP <= 0) // 플레이어가 죽었을 때
                     {
-                        Console.WriteLine("플레이어가 죽었습니다. 게임 오버.");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("플레이어가 죽었습니다. 게임 오버.");\
+                        Console.ResetColor();
                         Console.ReadKey(true);
                         return;
                     }
@@ -87,8 +89,9 @@ namespace TextRPG
                     {
                         for (int i = 0; i < creature.StatusEffect.Length; i++)
                         {
-                            if (creature.StatusEffect[i][0] == 0) { continue; } // 상태이상 효과가 없는 경우는 무시
-                            creature.ApplyStatusEffect(i + 1);
+                            if (creature.StatusEffect[i][0] == 0 || creature.HP <= 0) { continue; } // 상태이상 효과가 없는 경우는 무시
+                            creature.ApplyStatusEffect(i + 1); // 상태이상 적용
+                            creature.PrintEffects(); // 상태이상 메세지 출력
                         }
                     }
                 }
