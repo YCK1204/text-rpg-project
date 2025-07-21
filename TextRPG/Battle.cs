@@ -68,7 +68,7 @@ namespace TextRPG
                     if (player.HP <= 0) // 플레이어가 죽었을 때
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("플레이어가 죽었습니다. 게임 오버.");\
+                        Console.WriteLine("플레이어가 죽었습니다. 게임 오버.");
                         Console.ResetColor();
                         Console.ReadKey(true);
                         return;
@@ -352,7 +352,7 @@ namespace TextRPG
             if (enemy.StatusEffect[3][0]>0 && new Random().Next(0,100)<50) {return;} // 마비
             if (enemy.StatusEffect[5][0]>0) {return;} // 빙결
             int skillId = new Random().Next(17, 24); // 랜덤으로 스킬 선택
-            if (enemy.StatusEffect[4][0] >0] {skillId = 0; } // 침묵
+            if (enemy.StatusEffect[4][0] >0) {skillId = 0; } // 침묵
             if (skillId > 21) { skillId = 0; } // 스킬 ID 범위 조정
 
             Skill skill = DataManager.Instance.Skills[skillId];
